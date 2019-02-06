@@ -1,0 +1,14 @@
+# User id to use API (required)
+userid: dontpanic
+# Password to use API (required)
+secret: 123456
+# API endpoint/url. Aways use HTTPS! (required)
+endpoint: https://testnet.bitmex.com
+# Percentage to use on trade from total wallet value (required)
+hand: 3
+# Bot Speed in seconds. 2 seconds it's the least (required)
+speed: 2
+# Trade strategy (required)
+logic: volume
+# Asset to trade (required)
+asset: XBT
