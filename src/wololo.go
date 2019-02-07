@@ -18,6 +18,12 @@ func StringToInt(data string) int64 {
 	return result
 }
 
+// StringToIntBit convert string to int
+func StringToIntBit(data string) int {
+	result, _ := strconv.Atoi(data)
+	return result
+}
+
 // IntToString convert string to int64
 func IntToString(data int64) string {
 	return strconv.FormatInt(int64(data), 10)

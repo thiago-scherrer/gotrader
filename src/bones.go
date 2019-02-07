@@ -28,13 +28,15 @@ type APIResponseComplex struct {
 
 // Conf instruction are the file yaml on disc
 type Conf struct {
-	Asset    string `yaml:"asset"`
-	Endpoint string `yaml:"endpoint"`
-	Hand     string `yaml:"hand"`
-	Logic    string `yaml:"logic"`
-	Speed    string `yaml:"speed"`
-	Secret   string `yaml:"secret"`
-	Userid   string `yaml:"userid"`
+	Asset     string `yaml:"asset"`
+	Candle    string `yaml:"candle"`
+	Endpoint  string `yaml:"endpoint"`
+	Hand      string `yaml:"hand"`
+	Logic     string `yaml:"logic"`
+	Speed     string `yaml:"speed"`
+	Secret    string `yaml:"secret"`
+	Threshold string `yaml:"threshold"`
+	Userid    string `yaml:"userid"`
 }
 
 // KeyConfig struc from yaml file result
@@ -65,6 +67,10 @@ func configReader(keyname string, yamlFile []byte) string {
 		keyconfig.result = conf.Logic
 	} else if keyname == "asset" {
 		keyconfig.result = conf.Asset
+	} else if keyname == "candle" {
+		keyconfig.result = conf.Candle
+	} else if keyname == "threshold" {
+		keyconfig.result = conf.Threshold
 	}
 	return keyconfig.result
 }
@@ -116,6 +122,8 @@ func requiredConfig(confFile string) bool {
 	speed := configReader("speed", yamlFile)
 	logic := configReader("logic", yamlFile)
 	asset := configReader("asset", yamlFile)
+	candle := configReader("candle", yamlFile)
+	threshold := configReader("threshold", yamlFile)
 
 	if len(userid) == 0 {
 		result = true
@@ -138,7 +146,12 @@ func requiredConfig(confFile string) bool {
 	} else if len(asset) == 0 {
 		result = true
 		panic("asset not found!")
+	} else if len(candle) == 0 {
+		result = true
+		panic("candle time not found!")
+	} else if len(threshold) == 0 {
+		result = true
+		panic("threshold not found!")
 	}
-
 	return result
 }

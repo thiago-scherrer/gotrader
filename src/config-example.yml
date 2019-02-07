@@ -12,3 +12,7 @@ speed: 2
 logic: volume
 # Asset to trade (required)
 asset: XBT
+# Cadle time (minutes)
+candle: 30
+# threshold to trigger the rule
+threshold: 3
