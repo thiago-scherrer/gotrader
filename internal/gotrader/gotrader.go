@@ -10,7 +10,7 @@ func main() {
 	var strikeBuy int
 	var strikeSell int
 	var strike int
-	confFile := "config.yml"
+	confFile := "../../configs/config.yml"
 	yamlFile, err := ioutil.ReadFile(confFile)
 	if err != nil {
 		panic(err)

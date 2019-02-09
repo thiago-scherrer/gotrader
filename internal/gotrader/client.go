@@ -63,3 +63,7 @@ func clientPost(hex, endpoint, path, expired, userid string) string {
 
 	return BytesToString(body)
 }
+
+func getQuote() {
+	
+}

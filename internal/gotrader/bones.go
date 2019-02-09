@@ -19,11 +19,12 @@ type APIResponse struct {
 // APIResponseComplex used to struct data from API response,
 // thanks https://mholt.github.io/json-to-go/
 type APIResponseComplex struct {
-	Symbol string  `json:"symbol"`
-	ID     int64   `json:"id"`
-	Side   string  `json:"side"`
-	Size   int     `json:"size"`
-	Price  float64 `json:"price"`
+	Symbol    string  `json:"symbol"`
+	ID        int64   `json:"id"`
+	Side      string  `json:"side"`
+	Size      int     `json:"size"`
+	Price     float64 `json:"price"`
+	LastPrice int     `json:"lastPrice"`
 }
 
 // Conf instruction are the file yaml on disc
@@ -53,25 +54,27 @@ func configReader(keyname string, yamlFile []byte) string {
 		panic(err)
 	}
 
-	if keyname == "userid" {
+	switch keyname {
+	case "userid":
 		keyconfig.result = conf.Userid
-	} else if keyname == "secret" {
+	case "secret":
 		keyconfig.result = conf.Secret
-	} else if keyname == "api" {
+	case "api":
 		keyconfig.result = conf.Endpoint
-	} else if keyname == "hand" {
+	case "hand":
 		keyconfig.result = conf.Hand
-	} else if keyname == "speed" {
+	case "speed":
 		keyconfig.result = conf.Speed
-	} else if keyname == "logic" {
+	case "logic":
 		keyconfig.result = conf.Logic
-	} else if keyname == "asset" {
+	case "asset":
 		keyconfig.result = conf.Asset
-	} else if keyname == "candle" {
+	case "candle":
 		keyconfig.result = conf.Candle
-	} else if keyname == "threshold" {
+	case "threshold":
 		keyconfig.result = conf.Threshold
 	}
+
 	return keyconfig.result
 }
 

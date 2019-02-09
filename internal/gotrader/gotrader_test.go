@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -15,7 +16,7 @@ type TimeStamp struct {
 }
 
 func TestConfigFile(t *testing.T) {
-	config := "config-test.yml"
+	config := "../../configs/config-test.yml"
 	_, err := os.Stat(config)
 
 	if err == nil {
@@ -30,7 +31,7 @@ func TestConfigReader(t *testing.T) {
 	useridKey := "userid"
 	secretKey := "secret"
 	endpointKey := "api"
-	confFile := "config-test.yml"
+	confFile := "../../configs/config-test.yml"
 
 	yamlFile, err := ioutil.ReadFile(confFile)
 	if err != nil {
@@ -86,7 +87,7 @@ func TestHmac(t *testing.T) {
 }
 
 func TestGetAnnounement(t *testing.T) {
-	confFile := "config.yml"
+	confFile := "../../configs/config.yml"
 	expired := IntToString((timeExpired()))
 	path := "/api/v1/user/affiliateStatus"
 	requestTipe := "GET"
@@ -109,7 +110,7 @@ func TestGetAnnounement(t *testing.T) {
 }
 
 func TestGetWalletAmount(t *testing.T) {
-	confFile := "config.yml"
+	confFile := "../../configs/config.yml"
 	expired := IntToString((timeExpired()))
 	path := "/api/v1/user/wallet"
 	requestTipe := "GET"
@@ -133,7 +134,7 @@ func TestGetWalletAmount(t *testing.T) {
 }
 
 func TestPostLogout(t *testing.T) {
-	confFile := "config.yml"
+	confFile := "../../configs/config.yml"
 	expired := IntToString((timeExpired()))
 	path := "/api/v1/user/logout"
 	requestTipe := "POST"
@@ -156,7 +157,7 @@ func TestPostLogout(t *testing.T) {
 }
 
 func TestTradeValue(t *testing.T) {
-	confFile := "config.yml"
+	confFile := "../../configs/config.yml"
 	expired := IntToString((timeExpired()))
 	path := "/api/v1/user/wallet"
 	requestTipe := "GET"
@@ -180,6 +181,23 @@ func TestTradeValue(t *testing.T) {
 	}
 }
 
-func TestRequiredConfigs(t *testing.T) {
-	requiredConfig("config-test.yml")
+func TestQuote(t *testing.T) {
+	confFile := "../../configs/config.yml"
+	yamlFile, err := ioutil.ReadFile(confFile)
+	if err != nil {
+		panic(err)
+	}
+	secretQuery := configReader("secret", yamlFile)
+	userIDquery := configReader("userid", yamlFile)
+	endpoint := configReader("api", yamlFile)
+	asset := configReader("asset", yamlFile)
+	path := 
+	requestTipe := "GET"
+	expired := IntToString((timeExpired()))
+	hexResult := hexCreator(secretQuery, requestTipe, path, expired)
+	getResult := clientGet(hexResult, endpoint, path, expired, userIDquery)
+
+	//result := getQuote()
+
+	fmt.Println(getResult)
 }
