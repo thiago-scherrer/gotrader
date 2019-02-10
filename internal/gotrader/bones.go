@@ -6,7 +6,6 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"flag"
-	"fmt"
 	"io/ioutil"
 	"time"
 
@@ -135,19 +134,13 @@ func hexCreator(secret, requestTipe, path, expired string) string {
 }
 
 func parserAmount(data []byte) int {
-	var apiresponse []APIResponseComplex
-	var result int
-	fmt.Println(BytesToString(data))
-
+	apiresponse := APIResponseComplex{}
 	err := json.Unmarshal(data, &apiresponse)
 	if err != nil {
 		panic(err)
 	}
 
-	for _, value := range apiresponse[:] {
-		result = value.Amount
-	}
-	return result
+	return apiresponse.Amount
 }
 
 func lastPrice(data []byte) float64 {

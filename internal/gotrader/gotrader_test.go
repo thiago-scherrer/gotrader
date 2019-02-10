@@ -91,26 +91,13 @@ func TestGetAnnounement(t *testing.T) {
 	}
 }
 
-func TestGetWalletAmount(t *testing.T) {
-	confFile := "../../configs/config.yml"
-	path := "/api/v1/user/wallet"
-	requestTipe := "GET"
-
-	getResult := clientRobot(requestTipe, confFile, path)
-
-	getParser := parserAmount(getResult)
-
-	if getParser <= 1 {
-		t.Error("error to get wallet value, got: ", getParser)
-	}
-}
-
 func TestPostLogout(t *testing.T) {
 	confFile := "../../configs/config.yml"
 	path := "/api/v1/user/logout"
 	requestTipe := "POST"
+	getResult := clientRobot(requestTipe, confFile, path)
 
-	postResult := BytesToString(clientRobot(requestTipe, confFile, path))
+	postResult := BytesToString(getResult)
 
 	if postResult != "" {
 		t.Error("POST response not woring, got: ", postResult)
@@ -149,5 +136,18 @@ func TestQuote(t *testing.T) {
 	getPrice := lastPrice(getResult)
 	if getPrice <= 3 {
 		t.Error("erro to get last price, got: ", getPrice)
+	}
+}
+
+func TestGetWalletAmount(t *testing.T) {
+	confFile := "../../configs/config.yml"
+	path := "/api/v1/user/wallet"
+	requestTipe := "GET"
+	getResult := clientRobot(requestTipe, confFile, path)
+
+	getParser := parserAmount(getResult)
+
+	if getParser <= 1 {
+		t.Error("error to get wallet value, got: ", getParser)
 	}
 }

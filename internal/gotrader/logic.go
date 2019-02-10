@@ -6,37 +6,37 @@ import (
 	"time"
 )
 
-func volume(userIDquery, secretQuery, endpoint, asset, candle string, hand, speed int64) string {
-	var point []APIResponseComplex
+func volume(confFile string) string {
+	var apiresponse []APIResponseComplex
 	var countSell int
 	var countBuy int
 	var result string
-	candleTime := StringToIntBit(candle) * 60
+
+	asset := configReader("asset", confFile)
+	candleTime := StringToIntBit(
+		configReader("candle", confFile)) * 60
+	path := "/api/v1/orderBook/L2?symbol=" + asset + "&depth=0"
+	speed := StringToInt(
+		configReader("speed", confFile),
+	)
 
 	for count := 0; count < candleTime; count++ {
-
-		expired := IntToString((timeExpired()))
-		path := "/api/v1/orderBook/L2?symbol=" + asset + "&depth=10"
-		hexResult := hexCreator(secretQuery, "GET", path, expired)
-		getResult := clientGet(hexResult,
-			endpoint, path, expired, userIDquery)
-		getByte := StringToBytes(getResult)
-
-		err := json.Unmarshal(getByte, &point)
+		getResult := clientRobot("GET", confFile, path)
+		err := json.Unmarshal(getResult, &apiresponse)
 		if err != nil {
 			panic(err)
 		}
 
-		for _, value := range point[:] {
+		for _, value := range apiresponse[:] {
 			if value.Side == "Sell" {
 				countSell = countSell + value.Size
 			} else if value.Side == "Buy" {
 				countBuy = countBuy + value.Size
 			}
 		}
-		fmt.Println("Buy: ", countSell, "Sell: ", countBuy)
 		time.Sleep(time.Duration(speed) * time.Second)
 	}
+
 	if countBuy > countSell {
 		result = "Buy"
 	} else if countSell > countBuy {
@@ -49,5 +49,4 @@ func volume(userIDquery, secretQuery, endpoint, asset, candle string, hand, spee
 	}
 
 	return result
-
 }
