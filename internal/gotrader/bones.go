@@ -5,26 +5,48 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"flag"
+	"fmt"
 	"io/ioutil"
 	"time"
 
 	yaml "gopkg.in/yaml.v2"
 )
 
-// APIResponse are used to struc json result from API
-type APIResponse struct {
-	Amount int64 `json:"amount"`
-}
-
 // APIResponseComplex used to struct data from API response,
 // thanks https://mholt.github.io/json-to-go/
 type APIResponseComplex struct {
-	Symbol    string  `json:"symbol"`
-	ID        int64   `json:"id"`
-	Side      string  `json:"side"`
-	Size      int     `json:"size"`
-	Price     float64 `json:"price"`
-	LastPrice int     `json:"lastPrice"`
+	Amount           int           `json:"amount"`
+	Symbol           string        `json:"symbol"`
+	ID               int64         `json:"id"`
+	LastPrice        float64       `json:"lastPrice"`
+	Side             string        `json:"side"`
+	Size             int           `json:"size"`
+	Price            float64       `json:"price"`
+	Account          int           `json:"account"`
+	Currency         string        `json:"currency"`
+	PrevDeposited    int           `json:"prevDeposited"`
+	PrevWithdrawn    int           `json:"prevWithdrawn"`
+	PrevTransferIn   int           `json:"prevTransferIn"`
+	PrevTransferOut  int           `json:"prevTransferOut"`
+	PrevAmount       int           `json:"prevAmount"`
+	PrevTimestamp    time.Time     `json:"prevTimestamp"`
+	DeltaDeposited   int           `json:"deltaDeposited"`
+	DeltaWithdrawn   int           `json:"deltaWithdrawn"`
+	DeltaTransferIn  int           `json:"deltaTransferIn"`
+	DeltaTransferOut int           `json:"deltaTransferOut"`
+	DeltaAmount      int           `json:"deltaAmount"`
+	Deposited        int           `json:"deposited"`
+	Withdrawn        int           `json:"withdrawn"`
+	TransferIn       int           `json:"transferIn"`
+	TransferOut      int           `json:"transferOut"`
+	PendingCredit    int           `json:"pendingCredit"`
+	PendingDebit     int           `json:"pendingDebit"`
+	ConfirmedDebit   int           `json:"confirmedDebit"`
+	Timestamp        time.Time     `json:"timestamp"`
+	Addr             string        `json:"addr"`
+	Script           string        `json:"script"`
+	WithdrawalLock   []interface{} `json:"withdrawalLock"`
 }
 
 // Conf instruction are the file yaml on disc
@@ -45,11 +67,32 @@ type KeyConfig struct {
 	result string
 }
 
-func configReader(keyname string, yamlFile []byte) string {
+func configFile() string {
+	var config string
+	var help string
+
+	flag.StringVar(&config, "config", "", "")
+	flag.StringVar(&help, "help", "off", "")
+
+	flag.Parse()
+
+	if len(config) < 1 {
+		config = "usage: ./gotrade -config config.yml"
+		return config
+	}
+	return config
+
+}
+
+func configReader(keyname, confFile string) string {
 	conf := Conf{}
 	var keyconfig KeyConfig
 
-	err := yaml.Unmarshal(yamlFile, &conf)
+	yamlFile, err := ioutil.ReadFile(confFile)
+	if err != nil {
+		panic(err)
+	}
+	err = yaml.Unmarshal(yamlFile, &conf)
 	if err != nil {
 		panic(err)
 	}
@@ -78,7 +121,7 @@ func configReader(keyname string, yamlFile []byte) string {
 	return keyconfig.result
 }
 
-func handRoll(getParser, hand int64) int64 {
+func handRoll(getParser, hand int) int {
 	return (getParser * hand) / 100
 }
 
@@ -91,13 +134,35 @@ func hexCreator(secret, requestTipe, path, expired string) string {
 	return hexResult
 }
 
-func parserAmount(getResult string) int64 {
-	getByte := StringToBytes(getResult)
-	var apiresponse APIResponse
+func parserAmount(data []byte) int {
+	var apiresponse []APIResponseComplex
+	var result int
+	fmt.Println(BytesToString(data))
 
-	json.Unmarshal(getByte, &apiresponse)
+	err := json.Unmarshal(data, &apiresponse)
+	if err != nil {
+		panic(err)
+	}
 
-	return apiresponse.Amount
+	for _, value := range apiresponse[:] {
+		result = value.Amount
+	}
+	return result
+}
+
+func lastPrice(data []byte) float64 {
+	var apiresponse []APIResponseComplex
+	var result float64
+
+	err := json.Unmarshal(data, &apiresponse)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, value := range apiresponse[:] {
+		result = value.LastPrice
+	}
+	return result
 }
 
 func timeExpired() int64 {
@@ -113,20 +178,16 @@ func timeStamp() int64 {
 
 func requiredConfig(confFile string) bool {
 	var result bool
-	yamlFile, err := ioutil.ReadFile(confFile)
-	if err != nil {
-		panic(err)
-	}
 
-	userid := configReader("userid", yamlFile)
-	secret := configReader("secret", yamlFile)
-	endpoint := configReader("api", yamlFile)
-	hand := configReader("hand", yamlFile)
-	speed := configReader("speed", yamlFile)
-	logic := configReader("logic", yamlFile)
-	asset := configReader("asset", yamlFile)
-	candle := configReader("candle", yamlFile)
-	threshold := configReader("threshold", yamlFile)
+	userid := configReader("userid", confFile)
+	secret := configReader("secret", confFile)
+	endpoint := configReader("api", confFile)
+	hand := configReader("hand", confFile)
+	speed := configReader("speed", confFile)
+	logic := configReader("logic", confFile)
+	asset := configReader("asset", confFile)
+	candle := configReader("candle", confFile)
+	threshold := configReader("threshold", confFile)
 
 	if len(userid) == 0 {
 		result = true

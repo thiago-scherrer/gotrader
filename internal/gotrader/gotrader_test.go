@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
 	"testing"
@@ -33,20 +31,15 @@ func TestConfigReader(t *testing.T) {
 	endpointKey := "api"
 	confFile := "../../configs/config-test.yml"
 
-	yamlFile, err := ioutil.ReadFile(confFile)
-	if err != nil {
-		panic(err)
-	}
-
-	userIDquery := configReader(useridKey, yamlFile)
+	userIDquery := configReader(useridKey, confFile)
 	if userIDquery != "dontpanic" {
 		t.Error("the yml file not return the user, the result are: ", userIDquery)
 	}
-	secretQuery := configReader(secretKey, yamlFile)
+	secretQuery := configReader(secretKey, confFile)
 	if secretQuery != "123456" {
 		t.Error("the yml file not return the password, the result are: ", secretQuery)
 	}
-	endpointQuery := configReader(endpointKey, yamlFile)
+	endpointQuery := configReader(endpointKey, confFile)
 	if endpointQuery != "https://testnet.bitmex.com" {
 		t.Error("the yml file not return the endpoint, the result are: ", endpointQuery)
 	}
@@ -88,21 +81,10 @@ func TestHmac(t *testing.T) {
 
 func TestGetAnnounement(t *testing.T) {
 	confFile := "../../configs/config.yml"
-	expired := IntToString((timeExpired()))
 	path := "/api/v1/user/affiliateStatus"
 	requestTipe := "GET"
 
-	yamlFile, err := ioutil.ReadFile(confFile)
-	if err != nil {
-		panic(err)
-	}
-	secretQuery := configReader("secret", yamlFile)
-	userIDquery := configReader("userid", yamlFile)
-	endpoint := configReader("api", yamlFile)
-
-	hexResult := hexCreator(secretQuery, requestTipe, path, expired)
-
-	getResult := clientGet(hexResult, endpoint, path, expired, userIDquery)
+	getResult := clientRobot(requestTipe, confFile, path)
 
 	if len(getResult) <= 3 {
 		t.Error("GET response not woring, got: ", getResult)
@@ -111,20 +93,10 @@ func TestGetAnnounement(t *testing.T) {
 
 func TestGetWalletAmount(t *testing.T) {
 	confFile := "../../configs/config.yml"
-	expired := IntToString((timeExpired()))
 	path := "/api/v1/user/wallet"
 	requestTipe := "GET"
 
-	yamlFile, err := ioutil.ReadFile(confFile)
-	if err != nil {
-		panic(err)
-	}
-	secretQuery := configReader("secret", yamlFile)
-	userIDquery := configReader("userid", yamlFile)
-	endpoint := configReader("api", yamlFile)
-	hexResult := hexCreator(secretQuery, requestTipe, path, expired)
-
-	getResult := clientGet(hexResult, endpoint, path, expired, userIDquery)
+	getResult := clientRobot(requestTipe, confFile, path)
 
 	getParser := parserAmount(getResult)
 
@@ -135,21 +107,10 @@ func TestGetWalletAmount(t *testing.T) {
 
 func TestPostLogout(t *testing.T) {
 	confFile := "../../configs/config.yml"
-	expired := IntToString((timeExpired()))
 	path := "/api/v1/user/logout"
 	requestTipe := "POST"
 
-	yamlFile, err := ioutil.ReadFile(confFile)
-	if err != nil {
-		panic(err)
-	}
-	secretQuery := configReader("secret", yamlFile)
-	userIDquery := configReader("userid", yamlFile)
-	endpoint := configReader("api", yamlFile)
-
-	hexResult := hexCreator(secretQuery, requestTipe, path, expired)
-
-	postResult := clientPost(hexResult, endpoint, path, expired, userIDquery)
+	postResult := BytesToString(clientRobot(requestTipe, confFile, path))
 
 	if postResult != "" {
 		t.Error("POST response not woring, got: ", postResult)
@@ -158,20 +119,10 @@ func TestPostLogout(t *testing.T) {
 
 func TestTradeValue(t *testing.T) {
 	confFile := "../../configs/config.yml"
-	expired := IntToString((timeExpired()))
 	path := "/api/v1/user/wallet"
 	requestTipe := "GET"
-
-	yamlFile, err := ioutil.ReadFile(confFile)
-	if err != nil {
-		panic(err)
-	}
-	secretQuery := configReader("secret", yamlFile)
-	userIDquery := configReader("userid", yamlFile)
-	endpoint := configReader("api", yamlFile)
-	hand := StringToInt(configReader("hand", yamlFile))
-	hexResult := hexCreator(secretQuery, requestTipe, path, expired)
-	getResult := clientGet(hexResult, endpoint, path, expired, userIDquery)
+	hand := StringToIntBit(configReader("hand", confFile))
+	getResult := clientRobot(requestTipe, confFile, path)
 	getParser := parserAmount(getResult)
 	handRollEspected := (getParser * hand) / 100
 	result := handRoll(getParser, hand)
@@ -181,23 +132,22 @@ func TestTradeValue(t *testing.T) {
 	}
 }
 
+func TestConfigLoad(t *testing.T) {
+	getResult := configFile()
+	expected := "usage: ./gotrade -config config.yml"
+
+	if getResult != expected {
+		t.Error("config load not working, got: ", getResult)
+	}
+}
 func TestQuote(t *testing.T) {
 	confFile := "../../configs/config.yml"
-	yamlFile, err := ioutil.ReadFile(confFile)
-	if err != nil {
-		panic(err)
+	asset := configReader("asset", confFile)
+	path := "/api/v1/instrument?symbol=" + asset + "&count=100&reverse=false&columns=lastPrice"
+	getResult := clientRobot("GET", confFile, path)
+
+	getPrice := lastPrice(getResult)
+	if getPrice <= 3 {
+		t.Error("erro to get last price, got: ", getPrice)
 	}
-	secretQuery := configReader("secret", yamlFile)
-	userIDquery := configReader("userid", yamlFile)
-	endpoint := configReader("api", yamlFile)
-	asset := configReader("asset", yamlFile)
-	path := 
-	requestTipe := "GET"
-	expired := IntToString((timeExpired()))
-	hexResult := hexCreator(secretQuery, requestTipe, path, expired)
-	getResult := clientGet(hexResult, endpoint, path, expired, userIDquery)
-
-	//result := getQuote()
-
-	fmt.Println(getResult)
 }

@@ -1,7 +1,5 @@
 # gotrader
 
-[!gopher](assets/gopher.png)
-
 Project to provider a crypto bot trader
 
 ## reqs
