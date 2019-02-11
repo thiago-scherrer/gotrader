@@ -19,9 +19,15 @@ func volume(confFile string) string {
 	speed := StringToInt(
 		configReader("speed", confFile),
 	)
+	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
+	dataB, err := json.Marshal(data)
+	if err != nil {
+		panic(err)
+	}
 
 	for count := 0; count < candleTime; count++ {
-		getResult := clientRobot("GET", confFile, path)
+
+		getResult := clientRobot("GET", confFile, path, dataB)
 		err := json.Unmarshal(getResult, &apiresponse)
 		if err != nil {
 			panic(err)

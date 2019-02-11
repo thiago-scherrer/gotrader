@@ -48,6 +48,12 @@ type APIResponseComplex struct {
 	WithdrawalLock   []interface{} `json:"withdrawalLock"`
 }
 
+// BotData are json send to the API
+type BotData struct {
+	ChannelID string `json:"channelID"`
+	Message   string `json:"message"`
+}
+
 // Conf instruction are the file yaml on disc
 type Conf struct {
 	Asset     string `yaml:"asset"`

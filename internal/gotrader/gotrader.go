@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 func main() {
 	cfile := configFile()
@@ -15,5 +18,20 @@ func main() {
 	fmt.Println("Logic:", logic)
 	fmt.Println("Hand:", hand)
 
-	fmt.Println(volume(cfile))
+	volume(cfile)
+}
+
+func sellOrder(configFile string) {
+	path := "/api/v1/user/wallet"
+	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
+	dataB, err := json.Marshal(data)
+	if err != nil {
+		panic(err)
+	}
+
+	asset := configReader("asset", configFile)
+	path = "/api/v1/order/&symbol=" + asset + "&side=SELL&orderQty=" + "1" + "&price=" + "3603,5" + "&ordType=Limit"
+	getResult := clientRobot("GET", configFile, path, dataB)
+
+	fmt.Println(BytesToString(getResult))
 }

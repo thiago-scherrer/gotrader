@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"os"
 	"strings"
 	"testing"
@@ -83,25 +85,32 @@ func TestGetAnnounement(t *testing.T) {
 	confFile := "../../configs/config.yml"
 	path := "/api/v1/user/affiliateStatus"
 	requestTipe := "GET"
-
-	getResult := clientRobot(requestTipe, confFile, path)
+	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
+	dataB, err := json.Marshal(data)
+	if err != nil {
+		panic(err)
+	}
+	getResult := clientRobot(requestTipe, confFile, path, dataB)
 
 	if len(getResult) <= 3 {
 		t.Error("GET response not woring, got: ", getResult)
 	}
 }
 
-func TestPostLogout(t *testing.T) {
+func TestPostChat(t *testing.T) {
 	confFile := "../../configs/config.yml"
-	path := "/api/v1/user/logout"
+	path := "/api/v1/chat"
 	requestTipe := "POST"
-	getResult := clientRobot(requestTipe, confFile, path)
-
-	postResult := BytesToString(getResult)
-
-	if postResult != "" {
-		t.Error("POST response not woring, got: ", postResult)
+	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
+	dataB, err := json.Marshal(data)
+	if err != nil {
+		panic(err)
 	}
+	getResult := clientRobot(requestTipe, confFile, path, dataB)
+
+	//postResult := BytesToString(getResult)
+
+	fmt.Println(getResult)
 }
 
 func TestTradeValue(t *testing.T) {
@@ -109,7 +118,12 @@ func TestTradeValue(t *testing.T) {
 	path := "/api/v1/user/wallet"
 	requestTipe := "GET"
 	hand := StringToIntBit(configReader("hand", confFile))
-	getResult := clientRobot(requestTipe, confFile, path)
+	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
+	dataB, err := json.Marshal(data)
+	if err != nil {
+		panic(err)
+	}
+	getResult := clientRobot(requestTipe, confFile, path, dataB)
 	getParser := parserAmount(getResult)
 	handRollEspected := (getParser * hand) / 100
 	result := handRoll(getParser, hand)
@@ -131,7 +145,12 @@ func TestQuote(t *testing.T) {
 	confFile := "../../configs/config.yml"
 	asset := configReader("asset", confFile)
 	path := "/api/v1/instrument?symbol=" + asset + "&count=100&reverse=false&columns=lastPrice"
-	getResult := clientRobot("GET", confFile, path)
+	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
+	dataB, err := json.Marshal(data)
+	if err != nil {
+		panic(err)
+	}
+	getResult := clientRobot("GET", confFile, path, dataB)
 
 	getPrice := lastPrice(getResult)
 	if getPrice <= 3 {
@@ -143,11 +162,20 @@ func TestGetWalletAmount(t *testing.T) {
 	confFile := "../../configs/config.yml"
 	path := "/api/v1/user/wallet"
 	requestTipe := "GET"
-	getResult := clientRobot(requestTipe, confFile, path)
+	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
+	dataB, err := json.Marshal(data)
+	if err != nil {
+		panic(err)
+	}
+	getResult := clientRobot(requestTipe, confFile, path, dataB)
 
 	getParser := parserAmount(getResult)
 
 	if getParser <= 1 {
 		t.Error("error to get wallet value, got: ", getParser)
 	}
+}
+
+func TestSellOrder(t *testing.T) {
+
 }
