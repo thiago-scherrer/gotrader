@@ -6,11 +6,10 @@ import (
 )
 
 func main() {
-	cfile := configFile()
-	asset := configReader("asset", cfile)
-	candleTime := configReader("candle", cfile)
-	logic := configReader("logic", cfile)
-	hand := configReader("hand", cfile)
+	asset := asset()
+	candleTime := candle()
+	logic := logic()
+	hand := hand()
 
 	fmt.Println("Starting gotrader!")
 	fmt.Println("Asset:", asset)
@@ -18,7 +17,7 @@ func main() {
 	fmt.Println("Logic:", logic)
 	fmt.Println("Hand:", hand)
 
-	volume(cfile)
+	volume()
 }
 
 func sellOrder(configFile string) {
@@ -29,9 +28,9 @@ func sellOrder(configFile string) {
 		panic(err)
 	}
 
-	asset := configReader("asset", configFile)
+	asset := asset()
 	path = "/api/v1/order/&symbol=" + asset + "&side=SELL&orderQty=" + "1" + "&price=" + "3603,5" + "&ordType=Limit"
-	getResult := clientRobot("GET", configFile, path, dataB)
+	getResult := clientRobot("GET", path, dataB)
 
 	fmt.Println(BytesToString(getResult))
 }

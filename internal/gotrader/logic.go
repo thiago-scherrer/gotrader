@@ -6,18 +6,18 @@ import (
 	"time"
 )
 
-func volume(confFile string) string {
+func volume() string {
 	var apiresponse []APIResponseComplex
 	var countSell int
 	var countBuy int
 	var result string
 
-	asset := configReader("asset", confFile)
+	asset := asset()
 	candleTime := StringToIntBit(
-		configReader("candle", confFile)) * 60
+		candle()) * 60
 	path := "/api/v1/orderBook/L2?symbol=" + asset + "&depth=0"
 	speed := StringToInt(
-		configReader("speed", confFile),
+		speed(),
 	)
 	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
 	dataB, err := json.Marshal(data)
@@ -27,7 +27,7 @@ func volume(confFile string) string {
 
 	for count := 0; count < candleTime; count++ {
 
-		getResult := clientRobot("GET", confFile, path, dataB)
+		getResult := clientRobot("GET", path, dataB)
 		err := json.Unmarshal(getResult, &apiresponse)
 		if err != nil {
 			panic(err)

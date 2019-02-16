@@ -5,8 +5,8 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
-	"flag"
 	"io/ioutil"
+	"os"
 	"time"
 
 	yaml "gopkg.in/yaml.v2"
@@ -72,26 +72,25 @@ type KeyConfig struct {
 	result string
 }
 
-func configFile() string {
+func initFlag() string {
 	var config string
-	var help string
 
-	flag.StringVar(&config, "config", "", "")
-	flag.StringVar(&help, "help", "off", "")
-
-	flag.Parse()
-
-	if len(config) < 1 {
-		config = "usage: ./gotrade -config config.yml"
-		return config
+	if len(os.Args[1:]) == 0 {
+		panic("Usage : -config config.yml")
 	}
-	return config
 
+	if os.Args[1] == "-config" {
+		config = os.Args[2]
+	} else {
+		panic("Usage : -config config.yml")
+	}
+
+	return config
 }
 
-func configReader(keyname, confFile string) string {
+func configReader() *Conf {
+	confFile := initFlag()
 	conf := Conf{}
-	var keyconfig KeyConfig
 
 	yamlFile, err := ioutil.ReadFile(confFile)
 	if err != nil {
@@ -101,28 +100,69 @@ func configReader(keyname, confFile string) string {
 	if err != nil {
 		panic(err)
 	}
+	return &conf
+}
 
-	switch keyname {
-	case "userid":
-		keyconfig.result = conf.Userid
-	case "secret":
-		keyconfig.result = conf.Secret
-	case "api":
-		keyconfig.result = conf.Endpoint
-	case "hand":
-		keyconfig.result = conf.Hand
-	case "speed":
-		keyconfig.result = conf.Speed
-	case "logic":
-		keyconfig.result = conf.Logic
-	case "asset":
-		keyconfig.result = conf.Asset
-	case "candle":
-		keyconfig.result = conf.Candle
-	case "threshold":
-		keyconfig.result = conf.Threshold
-	}
+func userid() string {
+	conf := configReader()
+	var keyconfig KeyConfig
+	keyconfig.result = conf.Userid
+	return keyconfig.result
+}
 
+func secret() string {
+	conf := configReader()
+	var keyconfig KeyConfig
+	keyconfig.result = conf.Secret
+	return keyconfig.result
+}
+
+func endpoint() string {
+	conf := configReader()
+	var keyconfig KeyConfig
+	keyconfig.result = conf.Endpoint
+	return keyconfig.result
+}
+
+func hand() string {
+	conf := configReader()
+	var keyconfig KeyConfig
+	keyconfig.result = conf.Hand
+	return keyconfig.result
+}
+
+func speed() string {
+	conf := configReader()
+	var keyconfig KeyConfig
+	keyconfig.result = conf.Speed
+	return keyconfig.result
+}
+
+func logic() string {
+	conf := configReader()
+	var keyconfig KeyConfig
+	keyconfig.result = conf.Logic
+	return keyconfig.result
+}
+
+func asset() string {
+	conf := configReader()
+	var keyconfig KeyConfig
+	keyconfig.result = conf.Asset
+	return keyconfig.result
+}
+
+func candle() string {
+	conf := configReader()
+	var keyconfig KeyConfig
+	keyconfig.result = conf.Candle
+	return keyconfig.result
+}
+
+func threshold() string {
+	conf := configReader()
+	var keyconfig KeyConfig
+	keyconfig.result = conf.Threshold
 	return keyconfig.result
 }
 
@@ -173,48 +213,4 @@ func timeStamp() int64 {
 	now := time.Now()
 	timestamp := now.Unix()
 	return timestamp
-}
-
-func requiredConfig(confFile string) bool {
-	var result bool
-
-	userid := configReader("userid", confFile)
-	secret := configReader("secret", confFile)
-	endpoint := configReader("api", confFile)
-	hand := configReader("hand", confFile)
-	speed := configReader("speed", confFile)
-	logic := configReader("logic", confFile)
-	asset := configReader("asset", confFile)
-	candle := configReader("candle", confFile)
-	threshold := configReader("threshold", confFile)
-
-	if len(userid) == 0 {
-		result = true
-		panic("user id not found!")
-	} else if len(secret) == 0 {
-		result = true
-		panic("secret not found!")
-	} else if len(endpoint) == 0 {
-		result = true
-		panic("api endpoint not found!")
-	} else if len(hand) == 0 {
-		result = true
-		panic("hand not found!")
-	} else if len(speed) == 0 {
-		result = true
-		panic("speed not found!")
-	} else if len(logic) == 0 {
-		result = true
-		panic("logic not found!")
-	} else if len(asset) == 0 {
-		result = true
-		panic("asset not found!")
-	} else if len(candle) == 0 {
-		result = true
-		panic("candle time not found!")
-	} else if len(threshold) == 0 {
-		result = true
-		panic("threshold not found!")
-	}
-	return result
 }

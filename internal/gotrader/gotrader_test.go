@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"strings"
 	"testing"
 	"time"
 )
@@ -15,42 +14,9 @@ type TimeStamp struct {
 	timeExpired int64
 }
 
-func TestConfigFile(t *testing.T) {
-	config := "../../configs/config-test.yml"
-	_, err := os.Stat(config)
-
-	if err == nil {
-	} else if os.IsNotExist(err) {
-		t.Error("config file not found! ", config)
-	} else {
-		t.Error("error to look at config file.")
-	}
-}
-
-func TestConfigReader(t *testing.T) {
-	useridKey := "userid"
-	secretKey := "secret"
-	endpointKey := "api"
-	confFile := "../../configs/config-test.yml"
-
-	userIDquery := configReader(useridKey, confFile)
-	if userIDquery != "dontpanic" {
-		t.Error("the yml file not return the user, the result are: ", userIDquery)
-	}
-	secretQuery := configReader(secretKey, confFile)
-	if secretQuery != "123456" {
-		t.Error("the yml file not return the password, the result are: ", secretQuery)
-	}
-	endpointQuery := configReader(endpointKey, confFile)
-	if endpointQuery != "https://testnet.bitmex.com" {
-		t.Error("the yml file not return the endpoint, the result are: ", endpointQuery)
-	}
-	if !strings.HasPrefix(endpointQuery, "https://") {
-		t.Error("the endpoint in yml file is not not secured (https), the result are: ", endpointQuery)
-	}
-}
-
 func TestExpiresTime(t *testing.T) {
+	os.Args[1] = "-config"
+	os.Args[2] = "../../configs/config.yml"
 	var timeStampResult TimeStamp
 
 	now := time.Now()
@@ -69,6 +35,8 @@ func TestExpiresTime(t *testing.T) {
 }
 
 func TestHmac(t *testing.T) {
+	os.Args[1] = "-config"
+	os.Args[2] = "../../configs/config.yml"
 	expired := "1518064236"
 	path := "/api/v1/instrument"
 	requestTipe := "GET"
@@ -82,7 +50,8 @@ func TestHmac(t *testing.T) {
 }
 
 func TestGetAnnounement(t *testing.T) {
-	confFile := "../../configs/config.yml"
+	os.Args[1] = "-config"
+	os.Args[2] = "../../configs/config.yml"
 	path := "/api/v1/user/affiliateStatus"
 	requestTipe := "GET"
 	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
@@ -90,7 +59,7 @@ func TestGetAnnounement(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	getResult := clientRobot(requestTipe, confFile, path, dataB)
+	getResult := clientRobot(requestTipe, path, dataB)
 
 	if len(getResult) <= 3 {
 		t.Error("GET response not woring, got: ", getResult)
@@ -98,7 +67,8 @@ func TestGetAnnounement(t *testing.T) {
 }
 
 func TestPostChat(t *testing.T) {
-	confFile := "../../configs/config.yml"
+	os.Args[1] = "-config"
+	os.Args[2] = "../../configs/config.yml"
 	path := "/api/v1/chat"
 	requestTipe := "POST"
 	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
@@ -106,7 +76,7 @@ func TestPostChat(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	getResult := clientRobot(requestTipe, confFile, path, dataB)
+	getResult := clientRobot(requestTipe, path, dataB)
 
 	//postResult := BytesToString(getResult)
 
@@ -114,16 +84,17 @@ func TestPostChat(t *testing.T) {
 }
 
 func TestTradeValue(t *testing.T) {
-	confFile := "../../configs/config.yml"
+	os.Args[1] = "-config"
+	os.Args[2] = "../../configs/config.yml"
 	path := "/api/v1/user/wallet"
 	requestTipe := "GET"
-	hand := StringToIntBit(configReader("hand", confFile))
+	hand := StringToIntBit(hand())
 	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
 	dataB, err := json.Marshal(data)
 	if err != nil {
 		panic(err)
 	}
-	getResult := clientRobot(requestTipe, confFile, path, dataB)
+	getResult := clientRobot(requestTipe, path, dataB)
 	getParser := parserAmount(getResult)
 	handRollEspected := (getParser * hand) / 100
 	result := handRoll(getParser, hand)
@@ -133,24 +104,17 @@ func TestTradeValue(t *testing.T) {
 	}
 }
 
-func TestConfigLoad(t *testing.T) {
-	getResult := configFile()
-	expected := "usage: ./gotrade -config config.yml"
-
-	if getResult != expected {
-		t.Error("config load not working, got: ", getResult)
-	}
-}
 func TestQuote(t *testing.T) {
-	confFile := "../../configs/config.yml"
-	asset := configReader("asset", confFile)
+	os.Args[1] = "-config"
+	os.Args[2] = "../../configs/config.yml"
+	asset := asset()
 	path := "/api/v1/instrument?symbol=" + asset + "&count=100&reverse=false&columns=lastPrice"
 	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
 	dataB, err := json.Marshal(data)
 	if err != nil {
 		panic(err)
 	}
-	getResult := clientRobot("GET", confFile, path, dataB)
+	getResult := clientRobot("GET", path, dataB)
 
 	getPrice := lastPrice(getResult)
 	if getPrice <= 3 {
@@ -159,7 +123,8 @@ func TestQuote(t *testing.T) {
 }
 
 func TestGetWalletAmount(t *testing.T) {
-	confFile := "../../configs/config.yml"
+	os.Args[1] = "-config"
+	os.Args[2] = "../../configs/config.yml"
 	path := "/api/v1/user/wallet"
 	requestTipe := "GET"
 	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
@@ -167,7 +132,7 @@ func TestGetWalletAmount(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	getResult := clientRobot(requestTipe, confFile, path, dataB)
+	getResult := clientRobot(requestTipe, path, dataB)
 
 	getParser := parserAmount(getResult)
 

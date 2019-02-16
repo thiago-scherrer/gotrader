@@ -6,15 +6,15 @@ import (
 	"net/http"
 )
 
-func clientRobot(requestType, config, path string, data []byte) []byte {
+func clientRobot(requestType, path string, data []byte) []byte {
 	client := &http.Client{}
-	endpoint := configReader("api", config)
-	secretQuery := configReader("secret", config)
-	userIDquery := configReader("userid", config)
+	endpoint := endpoint()
+	secretQuery := secret()
+	userIDquery := userid()
 	expire := IntToString((timeExpired()))
 	hexResult := hexCreator(secretQuery, requestType, path, expire)
 	url := endpoint + path
-	
+
 	request, err := http.NewRequest(requestType, url, nil)
 	if err != nil {
 		panic(err)
