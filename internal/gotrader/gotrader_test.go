@@ -106,7 +106,7 @@ func TestPostChat(t *testing.T) {
 	initFlag()
 	path := "/api/v1/chat"
 	requestTipe := "POST"
-	data := StringToBytes("message=TDD ROBOT Trader :)	&channelID=1")
+	data := StringToBytes("message=GoTrader bot&channelID=1")
 	getResult := clientRobot(requestTipe, path, data)
 
 	err := json.Unmarshal(getResult, &apiresponse)
@@ -124,7 +124,7 @@ func TestGetWalletAmount(t *testing.T) {
 	initFlag()
 	path := "/api/v1/user/wallet"
 	requestTipe := "GET"
-	data := StringToBytes("message=TDD ROBOT Trader :)	&channelID=1")
+	data := StringToBytes("message=GoTrader bot&channelID=1")
 	dataB, err := json.Marshal(data)
 	if err != nil {
 		panic(err)
