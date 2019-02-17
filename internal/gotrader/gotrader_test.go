@@ -50,12 +50,9 @@ func TestGetAnnounement(t *testing.T) {
 	initFlag()
 	path := "/api/v1/user/affiliateStatus"
 	requestTipe := "GET"
-	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
-	dataB, err := json.Marshal(data)
-	if err != nil {
-		panic(err)
-	}
-	getResult := clientRobot(requestTipe, path, dataB)
+	data := StringToBytes("message=GoTrader bot&channelID=1")
+
+	getResult := clientRobot(requestTipe, path, data)
 
 	if len(getResult) <= 3 {
 		t.Error("GET response not woring, got: ", getResult)
@@ -68,12 +65,8 @@ func TestTradeValue(t *testing.T) {
 	path := "/api/v1/user/wallet"
 	requestTipe := "GET"
 	hand := StringToIntBit(hand())
-	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
-	dataB, err := json.Marshal(data)
-	if err != nil {
-		panic(err)
-	}
-	getResult := clientRobot(requestTipe, path, dataB)
+	data := StringToBytes("message=GoTrader bot&channelID=1")
+	getResult := clientRobot(requestTipe, path, data)
 	getParser := parserAmount(getResult)
 	handRollEspected := (getParser * hand) / 100
 	result := handRoll(getParser, hand)
@@ -87,12 +80,9 @@ func TestQuote(t *testing.T) {
 	initFlag()
 	asset := asset()
 	path := "/api/v1/instrument?symbol=" + asset + "&count=100&reverse=false&columns=lastPrice"
-	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
-	dataB, err := json.Marshal(data)
-	if err != nil {
-		panic(err)
-	}
-	getResult := clientRobot("GET", path, dataB)
+	data := StringToBytes("message=GoTrader bot&channelID=1")
+
+	getResult := clientRobot("GET", path, data)
 
 	getPrice := lastPrice(getResult)
 	if getPrice <= 3 {
@@ -125,11 +115,7 @@ func TestGetWalletAmount(t *testing.T) {
 	path := "/api/v1/user/wallet"
 	requestTipe := "GET"
 	data := StringToBytes("message=GoTrader bot&channelID=1")
-	dataB, err := json.Marshal(data)
-	if err != nil {
-		panic(err)
-	}
-	getResult := clientRobot(requestTipe, path, dataB)
+	getResult := clientRobot(requestTipe, path, data)
 
 	getParser := parserAmount(getResult)
 

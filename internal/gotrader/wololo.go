@@ -1,6 +1,9 @@
 package main
 
-import "strconv"
+import (
+	"fmt"
+	"strconv"
+)
 
 // BytesToString convert bytes to string
 func BytesToString(data []byte) string {
@@ -27,4 +30,19 @@ func StringToIntBit(data string) int {
 // IntToString convert string to int64
 func IntToString(data int64) string {
 	return strconv.FormatInt(int64(data), 10)
+}
+
+// FloatToString convert float64 to string
+func FloatToString(data float64) string {
+	return fmt.Sprintf("%f", data)
+}
+
+// IntToFloat convert int to float64
+func IntToFloat(data int64) float64 {
+	return float64(data)
+}
+
+// FloatToInt convert int to float64
+func FloatToInt(data float64) int64 {
+	return int64(data)
 }

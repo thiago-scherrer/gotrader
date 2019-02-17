@@ -19,15 +19,11 @@ func volume() string {
 	speed := StringToInt(
 		speed(),
 	)
-	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
-	dataB, err := json.Marshal(data)
-	if err != nil {
-		panic(err)
-	}
+	data := StringToBytes("message=GoTrader bot&channelID=1")
 
 	for count := 0; count < candleTime; count++ {
 
-		getResult := clientRobot("GET", path, dataB)
+		getResult := clientRobot("GET", path, data)
 		err := json.Unmarshal(getResult, &apiresponse)
 		if err != nil {
 			panic(err)
