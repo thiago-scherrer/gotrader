@@ -46,6 +46,12 @@ type APIResponseComplex struct {
 	Addr             string        `json:"addr"`
 	Script           string        `json:"script"`
 	WithdrawalLock   []interface{} `json:"withdrawalLock"`
+	Date             time.Time     `json:"date"`
+	User             string        `json:"user"`
+	Message          string        `json:"message"`
+	HTML             string        `json:"html"`
+	FromBot          bool          `json:"fromBot"`
+	ChannelID        int           `json:"channelID"`
 }
 
 // BotData are json send to the API
@@ -76,13 +82,13 @@ func initFlag() string {
 	var config string
 
 	if len(os.Args[1:]) == 0 {
-		panic("Usage : -config config.yml")
+		panic("Usage : config config.yml")
 	}
 
-	if os.Args[1] == "-config" {
+	if os.Args[1] == "config" {
 		config = os.Args[2]
 	} else {
-		panic("Usage : -config config.yml")
+		panic("Usage : config config.yml")
 	}
 
 	return config
@@ -170,8 +176,8 @@ func handRoll(getParser, hand int) int {
 	return (getParser * hand) / 100
 }
 
-func hexCreator(secret, requestTipe, path, expired string) string {
-	concat := requestTipe + path + expired
+func hexCreator(secret, requestTipe, path, expired, data string) string {
+	concat := requestTipe + path + expired + data
 	h := hmac.New(sha256.New, []byte(secret))
 	h.Write([]byte(concat))
 

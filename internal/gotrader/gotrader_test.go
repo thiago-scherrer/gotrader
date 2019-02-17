@@ -2,8 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
-	"os"
 	"testing"
 	"time"
 )
@@ -15,8 +13,7 @@ type TimeStamp struct {
 }
 
 func TestExpiresTime(t *testing.T) {
-	os.Args[1] = "-config"
-	os.Args[2] = "../../configs/config.yml"
+	initFlag()
 	var timeStampResult TimeStamp
 
 	now := time.Now()
@@ -35,14 +32,14 @@ func TestExpiresTime(t *testing.T) {
 }
 
 func TestHmac(t *testing.T) {
-	os.Args[1] = "-config"
-	os.Args[2] = "../../configs/config.yml"
+	initFlag()
+
 	expired := "1518064236"
 	path := "/api/v1/instrument"
 	requestTipe := "GET"
 	secretQuery := "chNOOS4KvNXR_Xq4k4c9qsfoKWvnDecLATCRlcBwyKDYnWgO"
-	hexExpected := "c7682d435d0cfe87c16098df34ef2eb5a549d4c5a3c2b1f0f77b8af73423bf00"
-	hexResult := hexCreator(secretQuery, requestTipe, path, expired)
+	hexExpected := "9c37199dd75f47b63774ddbb5e2851998848d5ec62b9a2bbc380a48f620b305e"
+	hexResult := hexCreator(secretQuery, requestTipe, path, expired, "data")
 
 	if hexExpected != hexResult {
 		t.Error("GET hex not match, got: ", hexResult, "need: ", hexExpected)
@@ -50,8 +47,7 @@ func TestHmac(t *testing.T) {
 }
 
 func TestGetAnnounement(t *testing.T) {
-	os.Args[1] = "-config"
-	os.Args[2] = "../../configs/config.yml"
+	initFlag()
 	path := "/api/v1/user/affiliateStatus"
 	requestTipe := "GET"
 	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
@@ -64,28 +60,11 @@ func TestGetAnnounement(t *testing.T) {
 	if len(getResult) <= 3 {
 		t.Error("GET response not woring, got: ", getResult)
 	}
-}
 
-func TestPostChat(t *testing.T) {
-	os.Args[1] = "-config"
-	os.Args[2] = "../../configs/config.yml"
-	path := "/api/v1/chat"
-	requestTipe := "POST"
-	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
-	dataB, err := json.Marshal(data)
-	if err != nil {
-		panic(err)
-	}
-	getResult := clientRobot(requestTipe, path, dataB)
-
-	//postResult := BytesToString(getResult)
-
-	fmt.Println(getResult)
 }
 
 func TestTradeValue(t *testing.T) {
-	os.Args[1] = "-config"
-	os.Args[2] = "../../configs/config.yml"
+	initFlag()
 	path := "/api/v1/user/wallet"
 	requestTipe := "GET"
 	hand := StringToIntBit(hand())
@@ -105,8 +84,7 @@ func TestTradeValue(t *testing.T) {
 }
 
 func TestQuote(t *testing.T) {
-	os.Args[1] = "-config"
-	os.Args[2] = "../../configs/config.yml"
+	initFlag()
 	asset := asset()
 	path := "/api/v1/instrument?symbol=" + asset + "&count=100&reverse=false&columns=lastPrice"
 	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
@@ -122,12 +100,31 @@ func TestQuote(t *testing.T) {
 	}
 }
 
+func TestPostChat(t *testing.T) {
+	apiresponse := APIResponseComplex{}
+
+	initFlag()
+	path := "/api/v1/chat"
+	requestTipe := "POST"
+	data := StringToBytes("message=TDD ROBOT Trader :)	&channelID=1")
+	getResult := clientRobot(requestTipe, path, data)
+
+	err := json.Unmarshal(getResult, &apiresponse)
+	if err != nil {
+		panic(err)
+	}
+
+	postResult := BytesToString(getResult)
+	if apiresponse.ChannelID != 1 {
+		t.Error("error to use chat, got: ", postResult)
+	}
+}
+
 func TestGetWalletAmount(t *testing.T) {
-	os.Args[1] = "-config"
-	os.Args[2] = "../../configs/config.yml"
+	initFlag()
 	path := "/api/v1/user/wallet"
 	requestTipe := "GET"
-	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
+	data := StringToBytes("message=TDD ROBOT Trader :)	&channelID=1")
 	dataB, err := json.Marshal(data)
 	if err != nil {
 		panic(err)
@@ -139,8 +136,5 @@ func TestGetWalletAmount(t *testing.T) {
 	if getParser <= 1 {
 		t.Error("error to get wallet value, got: ", getParser)
 	}
-}
-
-func TestSellOrder(t *testing.T) {
 
 }

@@ -1,11 +1,12 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 )
 
 func main() {
+	initFlag()
+
 	asset := asset()
 	candleTime := candle()
 	logic := logic()
@@ -18,19 +19,4 @@ func main() {
 	fmt.Println("Hand:", hand)
 
 	volume()
-}
-
-func sellOrder(configFile string) {
-	path := "/api/v1/user/wallet"
-	data := map[string]string{"message": "TDDRobot =)", "channelID": "1"}
-	dataB, err := json.Marshal(data)
-	if err != nil {
-		panic(err)
-	}
-
-	asset := asset()
-	path = "/api/v1/order/&symbol=" + asset + "&side=SELL&orderQty=" + "1" + "&price=" + "3603,5" + "&ordType=Limit"
-	getResult := clientRobot("GET", path, dataB)
-
-	fmt.Println(BytesToString(getResult))
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -12,19 +13,21 @@ func clientRobot(requestType, path string, data []byte) []byte {
 	secretQuery := secret()
 	userIDquery := userid()
 	expire := IntToString((timeExpired()))
-	hexResult := hexCreator(secretQuery, requestType, path, expire)
+	hexResult := hexCreator(secretQuery, requestType, path, expire, BytesToString(data))
+
 	url := endpoint + path
 
-	request, err := http.NewRequest(requestType, url, nil)
+	request, err := http.NewRequest(requestType, url, bytes.NewBuffer(data))
 	if err != nil {
 		panic(err)
 	}
 
-	request.Header.Add("api-signature", hexResult)
-	request.Header.Add("api-expires", expire)
-	request.Header.Add("api-key", userIDquery)
-	request.Header.Add("Content-Type", "text/plain; charset=utf-8")
-	request.Header.Add("User-Agent", "gotrader-r0b0tnull")
+	request.Header.Set("api-signature", hexResult)
+	request.Header.Set("api-expires", expire)
+	request.Header.Set("api-key", userIDquery)
+	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	request.Header.Set("Accept", "application/json")
+	request.Header.Set("User-Agent", "gotrader-r0b0tnull")
 
 	response, err := client.Do(request)
 	if err != nil {
