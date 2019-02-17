@@ -49,7 +49,3 @@ func clientRobot(requestType, path string, data []byte) []byte {
 
 	return body
 }
-
-func getQuote() {
-
-}
