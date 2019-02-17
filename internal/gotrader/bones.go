@@ -159,7 +159,6 @@ type APIResponseComplex struct {
 	SimpleValue           interface{}   `json:"simpleValue"`
 	SimplePnl             interface{}   `json:"simplePnl"`
 	SimplePnlPcnt         interface{}   `json:"simplePnlPcnt"`
-	AvgCostPrice          int           `json:"avgCostPrice"`
 	AvgEntryPrice         float64       `json:"avgEntryPrice"`
 	BreakEvenPrice        float64       `json:"breakEvenPrice"`
 	MarginCallPrice       int           `json:"marginCallPrice"`
