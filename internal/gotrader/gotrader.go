@@ -16,22 +16,20 @@ func main() {
 	speed := StringToInt(
 		speed(),
 	)
+	asset := asset()
+	candleTime := candle()
+	logic := logic()
+	hand := getHand()
+
+	fmt.Println("Starting gotrader!")
+	fmt.Println("Asset:", asset)
+	fmt.Println("Candle time:", candleTime)
+	fmt.Println("Logic:", logic)
+	fmt.Println("Hand:", hand)
 
 	for index := 0; index <= trigger; index++ {
-
-		asset := asset()
-		candleTime := candle()
-		logic := logic()
-		hand := getHand()
-
-		fmt.Println("Starting gotrader!")
-		fmt.Println("Asset:", asset)
-		fmt.Println("Candle time:", candleTime)
-		fmt.Println("Logic:", logic)
-		fmt.Println("Hand:", hand)
-
+		fmt.Println("New candle: ", index)
 		result := volume()
-
 		if result == "Buy" {
 			cBuy++
 		} else if result == "Sell" {
@@ -54,7 +52,6 @@ func main() {
 	}
 
 	fmt.Println("Ordem criada: ", oderid)
-
 	for {
 		if closePositionBuy() && typeOrder == "Buy" {
 			closePosition()

@@ -26,7 +26,7 @@ func volume() string {
 		getResult := clientRobot("GET", path, data)
 		err := json.Unmarshal(getResult, &apiresponse)
 		if err != nil {
-			panic(err)
+			fmt.Println(err)
 		}
 
 		for _, value := range apiresponse[:] {

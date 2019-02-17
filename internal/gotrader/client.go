@@ -19,7 +19,7 @@ func clientRobot(requestType, path string, data []byte) []byte {
 
 	request, err := http.NewRequest(requestType, url, bytes.NewBuffer(data))
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 
 	request.Header.Set("api-signature", hexResult)
@@ -31,20 +31,18 @@ func clientRobot(requestType, path string, data []byte) []byte {
 
 	response, err := client.Do(request)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	defer response.Body.Close()
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 
 	if response.StatusCode == 401 {
-		fmt.Println("quiting, API response are: ")
-		panic(response.StatusCode)
+		fmt.Println("quiting, API response are: ", response.StatusCode)
 	} else if response.StatusCode == 404 {
-		fmt.Println("quiting, API response are: ")
-		panic(response.StatusCode)
+		fmt.Println("quiting, API response are: ", response.StatusCode)
 	}
 
 	return body

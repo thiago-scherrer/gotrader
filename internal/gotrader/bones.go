@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"time"
@@ -310,7 +311,7 @@ func parserAmount(data []byte) int {
 	apiresponse := APIResponseComplex{}
 	err := json.Unmarshal(data, &apiresponse)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 
 	return apiresponse.Amount
@@ -322,7 +323,7 @@ func lastPrice(data []byte) float64 {
 
 	err := json.Unmarshal(data, &apiresponse)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 
 	for _, value := range apiresponse[:] {
@@ -366,7 +367,7 @@ func makeSell() string {
 
 	err := json.Unmarshal(getResult, &apiresponse)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 
 	return apiresponse.OrderID
@@ -386,7 +387,7 @@ func makeBuy() string {
 
 	err := json.Unmarshal(getResult, &apiresponse)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 
 	return apiresponse.OrderID
@@ -403,7 +404,7 @@ func getPosition() float64 {
 
 	err := json.Unmarshal(getResult, &apiresponse)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 
 	for _, value := range apiresponse[:] {
@@ -416,7 +417,6 @@ func price() float64 {
 	asset := asset()
 	path := "/api/v1/instrument?symbol=" + asset + "&count=100&reverse=false&columns=lastPrice"
 	data := StringToBytes("message=GoTrader bot&channelID=1")
-
 	getResult := clientRobot("GET", path, data)
 
 	return lastPrice(getResult)
@@ -432,7 +432,6 @@ func closePositionSell() bool {
 }
 
 func closePosition() string {
-	//apiresponse := APIResponseComplex{}
 	asset()
 	path := "/api/v1/order"
 	requestTipe := "POST"
