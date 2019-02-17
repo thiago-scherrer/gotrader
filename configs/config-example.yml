@@ -16,3 +16,5 @@ asset: XBT
 candle: 30
 # threshold to trigger the rule
 threshold: 3
+# Percentage Profit Close  
+profit: 10
