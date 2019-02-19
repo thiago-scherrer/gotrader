@@ -12,10 +12,10 @@ Projeto para criar um robo de trade para a bitmex
 - docker >18.09.1
 - bitmex api
 - gopkg.in/yaml.v2 (go get gopkg.in/yaml.v2)
+
 ## Como funciona
 
-Este robo está em construção ainda. Ele AINDA não está funcionando!!! 
-Porém seu objetivo é automatizar uma recra criada pelo trader.
+Este robo está em construção ainda. Seu objetivo é automatizar uma regra criada pelo trader. Não é uma máquina de fazer dinheiro...
 
 ## Build
 
