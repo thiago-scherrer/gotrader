@@ -17,7 +17,7 @@ Projeto para criar um robo de trade para a bitmex
 Este robo está em construção ainda. Ele AINDA não está funcionando!!! 
 Porém seu objetivo é automatizar uma recra criada pelo trader.
 
-# Build
+## Build
 
 Copie o arquivo de exemplo de configuraçao, que está dentro de configs. Altere os dados necessários.
 Entre na pasta ./internal/gotrader e execute o teste:
