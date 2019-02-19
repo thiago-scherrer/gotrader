@@ -11,7 +11,7 @@ Projeto para criar um robo de trade para a bitmex
 
 - docker >18.09.1
 - bitmex api
-
+- gopkg.in/yaml.v2 (go get gopkg.in/yaml.v2)
 ## Como funciona
 
 Este robo está em construção ainda. Ele AINDA não está funcionando!!! 
@@ -36,5 +36,5 @@ go build -o gotrader
 
 - [golang-standards](https://github.com/golang-standards/project-layout)
 - [bitmex api](https://www.bitmex.com/api/explorer/)
-- [goreportcard](https://goreportcard.com/)]
+- [goreportcard](https://goreportcard.com/)
 - [gopherize](https://gopherize.me)
