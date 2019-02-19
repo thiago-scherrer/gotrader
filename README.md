@@ -1,4 +1,4 @@
-# gotrader
+# GoTrader bot
 
 Projeto para criar um robo de trade para a bitmex
 
