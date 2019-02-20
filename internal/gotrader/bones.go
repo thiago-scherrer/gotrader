@@ -263,17 +263,17 @@ func price() float64 {
 }
 
 func closePositionBuy() bool {
-	return (price() + ((price() / 100) * profit())) > getPosition()
+	return (getPosition() + ((getPosition() / 100) * profit())) >= price()
 }
 
 func closePositionSell() bool {
-	return (price() + ((price() / 100) * profit())) < getPosition()
+	return (getPosition() + ((getPosition() / 100) * profit())) <= price()
 }
 
 func closePosition() string {
 	path := "/api/v1/order"
 	requestTipe := "POST"
-	priceClose := price() + ((price() / 100) * profit())
+	priceClose := getPosition() + ((getPosition() / 100) * profit())
 	data := StringToBytes("symbol=" + asset() +
 		"&execInst=Close" + "&price=" + FloatToString(priceClose) + "&ordType=Limit")
 
