@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func volume() string {
+func logicSystem() string {
 	var apiresponse []APIResponseComplex
 	var countSell int
 	var countBuy int

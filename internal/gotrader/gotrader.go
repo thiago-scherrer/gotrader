@@ -16,18 +16,16 @@ func main() {
 	speed := speed()
 	asset := asset()
 	candleTime := candle()
-	logic := logic()
 	hand := getHand()
 
 	fmt.Println("Starting gotrader!")
 	fmt.Println("Asset:", asset)
 	fmt.Println("Candle time:", candleTime)
-	fmt.Println("Logic:", logic)
 	fmt.Println("Hand:", hand)
 
 	for index := 0; index <= trigger; index++ {
 		fmt.Println("New candle: ", index)
-		result := volume()
+		result := logicSystem()
 		if result == "Buy" {
 			cBuy++
 		} else if result == "Sell" {

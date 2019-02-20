@@ -40,7 +40,6 @@ type Conf struct {
 	Candle    int     `yaml:"candle"`
 	Endpoint  string  `yaml:"endpoint"`
 	Hand      int     `yaml:"hand"`
-	Logic     string  `yaml:"logic"`
 	Profit    float64 `yaml:"profit"`
 	Secret    string  `yaml:"secret"`
 	Speed     int     `yaml:"speed"`
@@ -98,11 +97,6 @@ func hand() int {
 func speed() int {
 	conf := configReader()
 	return conf.Speed
-}
-
-func logic() string {
-	conf := configReader()
-	return conf.Logic
 }
 
 func asset() string {
