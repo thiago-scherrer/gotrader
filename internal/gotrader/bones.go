@@ -38,6 +38,7 @@ type BotData struct {
 type Conf struct {
 	Asset     string  `yaml:"asset"`
 	Candle    int     `yaml:"candle"`
+	Depth     int64   `yaml:"depth"`
 	Endpoint  string  `yaml:"endpoint"`
 	Hand      int     `yaml:"hand"`
 	Profit    float64 `yaml:"profit"`
@@ -121,6 +122,11 @@ func threshold() int {
 
 func handRoll(getParser, hand int) int {
 	return (getParser * hand) / 100
+}
+
+func depth() int64 {
+	conf := configReader()
+	return conf.Depth
 }
 
 func hexCreator(secret, requestTipe, path, expired, data string) string {

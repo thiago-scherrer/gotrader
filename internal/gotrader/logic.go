@@ -14,7 +14,7 @@ func logicSystem() string {
 
 	asset := asset()
 	candleTime := candle()
-	path := "/api/v1/orderBook/L2?symbol=" + asset + "&depth=0"
+	path := "/api/v1/orderBook/L2?symbol=" + asset + "&depth=" + IntToString(depth())
 	speed := speed()
 	data := StringToBytes("message=GoTrader bot&channelID=1")
 
@@ -33,6 +33,8 @@ func logicSystem() string {
 				countBuy = countBuy + value.Size
 			}
 		}
+		fmt.Println("Sell: ", countSell)
+		fmt.Println("Buy: ", countBuy)
 		time.Sleep(time.Duration(speed) * time.Second)
 	}
 

@@ -27,3 +27,6 @@ profit: 10
 
 # Profit percentage to close a position
 profit: 0.60
+
+# How many depth orders
+depth: 600
