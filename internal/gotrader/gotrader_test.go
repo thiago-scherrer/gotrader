@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"testing"
 	"time"
 )
@@ -64,7 +63,7 @@ func TestTradeValue(t *testing.T) {
 	initFlag()
 	path := "/api/v1/user/wallet"
 	requestTipe := "GET"
-	hand := StringToIntBit(hand())
+	hand := hand()
 	data := StringToBytes("message=GoTrader bot&channelID=1")
 	getResult := clientRobot(requestTipe, path, data)
 	getParser := parserAmount(getResult)
@@ -90,6 +89,7 @@ func TestQuote(t *testing.T) {
 	}
 }
 
+/*
 func TestPostChat(t *testing.T) {
 	apiresponse := APIResponseComplex{}
 
@@ -109,7 +109,7 @@ func TestPostChat(t *testing.T) {
 		t.Error("error to use chat, got: ", postResult)
 	}
 }
-
+*/
 func TestGetWalletAmount(t *testing.T) {
 	initFlag()
 	path := "/api/v1/user/wallet"
@@ -122,5 +122,4 @@ func TestGetWalletAmount(t *testing.T) {
 	if getParser <= 1 {
 		t.Error("error to get wallet value, got: ", getParser)
 	}
-
 }

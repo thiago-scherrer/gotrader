@@ -17,15 +17,15 @@ import (
 // thanks https://mholt.github.io/json-to-go/
 type APIResponseComplex struct {
 	Amount        int     `json:"amount"`
+	AvgEntryPrice float64 `json:"avgEntryPrice"`
+	ChannelID     int     `json:"channelID"`
 	ID            int64   `json:"id"`
 	LastPrice     float64 `json:"lastPrice"`
-	Side          string  `json:"side"`
-	Size          int     `json:"size"`
-	Price         float64 `json:"price"`
-	ChannelID     int     `json:"channelID"`
 	OrderID       string  `json:"orderID"`
 	OrderQty      int     `json:"orderQty"`
-	AvgEntryPrice float64 `json:"avgEntryPrice"`
+	Price         float64 `json:"price"`
+	Side          string  `json:"side"`
+	Size          int     `json:"size"`
 }
 
 // BotData are json send to the API
@@ -36,43 +36,34 @@ type BotData struct {
 
 // Conf instruction are the file yaml on disc
 type Conf struct {
-	Asset     string `yaml:"asset"`
-	Candle    string `yaml:"candle"`
-	Endpoint  string `yaml:"endpoint"`
-	Hand      string `yaml:"hand"`
-	Logic     string `yaml:"logic"`
-	Speed     string `yaml:"speed"`
-	Secret    string `yaml:"secret"`
-	Threshold string `yaml:"threshold"`
-	Userid    string `yaml:"userid"`
-	Profit    string `yaml:"profit"`
-}
-
-// KeyConfig struc from yaml file result
-type KeyConfig struct {
-	result string
+	Asset     string  `yaml:"asset"`
+	Candle    int     `yaml:"candle"`
+	Endpoint  string  `yaml:"endpoint"`
+	Hand      int     `yaml:"hand"`
+	Logic     string  `yaml:"logic"`
+	Profit    float64 `yaml:"profit"`
+	Secret    string  `yaml:"secret"`
+	Speed     int     `yaml:"speed"`
+	Threshold int     `yaml:"threshold"`
+	Userid    string  `yaml:"userid"`
 }
 
 func initFlag() string {
 	var config string
-
 	if len(os.Args[1:]) == 0 {
 		panic("Usage : config config.yml")
 	}
-
 	if os.Args[1] == "config" {
 		config = os.Args[2]
 	} else {
 		panic("Usage : config config.yml")
 	}
-
 	return config
 }
 
 func configReader() *Conf {
 	confFile := initFlag()
 	conf := Conf{}
-
 	yamlFile, err := ioutil.ReadFile(confFile)
 	if err != nil {
 		panic(err)
@@ -86,72 +77,52 @@ func configReader() *Conf {
 
 func userid() string {
 	conf := configReader()
-	var keyconfig KeyConfig
-	keyconfig.result = conf.Userid
-	return keyconfig.result
+	return conf.Userid
 }
 
 func secret() string {
 	conf := configReader()
-	var keyconfig KeyConfig
-	keyconfig.result = conf.Secret
-	return keyconfig.result
+	return conf.Secret
 }
 
 func endpoint() string {
 	conf := configReader()
-	var keyconfig KeyConfig
-	keyconfig.result = conf.Endpoint
-	return keyconfig.result
+	return conf.Endpoint
 }
 
-func hand() string {
+func hand() int {
 	conf := configReader()
-	var keyconfig KeyConfig
-	keyconfig.result = conf.Hand
-	return keyconfig.result
+	return conf.Hand
 }
 
-func speed() string {
+func speed() int {
 	conf := configReader()
-	var keyconfig KeyConfig
-	keyconfig.result = conf.Speed
-	return keyconfig.result
+	return conf.Speed
 }
 
 func logic() string {
 	conf := configReader()
-	var keyconfig KeyConfig
-	keyconfig.result = conf.Logic
-	return keyconfig.result
+	return conf.Logic
 }
 
 func asset() string {
 	conf := configReader()
-	var keyconfig KeyConfig
-	keyconfig.result = conf.Asset
-	return keyconfig.result
+	return conf.Asset
 }
 
-func candle() string {
+func candle() int {
 	conf := configReader()
-	var keyconfig KeyConfig
-	keyconfig.result = conf.Candle
-	return keyconfig.result
+	return conf.Candle * 60
 }
 
-func profit() string {
+func profit() float64 {
 	conf := configReader()
-	var keyconfig KeyConfig
-	keyconfig.result = conf.Profit
-	return keyconfig.result
+	return conf.Profit
 }
 
-func threshold() string {
+func threshold() int {
 	conf := configReader()
-	var keyconfig KeyConfig
-	keyconfig.result = conf.Threshold
-	return keyconfig.result
+	return conf.Threshold
 }
 
 func handRoll(getParser, hand int) int {
@@ -162,7 +133,6 @@ func hexCreator(secret, requestTipe, path, expired, data string) string {
 	concat := requestTipe + path + expired + data
 	h := hmac.New(sha256.New, []byte(secret))
 	h.Write([]byte(concat))
-
 	hexResult := hex.EncodeToString(h.Sum(nil))
 	return hexResult
 }
@@ -173,7 +143,6 @@ func parserAmount(data []byte) int {
 	if err != nil {
 		fmt.Println(err)
 	}
-
 	return apiresponse.Amount
 }
 
@@ -185,7 +154,6 @@ func lastPrice(data []byte) float64 {
 	if err != nil {
 		fmt.Println(err)
 	}
-
 	for _, value := range apiresponse[:] {
 		result = value.LastPrice
 	}
@@ -206,10 +174,9 @@ func timeStamp() int64 {
 func getHand() int {
 	path := "/api/v1/user/wallet"
 	requestTipe := "GET"
-	hand := StringToIntBit(hand())
+	hand := hand()
 	data := StringToBytes("message=GoTrader bot&channelID=1")
 	getResult := clientRobot(requestTipe, path, data)
-
 	return (parserAmount(getResult) * hand) / 100
 }
 
@@ -278,27 +245,23 @@ func price() float64 {
 	path := "/api/v1/instrument?symbol=" + asset + "&count=100&reverse=false&columns=lastPrice"
 	data := StringToBytes("message=GoTrader bot&channelID=1")
 	getResult := clientRobot("GET", path, data)
-
 	return lastPrice(getResult)
-
 }
 
 func closePositionBuy() bool {
-	return (price() + ((price() / 100) * 3.0)) > getPosition()
+	return (price() + ((price() / 100) * profit())) > getPosition()
 }
 
 func closePositionSell() bool {
-	return (price() + ((price() / 100) * 3.0)) < getPosition()
+	return (price() + ((price() / 100) * profit())) < getPosition()
 }
 
 func closePosition() string {
-	asset()
 	path := "/api/v1/order"
 	requestTipe := "POST"
 	data := StringToBytes("symbol=" + asset() +
 		"&execInst=Close" + "&price=" + FloatToString(price()) + "&ordType=Limit")
 
 	getResult := clientRobot(requestTipe, path, data)
-
 	return BytesToString(getResult)
 }

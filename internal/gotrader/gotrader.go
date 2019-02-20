@@ -8,14 +8,12 @@ import (
 func main() {
 	initFlag()
 
-	trigger := StringToIntBit(threshold())
+	trigger := threshold()
 	var cSell int
 	var cBuy int
 	var oderid string
 	var typeOrder string
-	speed := StringToInt(
-		speed(),
-	)
+	speed := speed()
 	asset := asset()
 	candleTime := candle()
 	logic := logic()

@@ -13,12 +13,9 @@ func volume() string {
 	var result string
 
 	asset := asset()
-	candleTime := StringToIntBit(
-		candle()) * 60
+	candleTime := candle()
 	path := "/api/v1/orderBook/L2?symbol=" + asset + "&depth=0"
-	speed := StringToInt(
-		speed(),
-	)
+	speed := speed()
 	data := StringToBytes("message=GoTrader bot&channelID=1")
 
 	for count := 0; count < candleTime; count++ {
