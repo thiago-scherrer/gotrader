@@ -1,20 +1,32 @@
 # User id to use API (required)
 userid: xxxxxxxxxxxxxxxxx
+
 # Password to use API (required)
 secret: xxxxxxxxxxxxxxx
+
 # API endpoint/url. Aways use HTTPS! (required)
 endpoint: https://testnet.bitmex.com
+
 # Percentage to use on trade from total wallet value (required)
 hand: 3
+
 # Bot Speed in seconds. 2 seconds it's the least (required)
 speed: 2
+
 # Trade strategy (required)
 logic: volume
+
 # Asset to trade (required)
 asset: XBT
+
 # Cadle time (minutes)
 candle: 30
+
 # threshold to trigger the rule
 threshold: 3
+
 # Percentage Profit Close  
 profit: 10
+
+# Profit percentage to close a position
+profit: 0.60
