@@ -19,6 +19,7 @@ type APIResponseComplex struct {
 	Amount        int     `json:"amount"`
 	AvgEntryPrice float64 `json:"avgEntryPrice"`
 	ChannelID     int     `json:"channelID"`
+	IsOpen        bool    `json:"isOpen"`
 	ID            int64   `json:"id"`
 	LastPrice     float64 `json:"lastPrice"`
 	OrderID       string  `json:"orderID"`
@@ -144,6 +145,21 @@ func parserAmount(data []byte) int {
 	return apiresponse.Amount
 }
 
+func opening(data []byte) bool {
+	var apiresponse []APIResponseComplex
+	var result bool
+
+	err := json.Unmarshal(data, &apiresponse)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	for _, value := range apiresponse[:] {
+		result = value.IsOpen
+	}
+	return result
+}
+
 func lastPrice(data []byte) float64 {
 	var apiresponse []APIResponseComplex
 	var result float64
@@ -257,9 +273,18 @@ func closePositionSell() bool {
 func closePosition() string {
 	path := "/api/v1/order"
 	requestTipe := "POST"
+	priceClose := price() + ((price() / 100) * profit())
 	data := StringToBytes("symbol=" + asset() +
-		"&execInst=Close" + "&price=" + FloatToString(price()) + "&ordType=Limit")
+		"&execInst=Close" + "&price=" + FloatToString(priceClose) + "&ordType=Limit")
 
 	getResult := clientRobot(requestTipe, path, data)
 	return BytesToString(getResult)
+}
+
+func statusOrder() bool {
+	asset := asset()
+	path := "/api/v1/position?symbol=" + asset + "&count=1"
+	data := StringToBytes("message=GoTrader bot&channelID=1")
+	getResult := clientRobot("GET", path, data)
+	return opening(getResult)
 }

@@ -23,7 +23,7 @@ func main() {
 	fmt.Println("Candle time:", candleTime)
 	fmt.Println("Hand:", hand)
 
-	for index := 0; index <= trigger; index++ {
+	for index := 0; index < trigger; index++ {
 		fmt.Println("New candle: ", index)
 		result := logicSystem()
 		if result == "Buy" {
@@ -46,17 +46,40 @@ func main() {
 			panic("error to create a logic trigger")
 		}
 	}
+	fmt.Println("Nice, order created: ", oderid)
 
-	fmt.Println("Ordem criada: ", oderid)
+	for {
+		if statusOrder() {
+			fmt.Println("Done, good Luck!")
+			break
+		} else {
+			fmt.Println("Wainting order: ", oderid)
+			time.Sleep(time.Duration(speed) * time.Second)
+		}
+	}
+
 	for {
 		if closePositionBuy() && typeOrder == "Buy" {
+			fmt.Println("Closing buy position!")
 			closePosition()
 			break
 		} else if closePositionSell() && typeOrder == "Sell" {
+			fmt.Println("Closing sell position!")
 			closePosition()
 			break
 		} else {
 			time.Sleep(time.Duration(speed) * time.Second)
 		}
 	}
+
+	for {
+		if statusOrder() {
+			fmt.Println("Profit done!")
+			break
+		} else {
+			fmt.Println("Wainting for closing ...")
+			time.Sleep(time.Duration(speed) * time.Second)
+		}
+	}
+
 }
