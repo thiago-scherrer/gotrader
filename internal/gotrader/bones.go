@@ -263,19 +263,19 @@ func price() float64 {
 }
 
 func closePositionBuy() bool {
-	return (getPosition() + ((getPosition() / 100) * profit())) >= price()
+	return price() >= (getPosition() + ((getPosition() / 100) * profit()))
 }
 
 func closePositionSell() bool {
-	return (getPosition() + ((getPosition() / 100) * profit())) <= price()
+	return price() <= (getPosition() - ((getPosition() / 100) * profit()))
 }
 
 func closePosition() string {
 	path := "/api/v1/order"
 	requestTipe := "POST"
-	priceClose := getPosition() + ((getPosition() / 100) * profit())
+	priceClose := fmt.Sprintf("%2.f", (getPosition() + ((getPosition() / 100) * profit())))
 	data := StringToBytes("symbol=" + asset() +
-		"&execInst=Close" + "&price=" + FloatToString(priceClose) + "&ordType=Limit")
+		"&execInst=Close" + "&price=" + priceClose + "&ordType=Limit")
 
 	getResult := clientRobot(requestTipe, path, data)
 	return BytesToString(getResult)
