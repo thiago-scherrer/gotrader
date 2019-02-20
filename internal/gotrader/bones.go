@@ -43,7 +43,6 @@ type Conf struct {
 	Hand      int     `yaml:"hand"`
 	Profit    float64 `yaml:"profit"`
 	Secret    string  `yaml:"secret"`
-	Speed     int     `yaml:"speed"`
 	Threshold int     `yaml:"threshold"`
 	Userid    string  `yaml:"userid"`
 }
@@ -96,8 +95,7 @@ func hand() int {
 }
 
 func speed() int {
-	conf := configReader()
-	return conf.Speed
+	return 10
 }
 
 func asset() string {
@@ -107,7 +105,7 @@ func asset() string {
 
 func candle() int {
 	conf := configReader()
-	return conf.Candle * 60
+	return conf.Candle * 6
 }
 
 func profit() float64 {
