@@ -13,9 +13,6 @@ hand: 3
 # Bot Speed in seconds. 2 seconds it's the least (required)
 speed: 2
 
-# Trade strategy (required)
-logic: volume
-
 # Asset to trade (required)
 asset: XBT
 
