@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"testing"
 	"time"
 )
@@ -89,7 +90,6 @@ func TestQuote(t *testing.T) {
 	}
 }
 
-/*
 func TestPostChat(t *testing.T) {
 	apiresponse := APIResponseComplex{}
 
@@ -109,7 +109,7 @@ func TestPostChat(t *testing.T) {
 		t.Error("error to use chat, got: ", postResult)
 	}
 }
-*/
+
 func TestGetWalletAmount(t *testing.T) {
 	initFlag()
 	path := "/api/v1/user/wallet"
