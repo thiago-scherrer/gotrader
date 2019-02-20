@@ -33,8 +33,6 @@ func logicSystem() string {
 				countBuy = countBuy + value.Size
 			}
 		}
-		fmt.Println("Sell: ", countSell)
-		fmt.Println("Buy: ", countBuy)
 		time.Sleep(time.Duration(speed) * time.Second)
 	}
 
