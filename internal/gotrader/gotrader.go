@@ -49,11 +49,10 @@ func main() {
 	fmt.Println("Nice, order created: ", oderid)
 
 	for {
-		if statusOrder() {
+		if !statusOrder() {
 			fmt.Println("Done, good Luck!")
 			break
 		} else {
-			fmt.Println("Wainting order: ", oderid)
 			time.Sleep(time.Duration(speed) * time.Second)
 		}
 	}
@@ -72,12 +71,13 @@ func main() {
 		}
 	}
 
+	fmt.Println("Wainting position close!.")
+
 	for {
-		if statusOrder() {
+		if !statusOrder() {
 			fmt.Println("Profit done!")
 			break
 		} else {
-			fmt.Println("Wainting for closing ...")
 			time.Sleep(time.Duration(speed) * time.Second)
 		}
 	}
