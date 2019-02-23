@@ -1,38 +1,44 @@
 # GoTrader bot
 
-Projeto para criar um robo de trade para a bitmex
+Project to create a trade bot for a bitmex
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/thiago-scherrer/gotrader)](https://goreportcard.com/report/github.com/thiago-scherrer/gotrader)
 
 ![gopher](assets/gopher.png)
 
-
-## requerimentos
+## requirements
 
 - docker >18.09.1
 - bitmex api
 - gopkg.in/yaml.v2 (go get gopkg.in/yaml.v2)
 
-## Como funciona
+## how it works
 
-Este robo está em construção ainda. Seu objetivo é automatizar uma regra criada pelo trader. Não é uma máquina de fazer dinheiro...
+This robot is still under construction. Its purpose is to automate a rule created by the trader. It's not a money machine ...
 
-## Build
+## test
 
-Copie o arquivo de exemplo de configuraçao, que está dentro de configs. Altere os dados necessários.
-Entre na pasta ./internal/gotrader e execute o teste:
+Copy the sample configuration file, which is inside configs. Change the required data.
+Enter to the ./internal/gotrader folder and run the test:
 
 ```bash
 go test -args config ../../config.yml
 ```
 
-Em seguida, faça o build:
+## build
 
 ```bash
 go build -o gotrader 
 ```
 
-## Refs
+## runing
+
+```bash
+./gotrader config ../../config.yml
+```
+
+
+## references
 
 - [golang-standards](https://github.com/golang-standards/project-layout)
 - [bitmex api](https://www.bitmex.com/api/explorer/)
