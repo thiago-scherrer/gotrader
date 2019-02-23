@@ -8,7 +8,6 @@ Project to create a trade bot for a bitmex
 
 ## requirements
 
-- docker >18.09.1
 - bitmex api
 - gopkg.in/yaml.v2 (go get gopkg.in/yaml.v2)
 
