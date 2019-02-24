@@ -359,7 +359,7 @@ func getProfit() bool {
 	fmt.Println("Wainting get profit...")
 
 	for {
-		if !statusOrder() {
+		if statusOrder() == false {
 			fmt.Println("Profit done!")
 			time.Sleep(time.Duration(speed+50) * time.Second)
 			return true
