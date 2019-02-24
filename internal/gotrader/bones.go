@@ -280,5 +280,90 @@ func statusOrder() bool {
 	path := "/api/v1/position?symbol=" + asset + "&count=1"
 	data := StringToBytes("message=GoTrader bot&channelID=1")
 	getResult := clientRobot("GET", path, data)
+
 	return opening(getResult)
+}
+
+func candleRunner() string {
+	trigger := threshold()
+	var cSell int
+	var cBuy int
+
+	for index := 0; index < trigger; index++ {
+		fmt.Println("New candle: ", index)
+		result := logicSystem()
+		if result == "Buy" {
+			cBuy++
+		} else if result == "Sell" {
+			cSell++
+		}
+	}
+	return createOrder(cBuy, cSell)
+}
+
+func createOrder(cBuy, cSell int) string {
+	var oderid string
+	var typeOrder string
+
+	for {
+		if cBuy > cSell {
+			oderid = makeBuy()
+			typeOrder = "Buy"
+			fmt.Println("Nice, BUY order created: ", oderid)
+			break
+		} else if cSell > cBuy {
+			oderid = makeSell()
+			typeOrder = "Sell"
+			fmt.Println("Nice, SELL order created: ", oderid)
+			break
+		} else {
+			typeOrder = "Draw"
+		}
+	}
+	return typeOrder
+}
+
+func waitCreateOrder() bool {
+	speed := speed()
+
+	for {
+		if statusOrder() == true {
+			fmt.Println("Done, good Luck!")
+			return true
+		}
+		time.Sleep(time.Duration(speed) * time.Second)
+	}
+}
+
+func closePositionProfit(typeOrder string) bool {
+	speed := speed()
+	fmt.Println("Wainting position close...")
+
+	for {
+		if closePositionBuy() == true && typeOrder == "Buy" {
+			fmt.Println("Closing buy position!")
+			closePosition()
+			return true
+		} else if closePositionSell() == true && typeOrder == "Sell" {
+			fmt.Println("Closing sell position!")
+			closePosition()
+			return true
+		} else {
+			time.Sleep(time.Duration(speed) * time.Second)
+		}
+	}
+}
+
+func getProfit() bool {
+	speed := speed()
+	fmt.Println("Wainting get profit...")
+
+	for {
+		if !statusOrder() {
+			fmt.Println("Profit done!")
+			time.Sleep(time.Duration(speed+50) * time.Second)
+			return true
+		}
+		time.Sleep(time.Duration(speed) * time.Second)
+	}
 }
