@@ -6,6 +6,12 @@ import (
 )
 
 func main() {
+	for {
+		daemonize()
+	}
+}
+
+func daemonize() {
 	initFlag()
 
 	trigger := threshold()
@@ -82,4 +88,5 @@ func main() {
 		}
 	}
 
+	time.Sleep(time.Duration(speed+50) * time.Second)
 }
