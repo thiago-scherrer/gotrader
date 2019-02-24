@@ -21,8 +21,7 @@ func daemonize() {
 	fmt.Println("Asset: ", asset, "Candle time: ", candleTime, "Hand: ", hand)
 
 	typeOrder := candleRunner()
-
 	waitCreateOrder()
 	closePositionProfit(typeOrder)
-
+	getProfit()
 }
