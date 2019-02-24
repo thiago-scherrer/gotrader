@@ -18,9 +18,7 @@ func daemonize() {
 	hand := getHand()
 
 	fmt.Println("Starting a new round! GoTrader!")
-	fmt.Println("Asset:", asset)
-	fmt.Println("Candle time:", candleTime)
-	fmt.Println("Hand:", hand)
+	fmt.Println("Asset: ", asset, "Candle time: ", candleTime, "Hand: ", hand)
 
 	typeOrder := candleRunner()
 
