@@ -64,7 +64,6 @@ func telegramSend(msg string) int {
 	request.Header.Set("User-Agent", "gotrader-r0b0tnull")
 	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	request.Header.Set("Accept", "application/json")
-
 	response, err := client.Do(request)
 	if err != nil {
 		fmt.Println(err)
