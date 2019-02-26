@@ -1,8 +1,8 @@
 # User id to use API (required)
-userid: xxxxxxxxxxxxxxxxx
+userid: "xxxxxxxxxxxxxxxxx"
 
 # Password to use API (required)
-secret: xxxxxxxxxxxxxxx
+secret: "xxxxxxxxxxxxxxx"
 
 # API endpoint/url. Aways use HTTPS! (required)
 endpoint: https://testnet.bitmex.com
@@ -24,3 +24,12 @@ profit: 0.60
 
 # How many depth orders
 depth: 30
+
+# Telegram API KEY
+telegram_key: "xxxxxxxxxxxxxxx"
+
+# Telegram API URL
+telegramurl: "https://api.telegram.org/"
+
+# Telegram channel
+telegramchannel: "@xxxxxxxx"

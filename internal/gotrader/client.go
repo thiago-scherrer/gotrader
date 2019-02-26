@@ -47,3 +47,37 @@ func clientRobot(requestType, path string, data []byte) []byte {
 
 	return body
 }
+
+func telegramSend(msg string) int {
+	client := &http.Client{}
+	telegramurl := telegramurl()
+	telegramChannel := telegramChannel()
+	token := telegramKey()
+	data := StringToBytes("chat_id=" + telegramChannel + "&text=" + msg)
+	url := telegramurl + "/bot" + token + "/sendMessage"
+
+	request, err := http.NewRequest("POST", url, bytes.NewBuffer(data))
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	request.Header.Set("User-Agent", "gotrader-r0b0tnull")
+	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	request.Header.Set("Accept", "application/json")
+
+	response, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer response.Body.Close()
+	_, err = ioutil.ReadAll(response.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	if response.StatusCode != 200 {
+		fmt.Println("telegram error, API response are: ")
+		return response.StatusCode
+	}
+	return response.StatusCode
+}

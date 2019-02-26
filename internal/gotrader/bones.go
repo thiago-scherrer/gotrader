@@ -31,15 +31,18 @@ type APIResponseComplex struct {
 
 // Conf instruction are the file yaml on disc
 type Conf struct {
-	Asset     string  `yaml:"asset"`
-	Candle    int     `yaml:"candle"`
-	Depth     int64   `yaml:"depth"`
-	Endpoint  string  `yaml:"endpoint"`
-	Hand      int     `yaml:"hand"`
-	Profit    float64 `yaml:"profit"`
-	Secret    string  `yaml:"secret"`
-	Threshold int     `yaml:"threshold"`
-	Userid    string  `yaml:"userid"`
+	Asset           string  `yaml:"asset"`
+	Candle          int     `yaml:"candle"`
+	Depth           int64   `yaml:"depth"`
+	Endpoint        string  `yaml:"endpoint"`
+	Hand            int     `yaml:"hand"`
+	Profit          float64 `yaml:"profit"`
+	Secret          string  `yaml:"secret"`
+	Threshold       int     `yaml:"threshold"`
+	Userid          string  `yaml:"userid"`
+	TelegramKey     string  `yaml:"telegram_key"`
+	TelegramURL     string  `yaml:"telegramurl"`
+	TelegramChannel string  `yaml:"telegramchannel"`
 }
 
 func initFlag() string {
@@ -74,6 +77,11 @@ func userid() string {
 	return conf.Userid
 }
 
+func telegramurl() string {
+	conf := configReader()
+	return conf.TelegramURL
+}
+
 func secret() string {
 	conf := configReader()
 	return conf.Secret
@@ -82,6 +90,16 @@ func secret() string {
 func endpoint() string {
 	conf := configReader()
 	return conf.Endpoint
+}
+
+func telegramKey() string {
+	conf := configReader()
+	return conf.TelegramKey
+}
+
+func telegramChannel() string {
+	conf := configReader()
+	return conf.TelegramChannel
 }
 
 func hand() int {
@@ -309,12 +327,14 @@ func createOrder(cBuy, cSell int) string {
 		if cBuy > cSell {
 			oderid = makeBuy()
 			typeOrder = "Buy"
-			fmt.Println("Nice, BUY order created: ", oderid)
+			fmt.Println("Nice, BUY order created:", oderid)
+			telegramSend("Nice, BUY order created:")
 			break
 		} else if cSell > cBuy {
 			oderid = makeSell()
 			typeOrder = "Sell"
 			fmt.Println("Nice, SELL order created: ", oderid)
+			telegramSend("Nice, SELL order created:")
 			break
 		} else {
 			typeOrder = "Draw"
@@ -329,6 +349,7 @@ func waitCreateOrder() bool {
 	for {
 		if statusOrder() == true {
 			fmt.Println("Done, good Luck!")
+			telegramSend("Done, good Luck!")
 			return true
 		}
 		time.Sleep(time.Duration(speed) * time.Second)
@@ -338,14 +359,18 @@ func waitCreateOrder() bool {
 func closePositionProfit(typeOrder string) bool {
 	speed := speed()
 	fmt.Println("Wainting position close...")
+	telegramSend("Wainting position close...")
 
 	for {
 		if closePositionBuy() == true && typeOrder == "Buy" {
-			fmt.Println("Closing buy position!")
+			fmt.Println("Closing BUY position!")
+			telegramSend("Closing BUY position!")
 			closePosition()
 			return true
 		} else if closePositionSell() == true && typeOrder == "Sell" {
-			fmt.Println("Closing sell position!")
+			fmt.Println("Closing SELL position!")
+			telegramSend("Closing SELL position!")
+
 			closePosition()
 			return true
 		} else {
@@ -357,10 +382,12 @@ func closePositionProfit(typeOrder string) bool {
 func getProfit() bool {
 	speed := speed()
 	fmt.Println("Wainting get profit...")
+	telegramSend("Wainting get profit...")
 
 	for {
 		if statusOrder() == false {
 			fmt.Println("Profit done!")
+			telegramSend("Profit done!")
 			time.Sleep(time.Duration(speed+50) * time.Second)
 			return true
 		}

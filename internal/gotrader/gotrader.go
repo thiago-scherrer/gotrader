@@ -17,8 +17,13 @@ func daemonize() {
 	candleTime := candle()
 	hand := getHand()
 
-	fmt.Println("Starting a new round! GoTrader!")
-	fmt.Println("Asset: ", asset, "Candle time: ", candleTime, "Hand: ", hand)
+	msg1 := "Starting a new round! GoTrader!"
+	msg2 := "Asset: " + asset + "Candle time: " + string(candleTime) + "Hand: " + string(hand)
+
+	fmt.Println(msg1)
+	telegramSend(msg1)
+	fmt.Println(msg2)
+	telegramSend(msg2)
 
 	typeOrder := candleRunner()
 	waitCreateOrder()

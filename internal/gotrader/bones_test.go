@@ -70,5 +70,12 @@ func TestLastPriceJson(t *testing.T) {
 	if getResult != 10.1 {
 		t.Error("LastPrice json parser not working, got:", getResult)
 	}
+}
 
+func TestTelegram(t *testing.T) {
+	getResult := telegramSend("hello")
+
+	if getResult != 200 {
+		t.Error("Telegram not working, got: ", getResult)
+	}
 }
