@@ -36,6 +36,7 @@ type Conf struct {
 	Depth           int64   `yaml:"depth"`
 	Endpoint        string  `yaml:"endpoint"`
 	Hand            int     `yaml:"hand"`
+	Leverage        string  `yaml:"leverage"`
 	Profit          float64 `yaml:"profit"`
 	Secret          string  `yaml:"secret"`
 	Threshold       int     `yaml:"threshold"`
@@ -105,6 +106,11 @@ func telegramChannel() string {
 func hand() int {
 	conf := configReader()
 	return conf.Hand
+}
+
+func leverage() string {
+	conf := configReader()
+	return conf.Leverage
 }
 
 func speed() int {
@@ -271,6 +277,7 @@ func price() float64 {
 	path := "/api/v1/instrument?symbol=" + asset + "&count=100&reverse=false&columns=lastPrice"
 	data := StringToBytes("message=GoTrader bot&channelID=1")
 	getResult := clientRobot("GET", path, data)
+
 	return lastPrice(getResult)
 }
 
@@ -288,9 +295,21 @@ func closePosition() string {
 	priceClose := fmt.Sprintf("%2.f", (getPosition() + ((getPosition() / 100) * profit())))
 	data := StringToBytes("symbol=" + asset() +
 		"&execInst=Close" + "&price=" + priceClose + "&ordType=Limit")
-
 	getResult := clientRobot(requestTipe, path, data)
+
 	return BytesToString(getResult)
+}
+
+func setLeverge() {
+	asset()
+	path := "/position/leverage"
+	requestTipe := "POST"
+	data := StringToBytes("symbol=" + asset() + "&leverage=" + leverage())
+	clientRobot(requestTipe, path, data)
+
+	fmt.Println("Setting leverage")
+	telegramSend("Setting leverage")
+
 }
 
 func statusOrder() bool {
@@ -350,6 +369,7 @@ func waitCreateOrder() bool {
 		if statusOrder() == true {
 			fmt.Println("Done, good Luck!")
 			telegramSend("Done, good Luck!")
+			setLeverge()
 			return true
 		}
 		time.Sleep(time.Duration(speed) * time.Second)
