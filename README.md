@@ -37,6 +37,10 @@ You can see the logs with docker logs, like:
 docker logs -f gotrader_gotrader_1
 ```
 
+## Logic
+
+The acual logic can be changed on internal/gotrader/logic.go.
+
 ## test
 
 Copy the sample configuration file, which is inside configs. Change the required data.
