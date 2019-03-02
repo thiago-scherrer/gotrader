@@ -49,6 +49,7 @@ go test -args config ../../config.yml
 ## manual build
 
 ```bash
+cd internal/gotrader/
 go build -o gotrader 
 ```
 
