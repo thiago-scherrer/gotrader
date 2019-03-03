@@ -50,11 +50,19 @@ Enter to the *./internal/gotrader* folder and run the test:
 go test -args config ../../configs/config-test.yml
 ```
 
-## manual build
+## manual run
+
+Build the bin:
 
 ```bash
 cd internal/gotrader/
 go build -o gotrader 
+```
+
+And then, run:
+
+```bash
+./gotrader config ../../configs/config.yml
 ```
 
 ## references
