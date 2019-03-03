@@ -49,12 +49,12 @@ type Conf struct {
 func initFlag() string {
 	var config string
 	if len(os.Args[1:]) == 0 {
-		panic("Usage : config config.yml")
+		panic(usageMsg())
 	}
 	if os.Args[1] == "config" {
 		config = os.Args[2]
 	} else {
-		panic("Usage : config config.yml")
+		panic(usageMsg())
 	}
 	return config
 }
@@ -161,21 +161,6 @@ func parserAmount(data []byte) int {
 		fmt.Println(err)
 	}
 	return apiresponse.Amount
-}
-
-func opening(data []byte) bool {
-	var apiresponse []APIResponseComplex
-	var result bool
-
-	err := json.Unmarshal(data, &apiresponse)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	for _, value := range apiresponse[:] {
-		result = value.IsOpen
-	}
-	return result
 }
 
 func lastPrice(data []byte) float64 {
@@ -307,9 +292,8 @@ func setLeverge() {
 	data := StringToBytes("symbol=" + asset() + "&leverage=" + leverage())
 	clientRobot(requestTipe, path, data)
 
-	fmt.Println("Setting leverage")
-	telegramSend("Setting leverage")
-
+	fmt.Println(setlavarageMsg())
+	telegramSend(setlavarageMsg())
 }
 
 func statusOrder() bool {
@@ -321,13 +305,23 @@ func statusOrder() bool {
 	return opening(getResult)
 }
 
+func opening(data []byte) bool {
+	var apiresponse []APIResponseComplex
+	var result bool
+
+	json.Unmarshal(data, &apiresponse)
+	for _, value := range apiresponse[:] {
+		result = value.IsOpen
+	}
+	return result
+}
+
 func candleRunner() string {
 	trigger := threshold()
 	var cSell int
 	var cBuy int
 
 	for index := 0; index < trigger; index++ {
-		fmt.Println("New candle: ", index)
 		result := logicSystem()
 		if result == "Buy" {
 			cBuy++
@@ -339,21 +333,20 @@ func candleRunner() string {
 }
 
 func createOrder(cBuy, cSell int) string {
-	var oderid string
 	var typeOrder string
 
 	for {
 		if cBuy > cSell {
-			oderid = makeBuy()
+			makeBuy()
 			typeOrder = "Buy"
-			fmt.Println("Nice, BUY order created:", oderid)
-			telegramSend("Nice, BUY order created:")
+			fmt.Println(orderCreatedMsg(typeOrder))
+			telegramSend(orderCreatedMsg(typeOrder))
 			break
 		} else if cSell > cBuy {
-			oderid = makeSell()
+			makeSell()
 			typeOrder = "Sell"
-			fmt.Println("Nice, SELL order created: ", oderid)
-			telegramSend("Nice, SELL order created:")
+			fmt.Println(orderCreatedMsg(typeOrder))
+			telegramSend(orderCreatedMsg(typeOrder))
 			break
 		} else {
 			typeOrder = "Draw"
@@ -367,8 +360,8 @@ func waitCreateOrder() bool {
 
 	for {
 		if statusOrder() == true {
-			fmt.Println("Done, good Luck!")
-			telegramSend("Done, good Luck!")
+			fmt.Println(orderDoneMsg())
+			telegramSend(orderDoneMsg())
 			setLeverge()
 			return true
 		}
@@ -378,18 +371,16 @@ func waitCreateOrder() bool {
 
 func closePositionProfit(typeOrder string) bool {
 	speed := speed()
-	fmt.Println("Wainting position close...")
-	telegramSend("Wainting position close...")
 
 	for {
 		if closePositionBuy() == true && typeOrder == "Buy" {
-			fmt.Println("Closing BUY position!")
-			telegramSend("Closing BUY position!")
+			fmt.Println(ordertriggerMsg())
+			telegramSend(ordertriggerMsg())
 			closePosition()
 			return true
 		} else if closePositionSell() == true && typeOrder == "Sell" {
-			fmt.Println("Closing SELL position!")
-			telegramSend("Closing SELL position!")
+			fmt.Println(ordertriggerMsg())
+			telegramSend(ordertriggerMsg())
 
 			closePosition()
 			return true
@@ -401,13 +392,13 @@ func closePositionProfit(typeOrder string) bool {
 
 func getProfit() bool {
 	speed := speed()
-	fmt.Println("Wainting get profit...")
-	telegramSend("Wainting get profit...")
+	fmt.Println(orderWaintMsg())
+	telegramSend(orderWaintMsg())
 
 	for {
 		if statusOrder() == false {
-			fmt.Println("Profit done!")
-			telegramSend("Profit done!")
+			fmt.Println(profitMsg())
+			telegramSend(profitMsg())
 			time.Sleep(time.Duration(speed+50) * time.Second)
 			return true
 		}

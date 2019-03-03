@@ -72,10 +72,3 @@ func TestLastPriceJson(t *testing.T) {
 	}
 }
 
-func TestTelegram(t *testing.T) {
-	getResult := telegramSend("hello")
-
-	if getResult != 200 {
-		t.Error("Telegram not working, got: ", getResult)
-	}
-}

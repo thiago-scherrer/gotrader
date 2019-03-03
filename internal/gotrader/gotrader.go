@@ -13,9 +13,8 @@ func main() {
 func daemonize() {
 	initFlag()
 
-	msg1 := "Starting a new round! GoTrader!"
-	fmt.Println(msg1)
-	telegramSend(msg1)
+	fmt.Println(helloMsg())
+	telegramSend(helloMsg())
 
 	typeOrder := candleRunner()
 	waitCreateOrder()
