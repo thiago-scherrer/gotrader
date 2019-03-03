@@ -287,7 +287,7 @@ func closePosition() string {
 
 func setLeverge() {
 	asset()
-	path := "/position/leverage"
+	path := "/api/v1/position/leverage"
 	requestTipe := "POST"
 	data := StringToBytes("symbol=" + asset() + "&leverage=" + leverage())
 	clientRobot(requestTipe, path, data)
@@ -337,14 +337,18 @@ func createOrder(cBuy, cSell int) string {
 
 	for {
 		if cBuy > cSell {
+			setLeverge()
 			makeBuy()
 			typeOrder = "Buy"
+
 			fmt.Println(orderCreatedMsg(typeOrder))
 			telegramSend(orderCreatedMsg(typeOrder))
 			break
 		} else if cSell > cBuy {
+			setLeverge()
 			makeSell()
 			typeOrder = "Sell"
+
 			fmt.Println(orderCreatedMsg(typeOrder))
 			telegramSend(orderCreatedMsg(typeOrder))
 			break
@@ -362,7 +366,6 @@ func waitCreateOrder() bool {
 		if statusOrder() == true {
 			fmt.Println(orderDoneMsg())
 			telegramSend(orderDoneMsg())
-			setLeverge()
 			return true
 		}
 		time.Sleep(time.Duration(speed) * time.Second)
