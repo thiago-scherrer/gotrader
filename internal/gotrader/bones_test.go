@@ -71,4 +71,3 @@ func TestLastPriceJson(t *testing.T) {
 		t.Error("LastPrice json parser not working, got:", getResult)
 	}
 }
-
