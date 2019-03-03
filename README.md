@@ -19,19 +19,19 @@ This robot is still under construction. Its purpose is to automate a rule create
 
 ## runing
 
-Go to the config folder and then copy config-example.yml to the config.yml. Add your settings to the file and then, go back to the root dir and run docker-compose:
+Go to the config folder and then, copy **config-example.yml** to the **config.yml**. Add your settings to the file and then, go back to the root dir and run *docker-compose*:
 
 ```bash
 docker-compose build
 ```
 
-After build run the docker:
+After *build*, run the docker:
 
 ```bash
 docker-compose up -d
 ```
 
-You can see the logs with docker logs, like:
+You can see the logs with *docker logs* command, like:
 
 ```bash
 docker logs -f gotrader_gotrader_1
@@ -39,12 +39,12 @@ docker logs -f gotrader_gotrader_1
 
 ## logic
 
-The acual logic can be changed on internal/gotrader/logic.go.
+The acual logic can be changed on *internal/gotrader/logic.go*.
 
 ## test
 
 Copy the sample configuration file, which is inside configs. Change the required data.
-Enter to the ./internal/gotrader folder and run the test:
+Enter to the *./internal/gotrader* folder and run the test:
 
 ```bash
 go test -args config ../../configs/config-test.yml
