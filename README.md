@@ -47,7 +47,7 @@ Copy the sample configuration file, which is inside configs. Change the required
 Enter to the ./internal/gotrader folder and run the test:
 
 ```bash
-go test -args config ../../config.yml
+go test -args config ../../configs/config-test.yml
 ```
 
 ## manual build
