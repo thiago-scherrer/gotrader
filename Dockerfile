@@ -2,9 +2,12 @@ FROM golang:latest
 
 LABEL name="gotrader"
 
-ADD . /root/
-WORKDIR /root/internal/gotrader/
+WORKDIR /opt/gotrader
 
-RUN go get gopkg.in/yaml.v2 && go build -o gotrader
+COPY internal/ /opt/
+COPY configs/config.yml /opt/gotrader
 
-CMD ["./gotrader", "config", "../../configs/config.yml"]
+RUN go get gopkg.in/yaml.v2 && \
+    go build -o /bin/gotrader 
+
+CMD ["gotrader", "config", "/opt/gotrader/config.yml"]
