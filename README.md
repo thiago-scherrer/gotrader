@@ -64,3 +64,7 @@ go build -o gotrader
 - [goreportcard](https://goreportcard.com/)
 - [gopherize](https://gopherize.me)
 - [docker-compose install](https://docs.docker.com/compose/install/)
+
+## irc
+
+- freenode - Channel #gotrader
