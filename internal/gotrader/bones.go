@@ -41,6 +41,7 @@ type Conf struct {
 	Secret          string  `yaml:"secret"`
 	Threshold       int     `yaml:"threshold"`
 	Userid          string  `yaml:"userid"`
+	TelegramUse     bool    `yaml:"telegramuse"`
 	TelegramKey     string  `yaml:"telegram_key"`
 	TelegramURL     string  `yaml:"telegramurl"`
 	TelegramChannel string  `yaml:"telegramchannel"`
@@ -91,6 +92,11 @@ func secret() string {
 func endpoint() string {
 	conf := configReader()
 	return conf.Endpoint
+}
+
+func telegramUse() bool {
+	conf := configReader()
+	return conf.TelegramUse
 }
 
 func telegramKey() string {

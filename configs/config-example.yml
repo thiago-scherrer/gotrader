@@ -1,7 +1,7 @@
 # User id to use API (required)
 userid: "xxxxxxxxxxxxxxxxx"
 
-# Password to use API (required)
+# Password/Secret key to use API (required)
 secret: "xxxxxxxxxxxxxxx"
 
 # API endpoint/url. Aways use HTTPS! (required)
@@ -13,24 +13,27 @@ hand: 3
 # Asset to trade (required)
 asset: XBTUSD
 
-# Cadle time (minutes)
+# Cadle time (minutes) (required)
 candle: 30
 
-# threshold to trigger the rule
+# threshold to trigger the rule (required)
 threshold: 3
 
-# Profit percentage to close a position
+# Profit percentage to close a position (required)
 profit: 0.60
 
-# How many depth orders
+# How many depth orders (required)
 depth: 30
 
 # Leverage value. Set a number between 0.01 and 100. 
-# Send 0 to enable cross margin.
+# Send 0 to enable cross margin. (required) 
 leverage: 0.1
 
+# Enable telegram (true/false) (required)
+telegramuse: false
+
 # Telegram API KEY
-telegram_key: "xxxxxxxxxxxxxxx"
+telegram_key: "xxxxxxxxxx:xxxxxxxxxxxxxxxxxxxxx"
 
 # Telegram API URL
 telegramurl: "https://api.telegram.org/"

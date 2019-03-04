@@ -49,6 +49,10 @@ func clientRobot(requestType, path string, data []byte) []byte {
 }
 
 func telegramSend(msg string) int {
+	if telegramUse() == false {
+		return 200
+	}
+
 	client := &http.Client{}
 	telegramurl := telegramurl()
 	telegramChannel := telegramChannel()
