@@ -5,13 +5,13 @@ userid: "xxxxxxxxxxxxxxxxx"
 secret: "xxxxxxxxxxxxxxx"
 
 # API endpoint/url. Aways use HTTPS! (required)
-endpoint: https://testnet.bitmex.com
+endpoint: "https://testnet.bitmex.com"
 
 # Percentage to use on trade from total wallet value (required)
 hand: 3
 
 # Asset to trade (required)
-asset: XBTUSD
+asset: "XBTUSD"
 
 # Cadle time (minutes) (required)
 candle: 30
@@ -40,3 +40,6 @@ telegramurl: "https://api.telegram.org/"
 
 # Telegram channel
 telegramchannel: "@xxxxxxxx"
+
+# Verbose mode (true/fase) (required)
+verbose: true
