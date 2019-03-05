@@ -1,0 +1,10 @@
+---
+language: go
+go:
+  - "1.11.5"
+
+before_install:
+  - go get gopkg.in/yaml.v2
+
+script:
+  - cd internal/gotrader/ ; go test -args config ../../configs/config-test.yml
