@@ -36,10 +36,8 @@ func logicSystem() string {
 		}
 
 		if verboseMode() {
-			fmt.Println("New candle: ", count)
 			fmt.Println("Number of Sell orders: ", countSell)
 			fmt.Println("Number of Buy orders: ", countBuy)
-
 		}
 		time.Sleep(time.Duration(speed) * time.Second)
 	}
@@ -54,6 +52,8 @@ func logicSystem() string {
 		result = "Error"
 		fmt.Println("Api result noting working! Buy: ", countBuy, " Sell: ", countSell)
 	}
-
+	if verboseMode() {
+		fmt.Println("Candle result:", result)
+	}
 	return result
 }
