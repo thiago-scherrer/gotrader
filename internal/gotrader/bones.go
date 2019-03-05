@@ -280,7 +280,7 @@ func closePositionBuy(position float64) bool {
 
 func closePositionSell(position float64) bool {
 	if verboseMode() {
-		fmt.Println("Close Position Sell: ", position+
+		fmt.Println("Close Position Sell: ", position-
 			(position/100)*profit())
 	}
 	return price() <= (position - ((position / 100) * profit()))
