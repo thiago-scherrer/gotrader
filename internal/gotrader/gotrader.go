@@ -22,6 +22,11 @@ func daemonize() {
 
 	typeOrder := candleRunner()
 	waitCreateOrder()
-	closePositionProfit(typeOrder)
+
+	if typeOrder == "Buy" {
+		closePositionProfitBuy()
+	} else {
+		closePositionProfitSell()
+	}
 	getProfit()
 }

@@ -405,24 +405,33 @@ func waitCreateOrder() bool {
 	}
 }
 
-func closePositionProfit(typeOrder string) bool {
+func closePositionProfitBuy() bool {
 	speed := speed()
 
 	for {
-		if closePositionBuy(getPosition()) == true && typeOrder == "Buy" {
-			fmt.Println(ordertriggerMsg())
-			telegramSend(ordertriggerMsg())
-			closePosition()
-			return true
-		} else if closePositionSell(getPosition()) == true && typeOrder == "Sell" {
+		if closePositionBuy(getPosition()) {
 			fmt.Println(ordertriggerMsg())
 			telegramSend(ordertriggerMsg())
 
 			closePosition()
 			return true
-		} else {
-			time.Sleep(time.Duration(speed) * time.Second)
 		}
+		time.Sleep(time.Duration(speed) * time.Second)
+	}
+}
+
+func closePositionProfitSell() bool {
+	speed := speed()
+
+	for {
+		if closePositionSell(getPosition()) {
+			fmt.Println(ordertriggerMsg())
+			telegramSend(ordertriggerMsg())
+
+			closePosition()
+			return true
+		}
+		time.Sleep(time.Duration(speed) * time.Second)
 	}
 }
 
