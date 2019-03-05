@@ -42,4 +42,4 @@ telegramurl: "https://api.telegram.org/"
 telegramchannel: "@xxxxxxxx"
 
 # Verbose mode (true/fase) (required)
-verbose: true
+verbose: false

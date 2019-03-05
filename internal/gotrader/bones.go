@@ -45,6 +45,7 @@ type Conf struct {
 	TelegramKey     string  `yaml:"telegram_key"`
 	TelegramURL     string  `yaml:"telegramurl"`
 	TelegramChannel string  `yaml:"telegramchannel"`
+	Verbose         bool    `yaml:"verbose"`
 }
 
 func initFlag() string {
@@ -152,6 +153,11 @@ func depth() int64 {
 	return conf.Depth
 }
 
+func verboseMode() bool {
+	conf := configReader()
+	return conf.Verbose
+}
+
 func hexCreator(secret, requestTipe, path, expired, data string) string {
 	concat := requestTipe + path + expired + data
 	h := hmac.New(sha256.New, []byte(secret))
@@ -163,8 +169,8 @@ func hexCreator(secret, requestTipe, path, expired, data string) string {
 func parserAmount(data []byte) int {
 	apiresponse := APIResponseComplex{}
 	err := json.Unmarshal(data, &apiresponse)
-	if err != nil {
-		fmt.Println(err)
+	if err != nil && verboseMode() {
+		fmt.Println("Error to get Amount: ", err)
 	}
 	return apiresponse.Amount
 }
@@ -174,8 +180,8 @@ func lastPrice(data []byte) float64 {
 	var result float64
 
 	err := json.Unmarshal(data, &apiresponse)
-	if err != nil {
-		fmt.Println(err)
+	if err != nil && verboseMode() {
+		fmt.Println("Error to get last price: ", err)
 	}
 	for _, value := range apiresponse[:] {
 		result = value.LastPrice
@@ -198,46 +204,38 @@ func getHand() int {
 	path := "/api/v1/user/wallet"
 	requestTipe := "GET"
 	hand := hand()
+
+	if verboseMode() {
+		fmt.Println("DATA get hand: ", hand)
+	}
+
 	data := StringToBytes("message=GoTrader bot&channelID=1")
 	getResult := clientRobot(requestTipe, path, data)
 	return (parserAmount(getResult) * hand) / 100
 }
 
-func makeSell() string {
+func makeOrder(orderType string) string {
 	apiresponse := APIResponseComplex{}
 	qtyOrerFloat := (price() * float64(getHand())) / 10000000
 	qtyOrder := FloatToInt(qtyOrerFloat)
 	asset()
 	path := "/api/v1/order"
 	requestTipe := "POST"
-	data := StringToBytes("symbol=" + asset() + "&side=Sell&orderQty=" +
-		IntToString(qtyOrder) + "&price=" + FloatToString(price()) + "&ordType=Limit")
 
-	getResult := clientRobot(requestTipe, path, data)
-
-	err := json.Unmarshal(getResult, &apiresponse)
-	if err != nil {
-		fmt.Println(err)
+	if verboseMode() {
+		fmt.Println("DATA make order: " + "symbol=" + asset() + "&side=" +
+			orderType + "&orderQty=" + IntToString(qtyOrder) + "&price=" +
+			FloatToString(price()) + "&ordType=Limit")
 	}
 
-	return apiresponse.OrderID
-}
-
-func makeBuy() string {
-	apiresponse := APIResponseComplex{}
-	qtyOrerFloat := (price() * float64(getHand())) / 10000000
-	qtyOrder := FloatToInt(qtyOrerFloat)
-	asset()
-	path := "/api/v1/order"
-	requestTipe := "POST"
-	data := StringToBytes("symbol=" + asset() + "&side=Buy&orderQty=" +
+	data := StringToBytes("symbol=" + asset() + "&side=" + orderType + "&orderQty=" +
 		IntToString(qtyOrder) + "&price=" + FloatToString(price()) + "&ordType=Limit")
 
 	getResult := clientRobot(requestTipe, path, data)
 
 	err := json.Unmarshal(getResult, &apiresponse)
-	if err != nil {
-		fmt.Println(err)
+	if err != nil && verboseMode() {
+		fmt.Println("Error to make a order:", err)
 	}
 
 	return apiresponse.OrderID
@@ -253,8 +251,8 @@ func getPosition() float64 {
 	getResult := clientRobot(requestTipe, path, data)
 
 	err := json.Unmarshal(getResult, &apiresponse)
-	if err != nil {
-		fmt.Println(err)
+	if err != nil && verboseMode() {
+		fmt.Println("Error to get position:", err)
 	}
 
 	for _, value := range apiresponse[:] {
@@ -273,21 +271,35 @@ func price() float64 {
 }
 
 func closePositionBuy() bool {
+	if verboseMode() {
+		fmt.Println("Close Position Buy: ", getPosition()+
+			(getPosition()/100)*profit())
+	}
 	return price() >= (getPosition() + ((getPosition() / 100) * profit()))
 }
 
 func closePositionSell() bool {
+	if verboseMode() {
+		fmt.Println("Close Position Sell: ", getPosition()+
+			(getPosition()/100)*profit())
+	}
 	return price() <= (getPosition() - ((getPosition() / 100) * profit()))
 }
 
 func closePosition() string {
 	path := "/api/v1/order"
 	requestTipe := "POST"
-	priceClose := fmt.Sprintf("%2.f", (getPosition() + ((getPosition() / 100) * profit())))
+	priceClose := fmt.Sprintf("%2.f", (getPosition() +
+		((getPosition() / 100) * profit())))
+
+	if verboseMode() {
+		fmt.Println("Data close position: " + "symbol=" + asset() +
+			"&execInst=Close" + "&price=" + priceClose + "&ordType=Limit")
+	}
+
 	data := StringToBytes("symbol=" + asset() +
 		"&execInst=Close" + "&price=" + priceClose + "&ordType=Limit")
 	getResult := clientRobot(requestTipe, path, data)
-
 	return BytesToString(getResult)
 }
 
@@ -295,6 +307,12 @@ func setLeverge() {
 	asset()
 	path := "/api/v1/position/leverage"
 	requestTipe := "POST"
+
+	if verboseMode() {
+		fmt.Println("Data leverge: " + "symbol=" + asset() +
+			"&leverage=" + leverage())
+	}
+
 	data := StringToBytes("symbol=" + asset() + "&leverage=" + leverage())
 	clientRobot(requestTipe, path, data)
 
@@ -305,9 +323,13 @@ func setLeverge() {
 func statusOrder() bool {
 	asset := asset()
 	path := "/api/v1/position?symbol=" + asset + "&count=1"
+
+	if verboseMode() {
+		fmt.Println("Data status order: " + "message=GoTrader bot&channelID=1")
+	}
+
 	data := StringToBytes("message=GoTrader bot&channelID=1")
 	getResult := clientRobot("GET", path, data)
-
 	return opening(getResult)
 }
 
@@ -315,7 +337,10 @@ func opening(data []byte) bool {
 	var apiresponse []APIResponseComplex
 	var result bool
 
-	json.Unmarshal(data, &apiresponse)
+	err := json.Unmarshal(data, &apiresponse)
+	if err != nil && verboseMode() {
+		fmt.Println("Check if open error:", err)
+	}
 	for _, value := range apiresponse[:] {
 		result = value.IsOpen
 	}
@@ -335,6 +360,9 @@ func candleRunner() string {
 			cSell++
 		}
 	}
+	if verboseMode() {
+		fmt.Println("Buy orders:", cBuy, "Sell orders: ", cSell)
+	}
 	return createOrder(cBuy, cSell)
 }
 
@@ -344,7 +372,7 @@ func createOrder(cBuy, cSell int) string {
 	for {
 		if cBuy > cSell {
 			setLeverge()
-			makeBuy()
+			makeOrder("Buy")
 			typeOrder = "Buy"
 
 			fmt.Println(orderCreatedMsg(typeOrder))
@@ -352,7 +380,7 @@ func createOrder(cBuy, cSell int) string {
 			break
 		} else if cSell > cBuy {
 			setLeverge()
-			makeSell()
+			makeOrder("Sell")
 			typeOrder = "Sell"
 
 			fmt.Println(orderCreatedMsg(typeOrder))

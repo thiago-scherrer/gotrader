@@ -19,7 +19,7 @@ func clientRobot(requestType, path string, data []byte) []byte {
 
 	request, err := http.NewRequest(requestType, url, bytes.NewBuffer(data))
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Error create a request on bitmex, got: ", err)
 	}
 
 	request.Header.Set("api-signature", hexResult)
@@ -31,7 +31,7 @@ func clientRobot(requestType, path string, data []byte) []byte {
 
 	response, err := client.Do(request)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Error to send the request to the API bitmex, got: ", err)
 	}
 	defer response.Body.Close()
 	body, err := ioutil.ReadAll(response.Body)
@@ -39,10 +39,8 @@ func clientRobot(requestType, path string, data []byte) []byte {
 		fmt.Println(err)
 	}
 
-	if response.StatusCode == 401 {
-		fmt.Println("quiting, API response are: ", response.StatusCode)
-	} else if response.StatusCode == 404 {
-		fmt.Println("quiting, API response are: ", response.StatusCode)
+	if verboseMode() {
+		fmt.Println("Bitmex API Status code are: ", response.StatusCode)
 	}
 
 	return body
@@ -62,7 +60,7 @@ func telegramSend(msg string) int {
 
 	request, err := http.NewRequest("POST", url, bytes.NewBuffer(data))
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Error create a request on telegram, got: ", err)
 	}
 
 	request.Header.Set("User-Agent", "gotrader-r0b0tnull")
@@ -74,13 +72,13 @@ func telegramSend(msg string) int {
 	}
 	defer response.Body.Close()
 	_, err = ioutil.ReadAll(response.Body)
-	if err != nil {
-		fmt.Println(err)
+	if err != nil && verboseMode() {
+		fmt.Println("Error to get body from Telegram API, got", err)
 	}
 
-	if response.StatusCode != 200 {
-		fmt.Println("telegram error, API response are: ")
-		return response.StatusCode
+	if verboseMode() {
+		fmt.Println("Telegram API Status code are: ", response.StatusCode)
 	}
+
 	return response.StatusCode
 }
