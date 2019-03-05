@@ -270,20 +270,20 @@ func price() float64 {
 	return lastPrice(getResult)
 }
 
-func closePositionBuy() bool {
+func closePositionBuy(position float64) bool {
 	if verboseMode() {
-		fmt.Println("Close Position Buy: ", getPosition()+
-			(getPosition()/100)*profit())
+		fmt.Println("Close Position Buy: ", position+
+			(position/100)*profit())
 	}
-	return price() >= (getPosition() + ((getPosition() / 100) * profit()))
+	return price() >= (position + ((position / 100) * profit()))
 }
 
-func closePositionSell() bool {
+func closePositionSell(position float64) bool {
 	if verboseMode() {
-		fmt.Println("Close Position Sell: ", getPosition()+
-			(getPosition()/100)*profit())
+		fmt.Println("Close Position Sell: ", position+
+			(position/100)*profit())
 	}
-	return price() <= (getPosition() - ((getPosition() / 100) * profit()))
+	return price() <= (position - ((position / 100) * profit()))
 }
 
 func closePosition() string {
@@ -324,12 +324,11 @@ func statusOrder() bool {
 	asset := asset()
 	path := "/api/v1/position?symbol=" + asset + "&count=1"
 
-	if verboseMode() {
-		fmt.Println("Data status order: " + "message=GoTrader bot&channelID=1")
-	}
-
 	data := StringToBytes("message=GoTrader bot&channelID=1")
 	getResult := clientRobot("GET", path, data)
+	if verboseMode() {
+		fmt.Println("Data status order: " + BytesToString(getResult))
+	}
 	return opening(getResult)
 }
 
@@ -410,12 +409,12 @@ func closePositionProfit(typeOrder string) bool {
 	speed := speed()
 
 	for {
-		if closePositionBuy() == true && typeOrder == "Buy" {
+		if closePositionBuy(getPosition()) == true && typeOrder == "Buy" {
 			fmt.Println(ordertriggerMsg())
 			telegramSend(ordertriggerMsg())
 			closePosition()
 			return true
-		} else if closePositionSell() == true && typeOrder == "Sell" {
+		} else if closePositionSell(getPosition()) == true && typeOrder == "Sell" {
 			fmt.Println(ordertriggerMsg())
 			telegramSend(ordertriggerMsg())
 
