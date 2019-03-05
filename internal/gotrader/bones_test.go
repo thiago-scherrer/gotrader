@@ -360,3 +360,41 @@ func Test_speed(t *testing.T) {
 		})
 	}
 }
+
+func Test_handRoll(t *testing.T) {
+	tests := []struct {
+		name string
+		want int
+	}{
+		{"Test", 17},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := handRoll(42, 42); got != tt.want {
+				t.Errorf("handRoll() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_hexCreator(t *testing.T) {
+	tests := []struct {
+		name string
+		want string
+	}{
+		{"Test", "4210b09a7ec51b6399c8b32284925bce0c28156b4800d97f4cf5815ab059fd4b"},
+	}
+	secret := "42"
+	requestTipe := "42"
+	path := "42"
+	expired := "never"
+	data := "42"
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := hexCreator(secret, requestTipe, path,
+				expired, data); got != tt.want {
+				t.Errorf("hexCreator() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
