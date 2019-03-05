@@ -1,6 +1,8 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestUsageMsg(t *testing.T) {
 	if usageMsg() != "Usage: config config.yml" {
@@ -13,5 +15,101 @@ func TestTelegram(t *testing.T) {
 
 	if getResult != 200 {
 		t.Error("Telegram not working, got: ", getResult)
+	}
+}
+
+func Test_setlavarageMsg(t *testing.T) {
+	tests := []struct {
+		name string
+		want string
+	}{
+		{"test: ", "Setting leverage: 0.1"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := setlavarageMsg(); got != tt.want {
+				t.Errorf("setlavarageMsg() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_orderCreatedMsg(t *testing.T) {
+	tests := []struct {
+		name string
+		want string
+	}{
+		{"Test", "A new order type: Sell as been created! "},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := orderCreatedMsg("Sell"); got != tt.want {
+				t.Errorf("orderCreatedMsg() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_orderDoneMsg(t *testing.T) {
+	tests := []struct {
+		name string
+		want string
+	}{
+		{"Test", "Order fulfilled!"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := orderDoneMsg(); got != tt.want {
+				t.Errorf("orderDoneMsg() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_ordertriggerMsg(t *testing.T) {
+	tests := []struct {
+		name string
+		want string
+	}{
+		{"Test", "Profit target trigged"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := ordertriggerMsg(); got != tt.want {
+				t.Errorf("ordertriggerMsg() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_orderWaintMsg(t *testing.T) {
+	tests := []struct {
+		name string
+		want string
+	}{
+		{"Test", "Waiting to get order fulfilled..."},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := orderWaintMsg(); got != tt.want {
+				t.Errorf("orderWaintMsg() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_profitMsg(t *testing.T) {
+	tests := []struct {
+		name string
+		want string
+	}{
+		{"Test", "Profit done!"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := profitMsg(); got != tt.want {
+				t.Errorf("profitMsg() = %v, want %v", got, tt.want)
+			}
+		})
 	}
 }
