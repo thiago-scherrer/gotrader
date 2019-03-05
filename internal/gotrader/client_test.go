@@ -39,31 +39,3 @@ func TestTradeValue(t *testing.T) {
 		t.Error("the value to trade not working, got: ", result, ", want: ", handRollEspected)
 	}
 }
-
-func TestQuote(t *testing.T) {
-	initFlag()
-	asset := asset()
-	path := "/api/v1/instrument?symbol=" + asset + "&count=100&reverse=false&columns=lastPrice"
-	data := StringToBytes("message=GoTrader bot&channelID=1")
-
-	getResult := clientRobot("GET", path, data)
-
-	getPrice := lastPrice(getResult)
-	if getPrice <= 3 {
-		t.Error("erro to get last price, got: ", getPrice)
-	}
-}
-
-func TestGetWalletAmount(t *testing.T) {
-	initFlag()
-	path := "/api/v1/user/wallet"
-	requestTipe := "GET"
-	data := StringToBytes("message=GoTrader bot&channelID=1")
-	getResult := clientRobot(requestTipe, path, data)
-
-	getParser := parserAmount(getResult)
-
-	if getParser <= 1 {
-		t.Error("error to get wallet value, got: ", getParser)
-	}
-}
