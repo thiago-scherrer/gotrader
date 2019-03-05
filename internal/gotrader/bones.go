@@ -75,39 +75,24 @@ func configReader() *Conf {
 	return &conf
 }
 
-func userid() string {
+func asset() string {
 	conf := configReader()
-	return conf.Userid
+	return conf.Asset
 }
 
-func telegramurl() string {
+func candle() int {
 	conf := configReader()
-	return conf.TelegramURL
+	return conf.Candle * 6
 }
 
-func secret() string {
+func depth() int64 {
 	conf := configReader()
-	return conf.Secret
+	return conf.Depth
 }
 
 func endpoint() string {
 	conf := configReader()
 	return conf.Endpoint
-}
-
-func telegramUse() bool {
-	conf := configReader()
-	return conf.TelegramUse
-}
-
-func telegramKey() string {
-	conf := configReader()
-	return conf.TelegramKey
-}
-
-func telegramChannel() string {
-	conf := configReader()
-	return conf.TelegramChannel
 }
 
 func hand() int {
@@ -120,23 +105,14 @@ func leverage() string {
 	return conf.Leverage
 }
 
-func speed() int {
-	return 10
-}
-
-func asset() string {
-	conf := configReader()
-	return conf.Asset
-}
-
-func candle() int {
-	conf := configReader()
-	return conf.Candle * 6
-}
-
 func profit() float64 {
 	conf := configReader()
 	return conf.Profit
+}
+
+func secret() string {
+	conf := configReader()
+	return conf.Secret
 }
 
 func threshold() int {
@@ -144,18 +120,42 @@ func threshold() int {
 	return conf.Threshold
 }
 
-func handRoll(getParser, hand int) int {
-	return (getParser * hand) / 100
+func userid() string {
+	conf := configReader()
+	return conf.Userid
 }
 
-func depth() int64 {
+func telegramUse() bool {
 	conf := configReader()
-	return conf.Depth
+	return conf.TelegramUse
+}
+
+func telegramKey() string {
+	conf := configReader()
+	return conf.TelegramKey
+}
+
+func telegramurl() string {
+	conf := configReader()
+	return conf.TelegramURL
+}
+
+func telegramChannel() string {
+	conf := configReader()
+	return conf.TelegramChannel
 }
 
 func verboseMode() bool {
 	conf := configReader()
 	return conf.Verbose
+}
+
+func speed() int {
+	return 10
+}
+
+func handRoll(getParser, hand int) int {
+	return (getParser * hand) / 100
 }
 
 func hexCreator(secret, requestTipe, path, expired, data string) string {
