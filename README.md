@@ -1,23 +1,23 @@
 # GoTrader bot
 
-Project to create a trade bot for a bitmex
+Project to create a trade bot for bitmex trade platform.
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/thiago-scherrer/gotrader)](https://goreportcard.com/report/github.com/thiago-scherrer/gotrader)
 
 ![gopher](assets/gopher.png)
 
-## requirements
+## Requirements
 
 - docker => 18.09.2
 - docker-compose => 1.23.2
 - bitmex api
 - gopkg.in/yaml.v2 (go get gopkg.in/yaml.v2)
 
-## how it works
+## How it works
 
 This robot is still under construction. Its purpose is to automate a rule created by the trader. It's not a money machine ...
 
-## runing
+## Runing
 
 Go to the config folder and then, copy **config-example.yml** to the **config.yml**. Add your settings to the file and then, go back to the root dir and run *docker-compose*:
 
@@ -37,11 +37,11 @@ You can see the logs with *docker logs* command, like:
 docker logs -f gotrader_gotrader_1
 ```
 
-## logic
+## Logic
 
 The acual logic can be changed on *internal/gotrader/logic.go*.
 
-## test
+## Testing
 
 Copy the sample configuration file, which is inside configs. Change the required data.
 Enter to the *./internal/gotrader* folder and run the test:
@@ -50,7 +50,7 @@ Enter to the *./internal/gotrader* folder and run the test:
 go test -args config ../../configs/config-test.yml
 ```
 
-## manual run
+## Manually building and executing
 
 Build the bin:
 
@@ -65,7 +65,7 @@ And then, run:
 ./gotrader config ../../configs/config.yml
 ```
 
-## references
+## References
 
 - [golang-standards](https://github.com/golang-standards/project-layout)
 - [bitmex api](https://www.bitmex.com/api/explorer/)
@@ -73,6 +73,6 @@ And then, run:
 - [gopherize](https://gopherize.me)
 - [docker-compose install](https://docs.docker.com/compose/install/)
 
-## irc
+## IRC
 
 - freenode - Channel #gotrader
