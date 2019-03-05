@@ -289,8 +289,9 @@ func closePositionSell(position float64) bool {
 func closePosition() string {
 	path := "/api/v1/order"
 	requestTipe := "POST"
-	priceClose := fmt.Sprintf("%2.f", (getPosition() +
-		((getPosition() / 100) * profit())))
+	position := getPosition()
+	priceClose := fmt.Sprintf("%2.f", (position +
+		((position / 100) * profit())))
 
 	if verboseMode() {
 		fmt.Println("Data close position: " + "symbol=" + asset() +
@@ -407,9 +408,10 @@ func waitCreateOrder() bool {
 
 func closePositionProfitBuy() bool {
 	speed := speed()
+	position := getPosition()
 
 	for {
-		if closePositionBuy(getPosition()) {
+		if closePositionBuy(position) {
 			fmt.Println(ordertriggerMsg())
 			telegramSend(ordertriggerMsg())
 
@@ -422,9 +424,10 @@ func closePositionProfitBuy() bool {
 
 func closePositionProfitSell() bool {
 	speed := speed()
+	position := getPosition()
 
 	for {
-		if closePositionSell(getPosition()) {
+		if closePositionSell(position) {
 			fmt.Println(ordertriggerMsg())
 			telegramSend(ordertriggerMsg())
 
