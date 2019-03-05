@@ -1,0 +1,45 @@
+# User id to use API (bitmex example)
+userid: "LAqUlngMIQkIUjXMUreyu3qn"
+
+# Password to use API (bitmex example)
+secret: "chNOOS4KvNXR_Xq4k4c9qsfoKWvnDecLATCRlcBwyKDYnWgO"
+
+# API endpoint/url. Aways use HTTPS!
+endpoint: "https://testnet.bitmex.com"
+
+# Percentage to use on trade from total wallet value. 
+hand: 2
+
+# Asset to trade
+asset: "XBTUSD"
+
+# Cadle time (minutes)
+candle: 1
+
+# threshold to trigger the rule.
+threshold: 1
+
+# Profit percentage to close a position
+profit: 1
+
+# How many depth orders
+depth: 30
+
+# Leverage value. Set a number between 0.01 and 100. 
+# Send 0 to enable cross margin.
+leverage: "0.1"
+
+# Enable telegram? (true/false)
+telegramuse: false
+
+# Telegram API KEY
+telegram_key: "xxxxx"
+
+# Telegram API URL
+telegramurl: "https://api.telegram.org"
+
+# Telegram channel
+telegramchannel: "@"
+
+# Verbose mode (true/fase) (required)
+verbose: false
