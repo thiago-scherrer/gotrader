@@ -214,7 +214,7 @@ func getHand() float64 {
 
 func makeOrder(orderType string) string {
 	apiresponse := APIResponseComplex{}
-	qtyOrerFloat := (price() * getHand())
+	qtyOrerFloat := fmt.Sprintf("%.f", (price() * getHand()))
 
 	asset()
 	path := "/api/v1/order"
@@ -222,12 +222,12 @@ func makeOrder(orderType string) string {
 
 	if verboseMode() {
 		fmt.Println("DATA make order: " + "symbol=" + asset() + "&side=" +
-			orderType + "&orderQty=" + FloatToString(qtyOrerFloat) + "&price=" +
+			orderType + "&orderQty=" + qtyOrerFloat + "&price=" +
 			FloatToString(price()) + "&ordType=Limit")
 	}
 
 	data := StringToBytes("symbol=" + asset() + "&side=" + orderType + "&orderQty=" +
-		FloatToString(qtyOrerFloat) + "&price=" + FloatToString(price()) + "&ordType=Limit")
+		qtyOrerFloat + "&price=" + FloatToString(price()) + "&ordType=Limit")
 
 	getResult := clientRobot(requestTipe, path, data)
 
