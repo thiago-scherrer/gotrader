@@ -216,7 +216,7 @@ func getHand() int {
 
 func makeOrder(orderType string) string {
 	apiresponse := APIResponseComplex{}
-	qtyOrerFloat := (price() * float64(getHand())) / 10000000
+	qtyOrerFloat := (price() * float64(getHand()))
 	qtyOrder := FloatToInt(qtyOrerFloat)
 	asset()
 	path := "/api/v1/order"
