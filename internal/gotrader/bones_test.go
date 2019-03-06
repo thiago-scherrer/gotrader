@@ -398,3 +398,51 @@ func Test_hexCreator(t *testing.T) {
 		})
 	}
 }
+
+func Test_parserAmount(t *testing.T) {
+	tests := []struct {
+		name string
+		want int
+	}{
+		{"Test", 1},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := parserAmount(StringToBytes(`{"amount":1}`)); got != tt.want {
+				t.Errorf("parserAmount() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_lastPrice(t *testing.T) {
+	tests := []struct {
+		name string
+		want float64
+	}{
+		{"Test", 1},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := lastPrice(StringToBytes(`[{"lastPrice":1}]`)); got != tt.want {
+				t.Errorf("lastPrice() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_opening(t *testing.T) {
+	tests := []struct {
+		name string
+		want bool
+	}{
+		{"Test", true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := opening(StringToBytes(`[{"isOpen":true}]`)); got != tt.want {
+				t.Errorf("opening() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
