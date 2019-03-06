@@ -242,12 +242,13 @@ func makeOrder(orderType string) string {
 func getPosition() float64 {
 	var apiresponse []APIResponseComplex
 	var result float64
-
-	path := "/api/v1/position?filter=" + "&symbol=" + asset() + "&count=1"
+	path := "/api/v1/position" + `?filter={"symbol":"` + asset() + `"}&count=1`
 	requestTipe := "GET"
 	data := StringToBytes("message=GoTrader bot&channelID=1")
 	getResult := clientRobot(requestTipe, path, data)
-
+	if verboseMode() {
+		fmt.Println("Data get position" + BytesToString(getResult))
+	}
 	err := json.Unmarshal(getResult, &apiresponse)
 	if err != nil && verboseMode() {
 		fmt.Println("Error to get position:", err)
@@ -320,7 +321,7 @@ func setLeverge() {
 }
 
 func statusOrder() bool {
-	path := "/api/v1/position?filter=" + "&symbol=" + asset() + "&count=1"
+	path := "/api/v1/position" + `?filter={"symbol":"` + asset() + `"}&count=1`
 
 	data := StringToBytes("message=GoTrader bot&channelID=1")
 	getResult := clientRobot("GET", path, data)
