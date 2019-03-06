@@ -321,7 +321,7 @@ func setLeverge() {
 
 func statusOrder() bool {
 	asset := asset()
-	path := "/api/v1/position?symbol=" + asset + "&count=1"
+	path := "/api/v1/position?filter=" + "?symbol=" + asset + "&count=1"
 
 	data := StringToBytes("message=GoTrader bot&channelID=1")
 	getResult := clientRobot("GET", path, data)
