@@ -243,7 +243,7 @@ func getPosition() float64 {
 	var apiresponse []APIResponseComplex
 	var result float64
 
-	path := "/api/v1/position?filter=" + "?symbol=" + asset() + "&count=1"
+	path := "/api/v1/position?filter=" + "&symbol=" + asset() + "&count=1"
 	requestTipe := "GET"
 	data := StringToBytes("message=GoTrader bot&channelID=1")
 	getResult := clientRobot(requestTipe, path, data)
@@ -320,8 +320,7 @@ func setLeverge() {
 }
 
 func statusOrder() bool {
-	asset := asset()
-	path := "/api/v1/position?filter=" + "?symbol=" + asset + "&count=1"
+	path := "/api/v1/position?filter=" + "&symbol=" + asset() + "&count=1"
 
 	data := StringToBytes("message=GoTrader bot&channelID=1")
 	getResult := clientRobot("GET", path, data)
