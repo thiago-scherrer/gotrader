@@ -154,10 +154,6 @@ func speed() int {
 	return 10
 }
 
-func handRoll(getParser, hand int) int {
-	return (getParser * hand) / 100
-}
-
 func hexCreator(secret, requestTipe, path, expired, data string) string {
 	concat := requestTipe + path + expired + data
 	h := hmac.New(sha256.New, []byte(secret))
@@ -200,7 +196,7 @@ func timeStamp() int64 {
 	return timestamp
 }
 
-func getHand() int {
+func getHand() float64 {
 	path := "/api/v1/user/wallet"
 	requestTipe := "GET"
 	hand := hand()
@@ -211,25 +207,27 @@ func getHand() int {
 
 	data := StringToBytes("message=GoTrader bot&channelID=1")
 	getResult := clientRobot(requestTipe, path, data)
-	return (parserAmount(getResult) * hand) / 100
+
+	satoshi := float64(parserAmount(getResult)) * 0.00000001
+	return (satoshi * float64(hand)) / 100
 }
 
 func makeOrder(orderType string) string {
 	apiresponse := APIResponseComplex{}
-	qtyOrerFloat := (price() * float64(getHand()))
-	qtyOrder := FloatToInt(qtyOrerFloat)
+	qtyOrerFloat := (price() * getHand())
+
 	asset()
 	path := "/api/v1/order"
 	requestTipe := "POST"
 
 	if verboseMode() {
 		fmt.Println("DATA make order: " + "symbol=" + asset() + "&side=" +
-			orderType + "&orderQty=" + IntToString(qtyOrder) + "&price=" +
+			orderType + "&orderQty=" + FloatToString(qtyOrerFloat) + "&price=" +
 			FloatToString(price()) + "&ordType=Limit")
 	}
 
 	data := StringToBytes("symbol=" + asset() + "&side=" + orderType + "&orderQty=" +
-		IntToString(qtyOrder) + "&price=" + FloatToString(price()) + "&ordType=Limit")
+		FloatToString(qtyOrerFloat) + "&price=" + FloatToString(price()) + "&ordType=Limit")
 
 	getResult := clientRobot(requestTipe, path, data)
 
@@ -245,7 +243,7 @@ func getPosition() float64 {
 	var apiresponse []APIResponseComplex
 	var result float64
 
-	path := "/api/v1/position" + "?symbol=" + asset() + "&count=1"
+	path := "/api/v1/position?filter=" + "?symbol=" + asset() + "&count=1"
 	requestTipe := "GET"
 	data := StringToBytes("message=GoTrader bot&channelID=1")
 	getResult := clientRobot(requestTipe, path, data)
