@@ -17,6 +17,11 @@ Project to create a trade bot for bitmex trade platform.
 
 This robot is still under construction. Its purpose is to automate a rule created by the trader. It's not a money machine ...
 
+## Supported Contracts
+
+- XBTUSD
+- ETHUSD
+
 ## Runing
 
 Go to the config folder and then, copy **config-example.yml** to the **config.yml**. Add your settings to the file and then, go back to the root dir and run *docker-compose*:
