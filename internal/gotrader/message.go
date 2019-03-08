@@ -4,10 +4,6 @@ func helloMsg() string {
 	return "Starting a new round => GoTrader Bot"
 }
 
-func toLowerMsg() string {
-	return "Hand to lower, setting 1 "
-}
-
 func usageMsg() string {
 	return "Usage: config config.yml"
 }
