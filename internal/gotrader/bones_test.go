@@ -169,22 +169,6 @@ func Test_endpoint(t *testing.T) {
 	}
 }
 
-func Test_hand(t *testing.T) {
-	tests := []struct {
-		name string
-		want int
-	}{
-		{"Test", 2},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := hand(); got != tt.want {
-				t.Errorf("hand() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func Test_leverage(t *testing.T) {
 	tests := []struct {
 		name string
@@ -192,6 +176,7 @@ func Test_leverage(t *testing.T) {
 	}{
 		{"Test", "0.1"},
 	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := leverage(); got != tt.want {

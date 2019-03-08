@@ -35,7 +35,7 @@ type Conf struct {
 	Candle          int     `yaml:"candle"`
 	Depth           int64   `yaml:"depth"`
 	Endpoint        string  `yaml:"endpoint"`
-	Hand            int     `yaml:"hand"`
+	Hand            int64   `yaml:"hand"`
 	Leverage        string  `yaml:"leverage"`
 	Profit          float64 `yaml:"profit"`
 	Secret          string  `yaml:"secret"`
@@ -95,7 +95,7 @@ func endpoint() string {
 	return conf.Endpoint
 }
 
-func hand() int {
+func hand() int64 {
 	conf := configReader()
 	return conf.Hand
 }
@@ -196,26 +196,9 @@ func timeStamp() int64 {
 	return timestamp
 }
 
-func getHand() float64 {
-	path := "/api/v1/user/wallet"
-	requestTipe := "GET"
-	hand := hand()
-
-	if verboseMode() {
-		fmt.Println("DATA get hand: ", hand)
-	}
-
-	data := StringToBytes("message=GoTrader bot&channelID=1")
-	getResult := clientRobot(requestTipe, path, data)
-
-	satoshi := float64(parserAmount(getResult)) * 0.00000001
-	return (satoshi * float64(hand)) / 100
-}
-
 func makeOrder(orderType string) string {
 	apiresponse := APIResponseComplex{}
-	qtyOrerFloat := fmt.Sprintf("%.f", (price() * getHand()))
-
+	qtyOrerFloat := IntToString(hand())
 	asset()
 	path := "/api/v1/order"
 	requestTipe := "POST"
