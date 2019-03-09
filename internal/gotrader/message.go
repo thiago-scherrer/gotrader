@@ -1,7 +1,7 @@
 package main
 
 func helloMsg() string {
-	return "Starting a new round => GoTrader Bot"
+	return " " + asset() + " - Starting a new round"
 }
 
 func usageMsg() string {
@@ -9,25 +9,25 @@ func usageMsg() string {
 }
 
 func setlavarageMsg() string {
-	return "Setting leverage: " + leverage()
+	return " " + asset() + " - Setting leverage: " + leverage()
 }
 
 func orderCreatedMsg(typeOrder string) string {
-	return "A new order type: " + typeOrder + " as been created! "
+	return " " + asset() + " - A new order type: " + typeOrder + " as been created! "
 }
 
 func orderDoneMsg() string {
-	return "Order fulfilled!"
+	return " " + asset() + " - Order fulfilled!"
 }
 
 func ordertriggerMsg() string {
-	return "Profit target trigged"
+	return " " + asset() + " - Profit target trigged"
 }
 
 func orderWaintMsg() string {
-	return "Waiting to get order fulfilled..."
+	return " " + asset() + " - Waiting to get order fulfilled..."
 }
 
 func profitMsg() string {
-	return "Profit done!"
+	return " " + asset() + " - Profit done!"
 }

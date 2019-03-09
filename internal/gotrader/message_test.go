@@ -23,7 +23,7 @@ func Test_setlavarageMsg(t *testing.T) {
 		name string
 		want string
 	}{
-		{"test: ", "Setting leverage: 0.1"},
+		{"test: ", " " + asset() + " - Setting leverage: 0.1"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -39,7 +39,7 @@ func Test_orderCreatedMsg(t *testing.T) {
 		name string
 		want string
 	}{
-		{"Test", "A new order type: Sell as been created! "},
+		{"Test", " " + asset() + " - A new order type: Sell as been created! "},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -55,7 +55,7 @@ func Test_orderDoneMsg(t *testing.T) {
 		name string
 		want string
 	}{
-		{"Test", "Order fulfilled!"},
+		{"Test", " " + asset() + " - Order fulfilled!"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -71,7 +71,7 @@ func Test_ordertriggerMsg(t *testing.T) {
 		name string
 		want string
 	}{
-		{"Test", "Profit target trigged"},
+		{"Test", " " + asset() + " - Profit target trigged"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -87,7 +87,7 @@ func Test_orderWaintMsg(t *testing.T) {
 		name string
 		want string
 	}{
-		{"Test", "Waiting to get order fulfilled..."},
+		{"Test", " " + asset() + " - Waiting to get order fulfilled..."},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -103,7 +103,7 @@ func Test_profitMsg(t *testing.T) {
 		name string
 		want string
 	}{
-		{"Test", "Profit done!"},
+		{"Test", " " + asset() + " - Profit done!"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
