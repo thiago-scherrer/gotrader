@@ -15,7 +15,7 @@ Project to create a trade bot for bitmex trade platform.
 
 ## How it works
 
-This robot is still under construction. Its purpose is to automate a rule created by the trader. It's not a money machine ...
+This robot still under construction. Its purpose is to automate a rule created by the trader. It's not a money machine ...
 
 ## Supported Contracts
 
