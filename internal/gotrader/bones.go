@@ -207,6 +207,7 @@ func timeStamp() int64 {
 }
 
 func makeOrder(orderType string) string {
+	speed := speed()
 	apiresponse := APIResponseComplex{}
 	qtyOrerFloat := IntToString(hand())
 	asset()
@@ -222,14 +223,16 @@ func makeOrder(orderType string) string {
 	data := StringToBytes("symbol=" + asset() + "&side=" + orderType + "&orderQty=" +
 		qtyOrerFloat + "&price=" + FloatToString(price()) + "&ordType=Limit")
 
-	getResult := clientRobot(requestTipe, path, data)
-
-	err := json.Unmarshal(getResult, &apiresponse)
-	if err != nil && verboseMode() {
-		fmt.Println("Error to make a order:", err)
+	for {
+		getResult := clientRobot(requestTipe, path, data)
+		err := json.Unmarshal(getResult, &apiresponse)
+		if err != nil && verboseMode() {
+			fmt.Println("Error to make a order:", err)
+			time.Sleep(time.Duration(speed) * time.Second)
+		} else {
+			return apiresponse.OrderID
+		}
 	}
-
-	return apiresponse.OrderID
 }
 
 func getPosition() float64 {
