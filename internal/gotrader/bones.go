@@ -22,7 +22,7 @@ type APIResponseComplex struct {
 	IsOpen        bool    `json:"isOpen"`
 	ID            int64   `json:"id"`
 	LastPrice     float64 `json:"lastPrice"`
-	Leverage      int64   `json:"leverage"`
+	Leverage      string  `json:"leverage,float64,omitempty"`
 	OrderID       string  `json:"orderID"`
 	OrderQty      int     `json:"orderQty"`
 	Price         float64 `json:"price"`
@@ -177,7 +177,7 @@ func lastPrice(data []byte) float64 {
 	var result float64
 
 	err := json.Unmarshal(data, &apiresponse)
-	if err != nil && verboseMode() {
+	if err != nil {
 		fmt.Println("Error to get last price: ", err)
 	}
 	for _, value := range apiresponse[:] {
@@ -186,11 +186,11 @@ func lastPrice(data []byte) float64 {
 	return result
 }
 
-func leverageResult(data []byte) int64 {
+func leverageResult(data []byte) string {
 	apiresponse := APIResponseComplex{}
 	err := json.Unmarshal(data, &apiresponse)
-	if err != nil && verboseMode() {
-		fmt.Println("Error to get Amount: ", err)
+	if err != nil {
+		fmt.Println("Error to set leverage: ", err)
 	}
 	return apiresponse.Leverage
 }
@@ -314,7 +314,7 @@ func setLeverge() {
 
 	for {
 		result := clientRobot(requestTipe, path, data)
-		if leverageResult(result) == StringToInt(leverage) {
+		if leverageResult(result) == leverage {
 			fmt.Println(setlavarageMsg())
 			telegramSend(setlavarageMsg())
 			break
