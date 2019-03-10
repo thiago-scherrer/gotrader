@@ -22,6 +22,7 @@ type APIResponseComplex struct {
 	IsOpen        bool    `json:"isOpen"`
 	ID            int64   `json:"id"`
 	LastPrice     float64 `json:"lastPrice"`
+	Leverage      int64   `json:"leverage"`
 	OrderID       string  `json:"orderID"`
 	OrderQty      int     `json:"orderQty"`
 	Price         float64 `json:"price"`
@@ -185,6 +186,15 @@ func lastPrice(data []byte) float64 {
 	return result
 }
 
+func leverageResult(data []byte) int64 {
+	apiresponse := APIResponseComplex{}
+	err := json.Unmarshal(data, &apiresponse)
+	if err != nil && verboseMode() {
+		fmt.Println("Error to get Amount: ", err)
+	}
+	return apiresponse.Leverage
+}
+
 func timeExpired() int64 {
 	timeExpired := timeStamp() + 60
 	return timeExpired
@@ -287,20 +297,28 @@ func closePosition() string {
 }
 
 func setLeverge() {
+	speed := speed()
 	asset()
 	path := "/api/v1/position/leverage"
 	requestTipe := "POST"
-
+	leverage := leverage()
 	if verboseMode() {
 		fmt.Println("Data leverge: " + "symbol=" + asset() +
-			"&leverage=" + leverage())
+			"&leverage=" + leverage)
 	}
 
-	data := StringToBytes("symbol=" + asset() + "&leverage=" + leverage())
-	clientRobot(requestTipe, path, data)
+	data := StringToBytes("symbol=" + asset() + "&leverage=" + leverage)
 
-	fmt.Println(setlavarageMsg())
-	telegramSend(setlavarageMsg())
+	for {
+		result := clientRobot(requestTipe, path, data)
+		if leverageResult(result) == StringToInt(leverage) {
+			fmt.Println(setlavarageMsg())
+			telegramSend(setlavarageMsg())
+			break
+		}
+		time.Sleep(time.Duration(speed) * time.Second)
+	}
+
 }
 
 func statusOrder() bool {
@@ -339,6 +357,8 @@ func candleRunner() string {
 			cBuy++
 		} else if result == "Sell" {
 			cSell++
+		} else {
+			index = -1
 		}
 	}
 	if verboseMode() {
