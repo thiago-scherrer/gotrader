@@ -300,7 +300,6 @@ func closePosition() string {
 }
 
 func setLeverge() {
-	speed := speed()
 	asset()
 	path := "/api/v1/position/leverage"
 	requestTipe := "POST"
@@ -312,15 +311,9 @@ func setLeverge() {
 
 	data := StringToBytes("symbol=" + asset() + "&leverage=" + leverage)
 
-	for {
-		result := clientRobot(requestTipe, path, data)
-		if leverageResult(result) == leverage {
-			fmt.Println(setlavarageMsg())
-			telegramSend(setlavarageMsg())
-			break
-		}
-		time.Sleep(time.Duration(speed) * time.Second)
-	}
+	clientRobot(requestTipe, path, data)
+	fmt.Println(setlavarageMsg())
+	telegramSend(setlavarageMsg())
 
 }
 
