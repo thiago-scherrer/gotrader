@@ -5,8 +5,13 @@ services:
       context: .
       dockerfile: Dockerfile
       target: test
-  run:
+  builder:
     build:
       context: .
       dockerfile: Dockerfile
-      target: test
+      target: build
+  gotrader:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: run
