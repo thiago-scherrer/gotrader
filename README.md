@@ -10,8 +10,7 @@ Project to create a trade bot for bitmex trade platform.
 
 - docker => 18.09.2
 - docker-compose => 1.23.2
-- bitmex api
-- gopkg.in/yaml.v2 (go get gopkg.in/yaml.v2)
+- bitmex account
 
 ## How it works
 
@@ -60,6 +59,7 @@ Anothers logics or examples can be found on *configs/logics/*.
 - [goreportcard](https://goreportcard.com/)
 - [gopherize](https://gopherize.me)
 - [docker-compose install](https://docs.docker.com/compose/install/)
+- [go-yaml](https://github.com/go-yaml/yaml)
 
 ## IRC
 
