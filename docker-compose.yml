@@ -1,4 +1,12 @@
-version: '3'
+version: '3.4'
 services:
-  gotrader:
-    build: .
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: test
+  run:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: test
