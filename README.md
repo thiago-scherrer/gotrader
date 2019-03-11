@@ -30,10 +30,10 @@ Go to the config folder and then, copy **config-example.yml** to the **config.ym
 docker-compose build
 ```
 
-After *build*, run the docker:
+After *test* and *build*, run the bot (background):
 
 ```bash
-docker-compose up -d
+docker-compose up -d gotrader
 ```
 
 You can see the logs with *docker logs* command, like:
@@ -42,33 +42,16 @@ You can see the logs with *docker logs* command, like:
 docker logs -f gotrader_gotrader_1
 ```
 
+To stop the robot, run:
+
+```bash
+docker-compose down
+```
+
 ## Logic
 
-The acual logic can be changed on *internal/gotrader/logic.go*.
-
-## Testing
-
-Copy the sample configuration file, which is inside configs. Change the required data.
-Enter to the *./internal/gotrader* folder and run the test:
-
-```bash
-go test -args config ../../configs/config-test.yml
-```
-
-## Manually building and executing
-
-Build the bin:
-
-```bash
-cd internal/gotrader/
-go build -o gotrader 
-```
-
-And then, run:
-
-```bash
-./gotrader config ../../configs/config.yml
-```
+The acual logic can be changed on *internal/logic.go*.
+Anothers logics or examples can be found on *configs/logics/*.
 
 ## References
 
