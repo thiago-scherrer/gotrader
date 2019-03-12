@@ -9,7 +9,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: build
+      target: builder
   gotrader:
     build:
       context: .
