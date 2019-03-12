@@ -49,7 +49,7 @@ docker-compose down
 
 ## Logic
 
-The acual logic can be changed on *internal/logic.go*.
+The acual logic can be changed on *internal/logic/*.
 Anothers logics or examples can be found on *configs/logics/*.
 
 ## References
