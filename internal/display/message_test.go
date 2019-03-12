@@ -1,20 +1,12 @@
-package main
+package display
 
 import (
 	"testing"
 )
 
 func TestUsageMsg(t *testing.T) {
-	if usageMsg() != "Usage: config config.yml" {
-		t.Error("error to get usage msg, got:", usageMsg())
-	}
-}
-
-func TestTelegram(t *testing.T) {
-	getResult := telegramSend(helloMsg())
-
-	if getResult != 200 {
-		t.Error("Telegram not working, got: ", getResult)
+	if UsageMsg() != "Config not found! Usage: config config.yml" {
+		t.Error("error to get usage msg, got:", UsageMsg())
 	}
 }
 
@@ -23,11 +15,11 @@ func Test_setlavarageMsg(t *testing.T) {
 		name string
 		want string
 	}{
-		{"test: ", " " + asset() + " - Setting leverage: 0.1"},
+		{"test: ", " " + "BTC" + " - Setting leverage: 0.1"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := setlavarageMsg(); got != tt.want {
+			if got := SetlavarageMsg("BTC", "0.1"); got != tt.want {
 				t.Errorf("setlavarageMsg() = %v, want %v", got, tt.want)
 			}
 		})
@@ -39,11 +31,11 @@ func Test_orderCreatedMsg(t *testing.T) {
 		name string
 		want string
 	}{
-		{"Test", " " + asset() + " - A new order type: Sell as been created! "},
+		{"Test", " " + "BTC" + " - A new order type: Sell as been created! "},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := orderCreatedMsg("Sell"); got != tt.want {
+			if got := OrderCreatedMsg("BTC", "Sell"); got != tt.want {
 				t.Errorf("orderCreatedMsg() = %v, want %v", got, tt.want)
 			}
 		})
@@ -55,11 +47,11 @@ func Test_orderDoneMsg(t *testing.T) {
 		name string
 		want string
 	}{
-		{"Test", " " + asset() + " - Order fulfilled!"},
+		{"Test", " " + "BTC" + " - Order fulfilled!"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := orderDoneMsg(); got != tt.want {
+			if got := OrderDoneMsg("BTC"); got != tt.want {
 				t.Errorf("orderDoneMsg() = %v, want %v", got, tt.want)
 			}
 		})
@@ -71,11 +63,11 @@ func Test_ordertriggerMsg(t *testing.T) {
 		name string
 		want string
 	}{
-		{"Test", " " + asset() + " - Profit target trigged"},
+		{"Test", " " + "BTC" + " - Profit target trigged"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := ordertriggerMsg(); got != tt.want {
+			if got := OrdertriggerMsg("BTC"); got != tt.want {
 				t.Errorf("ordertriggerMsg() = %v, want %v", got, tt.want)
 			}
 		})
@@ -87,11 +79,11 @@ func Test_orderWaintMsg(t *testing.T) {
 		name string
 		want string
 	}{
-		{"Test", " " + asset() + " - Waiting to get order fulfilled..."},
+		{"Test", " " + "BTC" + " - Waiting to get order fulfilled..."},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := orderWaintMsg(); got != tt.want {
+			if got := OrderWaintMsg("BTC"); got != tt.want {
 				t.Errorf("orderWaintMsg() = %v, want %v", got, tt.want)
 			}
 		})
@@ -103,11 +95,11 @@ func Test_profitMsg(t *testing.T) {
 		name string
 		want string
 	}{
-		{"Test", " " + asset() + " - Profit done!"},
+		{"Test", " " + "BTC" + " - Profit done!"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := profitMsg(); got != tt.want {
+			if got := ProfitMsg("BTC"); got != tt.want {
 				t.Errorf("profitMsg() = %v, want %v", got, tt.want)
 			}
 		})

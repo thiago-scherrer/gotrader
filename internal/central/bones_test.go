@@ -1,13 +1,13 @@
-package main
+package central
 
 import (
+	"gotrader/internal/convert"
 	"reflect"
 	"testing"
-	"time"
 )
 
 func TestFlag(t *testing.T) {
-	getResult := initFlag()
+	getResult := InitFlag()
 	if len(getResult) <= 1 {
 		t.Error("init flag not working, got: ", getResult)
 	}
@@ -22,7 +22,7 @@ func TestReader(t *testing.T) {
 }
 
 func TestHmac(t *testing.T) {
-	initFlag()
+	InitFlag()
 
 	expired := "1518064236"
 	path := "/api/v1/instrument"
@@ -36,28 +36,9 @@ func TestHmac(t *testing.T) {
 	}
 }
 
-func TestExpiresTime(t *testing.T) {
-	initFlag()
-	var timeStampResult TimeStamp
-
-	now := time.Now()
-	timestamp := now.Unix()
-	timeStampResult.timeResult = timeStamp()
-	diff := timestamp - timeStampResult.timeResult
-	timeStampResult.timeExpired = timeExpired()
-	timeStampResultExpected := timestamp + 60
-
-	if diff != 0 {
-		t.Error("time stamp function noting working, result are: ", diff)
-	}
-	if timeStampResult.timeExpired != timeStampResultExpected {
-		t.Error("expired time not working, resulte are: ", timeStampResult.timeExpired, "expected: ", timeStampResultExpected)
-	}
-}
-
 func TestParserAmount(t *testing.T) {
 	mock := `{ "Amount": 10 }`
-	getResult := parserAmount(StringToBytes(mock))
+	getResult := parserAmount(convert.StringToBytes(mock))
 
 	if getResult != 10 {
 		t.Error("json parser not working, got:", getResult)
@@ -66,14 +47,14 @@ func TestParserAmount(t *testing.T) {
 
 func TestLastPriceJson(t *testing.T) {
 	mock := `[{ "LastPrice": 10.1 }]`
-	getResult := lastPrice(StringToBytes(mock))
+	getResult := lastPrice(convert.StringToBytes(mock))
 
 	if getResult != 10.1 {
 		t.Error("LastPrice json parser not working, got:", getResult)
 	}
 }
 
-func Test_initFlag(t *testing.T) {
+func Test_InitFlag(t *testing.T) {
 	tests := []struct {
 		name string
 		want string
@@ -82,8 +63,8 @@ func Test_initFlag(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := initFlag(); got != tt.want {
-				t.Errorf("initFlag() = %v, want %v", got, tt.want)
+			if got := InitFlag(); got != tt.want {
+				t.Errorf("InitFlag() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -114,14 +95,14 @@ func Test_asset(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := asset(); got != tt.want {
-				t.Errorf("asset() = %v, want %v", got, tt.want)
+			if got := Asset(); got != tt.want {
+				t.Errorf("Asset() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_candle(t *testing.T) {
+func Test_Candle(t *testing.T) {
 	tests := []struct {
 		name string
 		want int
@@ -130,14 +111,14 @@ func Test_candle(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := candle(); got != tt.want {
-				t.Errorf("candle() = %v, want %v", got, tt.want)
+			if got := Candle(); got != tt.want {
+				t.Errorf("Candle() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_depth(t *testing.T) {
+func Test_Depth(t *testing.T) {
 	tests := []struct {
 		name string
 		want int64
@@ -146,8 +127,8 @@ func Test_depth(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := depth(); got != tt.want {
-				t.Errorf("depth() = %v, want %v", got, tt.want)
+			if got := Depth(); got != tt.want {
+				t.Errorf("Depth() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -218,7 +199,7 @@ func Test_secret(t *testing.T) {
 	}
 }
 
-func Test_threshold(t *testing.T) {
+func Test_Threshold(t *testing.T) {
 	tests := []struct {
 		name string
 		want int
@@ -227,8 +208,8 @@ func Test_threshold(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := threshold(); got != tt.want {
-				t.Errorf("threshold() = %v, want %v", got, tt.want)
+			if got := Threshold(); got != tt.want {
+				t.Errorf("Threshold() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -314,7 +295,7 @@ func Test_telegramChannel(t *testing.T) {
 	}
 }
 
-func Test_verboseMode(t *testing.T) {
+func Test_VerboseMode(t *testing.T) {
 	tests := []struct {
 		name string
 		want bool
@@ -323,14 +304,14 @@ func Test_verboseMode(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := verboseMode(); got != tt.want {
-				t.Errorf("verboseMode() = %v, want %v", got, tt.want)
+			if got := VerboseMode(); got != tt.want {
+				t.Errorf("VerboseMode() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_speed(t *testing.T) {
+func Test_Speed(t *testing.T) {
 	tests := []struct {
 		name string
 		want int
@@ -339,8 +320,8 @@ func Test_speed(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := speed(); got != tt.want {
-				t.Errorf("speed() = %v, want %v", got, tt.want)
+			if got := Speed(); got != tt.want {
+				t.Errorf("Speed() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -377,7 +358,7 @@ func Test_parserAmount(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := parserAmount(StringToBytes(`{"amount":1}`)); got != tt.want {
+			if got := parserAmount(convert.StringToBytes(`{"amount":1}`)); got != tt.want {
 				t.Errorf("parserAmount() = %v, want %v", got, tt.want)
 			}
 		})
@@ -393,7 +374,7 @@ func Test_lastPrice(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := lastPrice(StringToBytes(`[{"lastPrice":1}]`)); got != tt.want {
+			if got := lastPrice(convert.StringToBytes(`[{"lastPrice":1}]`)); got != tt.want {
 				t.Errorf("lastPrice() = %v, want %v", got, tt.want)
 			}
 		})
@@ -409,9 +390,29 @@ func Test_opening(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := opening(StringToBytes(`[{"isOpen":true}]`)); got != tt.want {
+			if got := opening(convert.StringToBytes(`[{"isOpen":true}]`)); got != tt.want {
 				t.Errorf("opening() = %v, want %v", got, tt.want)
 			}
 		})
 	}
+}
+
+// TimeStamp struct to validate expired time api
+type TimeStamp struct {
+	timeResult  int64
+	timeExpired int64
+}
+
+func TestGetAnnounement(t *testing.T) {
+	InitFlag()
+	path := "/api/v1/user/affiliateStatus"
+	requestTipe := "GET"
+	data := convert.StringToBytes("message=GoTrader bot&channelID=1")
+
+	getResult := ClientRobot(requestTipe, path, data)
+
+	if len(getResult) <= 3 {
+		t.Error("GET response not woring, got: ", getResult)
+	}
+
 }
