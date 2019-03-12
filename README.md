@@ -16,6 +16,16 @@ Project to create a trade bot for bitmex trade platform.
 
 This robot still under construction. Its purpose is to automate a rule created by the trader. It's not a money machine ...
 
+## Caution
+
+This robo does not guarantee anything, it may not even work properly. You can lose money with it! Test the robo in the test network first.
+
+You have been warned.
+
+But if you have good results, share your extracts =)
+
+Don't panic.
+
 ## Supported Contracts
 
 - XBTUSD
