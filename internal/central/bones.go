@@ -438,7 +438,7 @@ func CreateOrder(typeOrder string) {
 
 	for {
 		setLeverge()
-		makeOrder("Buy")
+		makeOrder(typeOrder)
 		if waitCreateOrder() {
 			fmt.Println(display.OrderCreatedMsg(Asset(), typeOrder))
 			TelegramSend(display.OrderCreatedMsg(Asset(), typeOrder))
