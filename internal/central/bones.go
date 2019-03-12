@@ -26,7 +26,6 @@ type APIResponseComplex struct {
 	IsOpen        bool    `json:"isOpen"`
 	ID            int64   `json:"id"`
 	LastPrice     float64 `json:"lastPrice"`
-	Leverage      string  `json:"leverage,float64,omitempty"`
 	OrderID       string  `json:"orderID"`
 	OrderQty      int     `json:"orderQty"`
 	Price         float64 `json:"price"`
@@ -287,15 +286,6 @@ func lastPrice(data []byte) float64 {
 	return result
 }
 
-func leverageResult(data []byte) string {
-	apiresponse := APIResponseComplex{}
-	err := json.Unmarshal(data, &apiresponse)
-	if err != nil {
-		fmt.Println("Error to set leverage: ", err)
-	}
-	return apiresponse.Leverage
-}
-
 func makeOrder(orderType string) string {
 	Speed := Speed()
 	apiresponse := APIResponseComplex{}
@@ -424,7 +414,7 @@ func opening(data []byte) bool {
 
 	err := json.Unmarshal(data, &apiresponse)
 	if err != nil && VerboseMode() {
-		fmt.Println("Check if open error:", err)
+		fmt.Println("Json open error:", err)
 	}
 	for _, value := range apiresponse[:] {
 		result = value.IsOpen
