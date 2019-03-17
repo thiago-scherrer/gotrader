@@ -21,13 +21,12 @@ ENV GOPATH /src/gotrader
 ENV GO111MODULE on
 RUN mkdir -p $GOPATH/src/gotrader
 COPY . ${GOPATH}/src/gotrader
-WORKDIR ${GOPATH}/src/gotrader/modules
-RUN go mod download
+COPY --from=test /go /
 WORKDIR ${GOPATH}/src/gotrader/cmd/main/
 COPY configs/config.yml /opt/
 RUN GOOS=linux GOARCH=amd64 go build -o /bin/gotrader 
 
-FROM scratch as run
+FROM alpine as run
 LABEL name="gotrader"
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /opt/config.yml /opt/
