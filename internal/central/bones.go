@@ -190,21 +190,27 @@ func ClientRobot(requestType, path string, data []byte) []byte {
 	request.Header.Set("Accept", "application/json")
 	request.Header.Set("User-Agent", "gotrader-r0b0tnull")
 
-	response, err := client.Do(request)
-	if err != nil {
-		fmt.Println("Error to send the request to the API bitmex, got: ", err)
-	}
-	defer response.Body.Close()
-	body, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		fmt.Println(err)
-	}
+	for {
+		response, err := client.Do(request)
+		if err != nil {
+			fmt.Println("Error to send the request to the API bitmex, got: ", err)
+		}
+		defer response.Body.Close()
+		body, err := ioutil.ReadAll(response.Body)
+		if err != nil {
+			fmt.Println(err)
+		}
 
-	if VerboseMode() {
-		fmt.Println("Bitmex API Status code are: ", response.StatusCode)
-	}
+		if VerboseMode() {
+			fmt.Println("Bitmex API Status code are: ", response.StatusCode)
+		}
 
-	return body
+		if response.StatusCode == 200 {
+			return body
+		}
+		Speed := Speed()
+		time.Sleep(time.Duration(Speed) * time.Second)
+	}
 }
 
 // TelegramSend send a msg to the user on settings
