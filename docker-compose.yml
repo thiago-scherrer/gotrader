@@ -1,17 +1,14 @@
 version: '3.4'
 services:
-  test:
+  gotrader_test:
     build:
       context: .
-      dockerfile: Dockerfile
       target: gotrader_test
-  builder:
+  gotrader_builder:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: .  
       target: gotrader_builder
-  run:
+  gotrader_run:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: .  
       target: gotrader_run
