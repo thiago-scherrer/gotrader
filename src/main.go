@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"gotrader/internal/central"
-	"gotrader/internal/display"
-	"gotrader/internal/logic"
+
+	"github.com/thiago-scherrer/gotrader/central"
+	"github.com/thiago-scherrer/gotrader/display"
+	"github.com/thiago-scherrer/gotrader/logic"
 )
 
 func main() {

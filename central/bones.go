@@ -7,12 +7,13 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"gotrader/internal/convert"
-	"gotrader/internal/display"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/thiago-scherrer/gotrader/convert"
+	"github.com/thiago-scherrer/gotrader/display"
 
 	yaml "gopkg.in/yaml.v2"
 )

@@ -1,9 +1,10 @@
 package central
 
 import (
-	"gotrader/internal/convert"
 	"reflect"
 	"testing"
+
+	"github.com/thiago-scherrer/gotrader/convert"
 )
 
 func TestFlag(t *testing.T) {

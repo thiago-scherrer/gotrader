@@ -3,8 +3,8 @@ package logic
 import (
 	"encoding/json"
 	"fmt"
-	"gotrader/internal/central"
-	"gotrader/internal/convert"
+	"github.com/thiago-scherrer/gotrader/central"
+	"github.com/thiago-scherrer/gotrader/convert"
 	"time"
 )
 
