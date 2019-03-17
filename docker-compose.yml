@@ -4,14 +4,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: test
+      target: gotrader_test
   builder:
     build:
       context: .
       dockerfile: Dockerfile
-      target: builder
-  gotrader:
+      target: gotrader_builder
+  run:
     build:
       context: .
       dockerfile: Dockerfile
-      target: run
+      target: gotrader_run
