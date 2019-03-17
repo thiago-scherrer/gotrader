@@ -6,7 +6,7 @@ ENV APP /src/gotrader
 WORKDIR ${APP}/src/gotrader
 RUN mkdir -p ${APP}/src/gotrader
 COPY . ${APP}/src/gotrader
-COPY configs/config-test.yml /opt/
+COPY configs/config*.yml /opt/
 RUN cd ${APP}/src/gotrader \
     && go mod download
 RUN cd central \
@@ -15,7 +15,6 @@ RUN cd convert \
     && go test -args config /opt/config-test.yml 
 RUN cd display \
     && go test -args config /opt/config-test.yml 
-COPY configs/config.yml /opt/
 RUN cd src/ \
     && CGO_ENABLED=0 GOOS=linux \
     go build -a -installsuffix cgo -o /bin/gotrader \
