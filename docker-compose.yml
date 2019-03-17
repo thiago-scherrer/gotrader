@@ -1,14 +1,17 @@
 version: '3.4'
+
 services:
-  gotrader_test:
+  test:
     build:
       context: .
-      target: gotrader_test
-  gotrader_builder:
+      target: test
+
+  builder:
     build:
-      context: .  
-      target: gotrader_builder
-  gotrader_run:
+      context: .
+      target: builder
+
+  runner:
     build:
-      context: .  
-      target: gotrader_run
+      context: .
+      target: runner
