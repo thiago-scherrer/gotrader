@@ -208,8 +208,7 @@ func ClientRobot(requestType, path string, data []byte) []byte {
 		if response.StatusCode == 200 {
 			return body
 		}
-		Speed := Speed()
-		time.Sleep(time.Duration(Speed) * time.Second)
+		time.Sleep(time.Duration(60) * time.Second)
 	}
 }
 
