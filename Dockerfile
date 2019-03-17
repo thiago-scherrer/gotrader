@@ -31,6 +31,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /bin/gotrader
 # daemon image
 # ------------------------------------------------------------------------------
 FROM scratch AS runner
+COPY --from=builder /etc/ssl /etc/ssl
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /opt/config.yml /opt/
 COPY --from=builder /bin/gotrader /bin/gotrader
