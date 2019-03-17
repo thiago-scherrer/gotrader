@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"gotrader/internal/central"
 	"gotrader/internal/display"
 	"gotrader/internal/logic"
@@ -14,7 +15,9 @@ func main() {
 
 func daemonize() {
 	central.InitFlag()
-	display.HelloMsg(central.Asset())
+	fmt.Println(
+		display.HelloMsg(central.Asset()),
+	)
 
 	central.TelegramSend(
 		display.HelloMsg(central.Asset()),
