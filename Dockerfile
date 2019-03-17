@@ -25,7 +25,7 @@ ENV GOPATH /src/gotrader
 ENV GO111MODULE on
 WORKDIR ${GOPATH}/src/gotrader/cmd/main/
 COPY configs/config.yml /opt/
-RUN GOOS=linux GOARCH=amd64 go build -o /bin/gotrader 
+RUN GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o /bin/gotrader 
 
 # ------------------------------------------------------------------------------
 # daemon image
