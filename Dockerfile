@@ -27,9 +27,9 @@ WORKDIR ${GOPATH}/src/gotrader/cmd/main/
 COPY configs/config.yml /opt/
 RUN GOOS=linux GOARCH=amd64 go build -o /bin/gotrader 
 
-FROM scratch
+FROM scratch as run
 LABEL name="gotrader"
-COPY --from=gotrader_builder /etc/passwd /etc/passwd
-COPY --from=gotrader_builder /opt/config.yml /opt/
-COPY --from=gotrader_builder /bin/gotrader /bin/gotrader
+COPY --from=builder /etc/passwd /etc/passwd
+COPY --from=builder /opt/config.yml /opt/
+COPY --from=builder /bin/gotrader /bin/gotrader
 CMD ["gotrader", "config", "/opt/config.yml"]
