@@ -26,7 +26,7 @@ WORKDIR ${GOPATH}/src/gotrader/cmd/main/
 COPY configs/config.yml /opt/
 RUN GOOS=linux GOARCH=amd64 go build -o /bin/gotrader 
 
-FROM alpine AS run
+FROM alpine AS gotrader_run
 LABEL name="gotrader_run"
 COPY --from=gotrader_builder /etc/passwd /etc/passwd
 COPY --from=gotrader_builder /opt/config.yml /opt/
