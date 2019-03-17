@@ -1,16 +1,10 @@
 version: '3.4'
 
 services:
-  test:
-    build:
-      context: .
-      target: test
-
   builder:
     build:
       context: .
       target: builder
-
   runner:
     build:
       context: .

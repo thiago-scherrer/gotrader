@@ -64,7 +64,6 @@ Anothers logics or examples can be found on *configs/logics/*.
 
 ## References
 
-- [golang-standards](https://github.com/golang-standards/project-layout)
 - [bitmex api](https://www.bitmex.com/api/explorer/)
 - [goreportcard](https://goreportcard.com/)
 - [gopherize](https://gopherize.me)

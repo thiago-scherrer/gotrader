@@ -1,30 +1,25 @@
 # ------------------------------------------------------------------------------
-# Test image
+# Test and build
 # ------------------------------------------------------------------------------
-FROM golang@sha256:908ea6b956394d7a7006453e6a16011a6f86fd47996f2ccc32711f1eeff6b9fc AS test
+FROM golang@sha256:908ea6b956394d7a7006453e6a16011a6f86fd47996f2ccc32711f1eeff6b9fc AS builder
 ENV APP /src/gotrader
 WORKDIR ${APP}/src/gotrader
 RUN mkdir -p ${APP}/src/gotrader
 COPY . ${APP}/src/gotrader
 COPY configs/config-test.yml /opt/
-RUN cd ${APP}/src/gotrader/modules \
+RUN cd ${APP}/src/gotrader \
     && go mod download
-RUN cd internal/central \
+RUN cd central \
     && go test -args config /opt/config-test.yml 
-RUN cd internal/convert \
+RUN cd convert \
     && go test -args config /opt/config-test.yml 
-RUN cd internal/display \
+RUN cd display \
     && go test -args config /opt/config-test.yml 
-
-# ------------------------------------------------------------------------------
-# build image
-# ------------------------------------------------------------------------------
-FROM test AS builder
-ENV APP /src/gotrader
-WORKDIR ${APP}/src/gotrader/cmd/main/
 COPY configs/config.yml /opt/
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /bin/gotrader 
-RUN useradd gotrader
+RUN cd src/ \
+    && CGO_ENABLED=0 GOOS=linux \
+    go build -a -installsuffix cgo -o /bin/gotrader \
+    && useradd gotrader
 
 # ------------------------------------------------------------------------------
 # daemon image
