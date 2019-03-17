@@ -15,8 +15,7 @@ RUN cd convert \
     && go test -args config /opt/config-test.yml 
 RUN cd display \
     && go test -args config /opt/config-test.yml 
-RUN cd src/ \
-    && CGO_ENABLED=0 GOOS=linux \
+RUN CGO_ENABLED=0 GOOS=linux \
     go build -a -installsuffix cgo -o /bin/gotrader \
     && useradd gotrader
 
