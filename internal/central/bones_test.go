@@ -396,23 +396,3 @@ func Test_opening(t *testing.T) {
 		})
 	}
 }
-
-// TimeStamp struct to validate expired time api
-type TimeStamp struct {
-	timeResult  int64
-	timeExpired int64
-}
-
-func TestGetAnnounement(t *testing.T) {
-	InitFlag()
-	path := "/api/v1/user/affiliateStatus"
-	requestTipe := "GET"
-	data := convert.StringToBytes("message=GoTrader bot&channelID=1")
-
-	getResult := ClientRobot(requestTipe, path, data)
-
-	if len(getResult) <= 3 {
-		t.Error("GET response not woring, got: ", getResult)
-	}
-
-}

@@ -8,10 +8,6 @@
 # Test binary, build with `go test -c`
 *.test
 
-# go mod
-go.mod
-go.sum
-
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
