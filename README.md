@@ -42,13 +42,13 @@ docker-compose build
 After *test* and *build*, run the bot (background):
 
 ```bash
-docker-compose up -d gotrader
+docker-compose up -d
 ```
 
 You can see the logs with *docker logs* command, like:
 
 ```bash
-docker logs -f gotrader_gotrader_1
+docker logs -f gotrader_runner_1
 ```
 
 To stop the robot, run:
