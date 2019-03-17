@@ -31,7 +31,7 @@ Don't panic.
 - XBTUSD
 - ETHUSD
 
-## Runing
+## Runing with docker
 
 Go to the config folder and then, copy **config-example.yml** to the **config.yml**. Add your settings to the file and then, go back to the root dir and run *docker-compose*:
 
@@ -55,6 +55,26 @@ To stop the robot, run:
 
 ```bash
 docker-compose down
+```
+
+## Runing local
+
+Download the example configuration file, and after this, change the *config.yml* with your configurations:
+
+```bash
+wget https://raw.githubusercontent.com/thiago-scherrer/gotrader/master/configs/config-example.yml -O config.yml
+```
+
+Get the bot:
+
+```bash
+go get github.com/thiago-scherrer/gotrader
+```
+
+Run the bot like:
+
+```bash
+$GOPATH/bin/gotrader config config.yml
 ```
 
 ## Logic
