@@ -4,11 +4,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"net/url"
 	"time"
 
 	"github.com/thiago-scherrer/gotrader/central"
 	"github.com/thiago-scherrer/gotrader/convert"
 )
+
+const orderbook string = "/api/v1/orderBook/L2?"
 
 // CandleRunner verify the api and start the logic system
 func CandleRunner() string {
@@ -53,12 +56,18 @@ func logicSystem() string {
 	var countSell int
 	var countBuy int
 	var result string
-
+	depth := convert.IntToString(central.Depth())
 	asset := central.Asset()
 	candleTime := central.Candle()
-	path := "/api/v1/orderBook/L2?symbol=" + asset + "&depth=" + convert.IntToString(central.Depth())
+
+	urlmap := url.Values{}
+	urlmap.Set("symbol", asset)
+	urlmap.Add("depth", depth)
+	path := orderbook + urlmap.Encode()
 	speed := central.Speed()
 
+	// There is nothing important here,
+	// but I can not leave empty so as not to break the request
 	data := convert.StringToBytes("message=GoTrader bot&channelID=1")
 
 	for count := 0; count < candleTime; count++ {
