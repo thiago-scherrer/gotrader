@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"time"
 
@@ -20,7 +21,19 @@ import (
 )
 
 // Use to get the right time of the candle time
-const fixtime = 6
+const fixtime int = 6
+
+// Order path to use on API Request
+const orderpath string = "/api/v1/order"
+
+// Position path to use on API Request
+const positionpath string = "/api/v1/position?"
+
+// Basic path to use on API Request
+const instpath string = "/api/v1/instrument?"
+
+// Laverage path to use on API Request
+const leveragepath = "/api/v1/position/leverage"
 
 // APIResponseComplex used to struct data from API response,
 // thanks https://mholt.github.io/json-to-go/
@@ -300,18 +313,23 @@ func makeOrder(orderType string) string {
 	Speed := Speed()
 	apiresponse := APIResponseComplex{}
 	qtyOrerFloat := convert.IntToString(hand())
-	Asset()
-	path := "/api/v1/order"
+	asset := Asset()
+	path := orderpath
+	price := convert.FloatToString(price())
 	requestTipe := "POST"
 
+	urlmap := url.Values{}
+	urlmap.Set("symbol", asset)
+	urlmap.Add("side", orderType)
+	urlmap.Add("orderQty", qtyOrerFloat)
+	urlmap.Add("price", price)
+	urlmap.Add("ordType", "Limit")
+
 	if VerboseMode() {
-		fmt.Println("DATA make order: " + "symbol=" + Asset() + "&side=" +
-			orderType + "&orderQty=" + qtyOrerFloat + "&price=" +
-			convert.FloatToString(price()) + "&ordType=Limit")
+		fmt.Println("DATA make order: ", urlmap.Encode())
 	}
 
-	data := convert.StringToBytes("symbol=" + Asset() + "&side=" + orderType + "&orderQty=" +
-		qtyOrerFloat + "&price=" + convert.FloatToString(price()) + "&ordType=Limit")
+	data := convert.StringToBytes(urlmap.Encode())
 
 	for {
 		getResult := ClientRobot(requestTipe, path, data)
@@ -328,7 +346,7 @@ func makeOrder(orderType string) string {
 func getPosition() float64 {
 	var apiresponse []APIResponseComplex
 	var result float64
-	path := "/api/v1/position" + `?filter={"symbol":"` + Asset() + `"}&count=1`
+	path := positionpath + `filter={"symbol":"` + Asset() + `"}&count=1`
 	requestTipe := "GET"
 	data := convert.StringToBytes("message=GoTrader bot&channelID=1")
 	getResult := ClientRobot(requestTipe, path, data)
@@ -348,7 +366,14 @@ func getPosition() float64 {
 
 func price() float64 {
 	asset := Asset()
-	path := "/api/v1/instrument?symbol=" + asset + "&count=100&reverse=false&columns=lastPrice"
+
+	urlmap := url.Values{}
+	urlmap.Set("symbol", asset)
+	urlmap.Add("count", "100")
+	urlmap.Add("reverse", "false")
+	urlmap.Add("columns", "lastPrice")
+
+	path := instpath + urlmap.Encode()
 	data := convert.StringToBytes("message=GoTrader bot&channelID=1")
 	getResult := ClientRobot("GET", path, data)
 
@@ -372,34 +397,43 @@ func closePositionSell(position float64) bool {
 }
 
 func closePosition() string {
-	path := "/api/v1/order"
+	asset := Asset()
+	path := orderpath
 	requestTipe := "POST"
 	position := getPosition()
 	priceClose := fmt.Sprintf("%2.f", (position +
 		((position / 100) * profit())))
 
+	urlmap := url.Values{}
+	urlmap.Set("symbol", asset)
+	urlmap.Add("execInst", "Close")
+	urlmap.Add("price", priceClose)
+	urlmap.Add("ordType", "Limit")
+
 	if VerboseMode() {
-		fmt.Println("Data close position: " + "symbol=" + Asset() +
-			"&execInst=Close" + "&price=" + priceClose + "&ordType=Limit")
+		fmt.Println("Data close position: ", urlmap.Encode())
 	}
 
-	data := convert.StringToBytes("symbol=" + Asset() +
-		"&execInst=Close" + "&price=" + priceClose + "&ordType=Limit")
+	data := convert.StringToBytes(urlmap.Encode())
 	getResult := ClientRobot(requestTipe, path, data)
 	return convert.BytesToString(getResult)
 }
 
 func setLeverge() {
-	Asset()
-	path := "/api/v1/position/leverage"
+	asset := Asset()
+	path := leveragepath
 	requestTipe := "POST"
 	leverage := leverage()
+
+	urlmap := url.Values{}
+	urlmap.Set("symbol", asset)
+	urlmap.Add("leverage", leverage)
+
 	if VerboseMode() {
-		fmt.Println("Data leverge: " + "symbol=" + Asset() +
-			"&leverage=" + leverage)
+		fmt.Println("Data leverge: ", urlmap.Encode())
 	}
 
-	data := convert.StringToBytes("symbol=" + Asset() + "&leverage=" + leverage)
+	data := convert.StringToBytes(urlmap.Encode())
 
 	ClientRobot(requestTipe, path, data)
 	fmt.Println(display.SetlavarageMsg(Asset(), leverage))
@@ -408,7 +442,7 @@ func setLeverge() {
 }
 
 func statusOrder() bool {
-	path := "/api/v1/position" + `?filter={"symbol":"` + Asset() + `"}&count=1`
+	path := positionpath + `filter={"symbol":"` + Asset() + `"}&count=1`
 
 	data := convert.StringToBytes("message=GoTrader bot&channelID=1")
 	getResult := ClientRobot("GET", path, data)
