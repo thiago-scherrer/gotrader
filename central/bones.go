@@ -19,6 +19,9 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
+// Use to get the right time of the candle
+const fixtime = 6
+
 // APIResponseComplex used to struct data from API response,
 // thanks https://mholt.github.io/json-to-go/
 type APIResponseComplex struct {
@@ -74,11 +77,11 @@ func configReader() *Conf {
 	conf := Conf{}
 	yamlFile, err := ioutil.ReadFile(confFile)
 	if err != nil {
-		log.Fatalf("Could not open file: ", err)
+		log.Fatalf("Could not open file: %s", err)
 	}
 	err = yaml.Unmarshal(yamlFile, &conf)
 	if err != nil {
-		log.Fatalf("Could not open file: ", err)
+		log.Fatalf("Could not open file: %s", err)
 	}
 	return &conf
 }
@@ -92,7 +95,7 @@ func Asset() string {
 // Candle return the time of candle setting
 func Candle() int {
 	conf := configReader()
-	return conf.Candle * 6
+	return conf.Candle * fixtime
 }
 
 // Depth get how many ordersbooks can see
