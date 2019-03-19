@@ -19,7 +19,7 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
-// Use to get the right time of the candle
+// Use to get the right time of the candle time
 const fixtime = 6
 
 // APIResponseComplex used to struct data from API response,
