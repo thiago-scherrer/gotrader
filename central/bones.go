@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -57,12 +58,12 @@ type Conf struct {
 func InitFlag() string {
 	var config string
 	if len(os.Args[1:]) == 0 {
-		panic(display.UsageMsg())
+		log.Fatalf(display.UsageMsg())
 	}
 	if os.Args[1] == "config" {
 		config = os.Args[2]
 	} else {
-		panic(display.UsageMsg())
+		log.Fatalf(display.UsageMsg())
 	}
 	return config
 }
@@ -73,11 +74,11 @@ func configReader() *Conf {
 	conf := Conf{}
 	yamlFile, err := ioutil.ReadFile(confFile)
 	if err != nil {
-		panic(err)
+		log.Fatalf("Could not open file: ", err)
 	}
 	err = yaml.Unmarshal(yamlFile, &conf)
 	if err != nil {
-		panic(err)
+		log.Fatalf("Could not open file: ", err)
 	}
 	return &conf
 }

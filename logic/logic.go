@@ -3,9 +3,11 @@ package logic
 import (
 	"encoding/json"
 	"fmt"
+	"log"
+	"time"
+
 	"github.com/thiago-scherrer/gotrader/central"
 	"github.com/thiago-scherrer/gotrader/convert"
-	"time"
 )
 
 // CandleRunner verify the api and start the logic system
@@ -40,7 +42,7 @@ func order(cBuy, cSell int) string {
 			typeOrder = "Sell"
 			break
 		} else {
-			panic("Draw, Starting a new round!")
+			log.Fatalf("Draw, Starting a new round!")
 		}
 	}
 	return typeOrder
