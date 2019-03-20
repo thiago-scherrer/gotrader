@@ -316,7 +316,7 @@ func lastPrice(data []byte) float64 {
 func makeOrder(orderType string) string {
 	speedConfig := Speed()
 	apiResponse := APIResponseComplex{}
-	qtyOrerFloat := convert.IntToString(hand())
+	handFloat := convert.IntToString(hand())
 	asset := Asset()
 	path := orderpath
 	price := convert.FloatToString(price())
@@ -325,7 +325,7 @@ func makeOrder(orderType string) string {
 	urlmap := url.Values{}
 	urlmap.Set("symbol", asset)
 	urlmap.Add("side", orderType)
-	urlmap.Add("orderQty", qtyOrerFloat)
+	urlmap.Add("orderQty", handFloat)
 	urlmap.Add("price", price)
 	urlmap.Add("ordType", "Limit")
 
