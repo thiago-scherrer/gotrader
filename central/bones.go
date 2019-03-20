@@ -36,6 +36,9 @@ const instpath string = "/api/v1/instrument?"
 // Laverage path to use on API Request
 const leveragepath = "/api/v1/position/leverage"
 
+// A random number to make a sleep before staring a new round
+const timeToSleep = 50
+
 // APIResponseComplex used to struct data from API response,
 // thanks https://mholt.github.io/json-to-go/
 type APIResponseComplex struct {
@@ -541,7 +544,7 @@ func GetProfit() bool {
 		if statusOrder() == false {
 			fmt.Println(display.ProfitMsg(Asset()))
 			TelegramSend(display.ProfitMsg(Asset()))
-			time.Sleep(time.Duration(speedConfig+50) * time.Second)
+			time.Sleep(time.Duration(speedConfig+timeToSleep) * time.Second)
 			return true
 		}
 		time.Sleep(time.Duration(speedConfig) * time.Second)
