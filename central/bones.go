@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/thiago-scherrer/gotrader/convert"
@@ -88,15 +89,15 @@ func InitFlag() string {
 func configReader() *Conf {
 	confFile := InitFlag()
 	conf := Conf{}
-	yamlFile, err := ioutil.ReadFile(confFile)
-	if err != nil {
-		log.Fatalf("Could not open file: %s", err)
+	var once sync.Once
+
+	onceReader := func() {
+		config, _ := ioutil.ReadFile(confFile)
+		yaml.Unmarshal(config, &conf)
 	}
-	err = yaml.Unmarshal(yamlFile, &conf)
-	if err != nil {
-		log.Fatalf("Could not open file: %s", err)
-	}
+	once.Do(onceReader)
 	return &conf
+
 }
 
 // Asset set the contract type to trade
