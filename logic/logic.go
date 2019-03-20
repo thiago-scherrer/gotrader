@@ -11,7 +11,17 @@ import (
 	"github.com/thiago-scherrer/gotrader/convert"
 )
 
+// Path from api to view the orderbook
 const orderbook string = "/api/v1/orderBook/L2?"
+
+// Used to return Buy to te bone
+const tbuy = "Buy"
+
+// Used to return Sell to te bone
+const tsell = "Sell"
+
+// Used to return Draw to te bone
+const tdraw = "Draw"
 
 // CandleRunner verify the api and start the logic system
 func CandleRunner() string {
@@ -21,9 +31,9 @@ func CandleRunner() string {
 
 	for index := 0; index < trigger; index++ {
 		result := logicSystem()
-		if result == "Buy" {
+		if result == tbuy {
 			cBuy++
-		} else if result == "Sell" {
+		} else if result == tsell {
 			cSell++
 		} else {
 			index = -1
@@ -39,14 +49,15 @@ func order(cBuy, cSell int) string {
 
 	for {
 		if cBuy > cSell {
-			typeOrder = "Buy"
+			typeOrder = tbuy
 			break
 		} else if cSell > cBuy {
-			typeOrder = "Sell"
+			typeOrder = tsell
 			break
-		} else {
-			log.Fatalf("Draw, Starting a new round!")
 		}
+		log.Fatalf("Draw, Starting a new round!")
+		typeOrder = tdraw
+		break
 	}
 	return typeOrder
 }
@@ -55,7 +66,6 @@ func logicSystem() string {
 	var apiresponse []central.APIResponseComplex
 	var countSell int
 	var countBuy int
-	var result string
 	depth := convert.IntToString(central.Depth())
 	asset := central.Asset()
 	candleTime := central.Candle()
@@ -79,9 +89,9 @@ func logicSystem() string {
 		}
 
 		for _, value := range apiresponse[:] {
-			if value.Side == "Sell" {
+			if value.Side == tsell {
 				countSell = countSell + value.Size
-			} else if value.Side == "Buy" {
+			} else if value.Side == tbuy {
 				countBuy = countBuy + value.Size
 			}
 		}
@@ -94,17 +104,9 @@ func logicSystem() string {
 	}
 
 	if countBuy > countSell {
-		result = "Buy"
+		return tbuy
 	} else if countSell > countBuy {
-		result = "Sell"
-	} else if countSell == countBuy {
-		result = "Draw"
-	} else {
-		result = "Error"
-		fmt.Println("Api result noting working! Buy: ", countBuy, " Sell: ", countSell)
+		return tsell
 	}
-	if central.VerboseMode() {
-		fmt.Println("Candle result:", result)
-	}
-	return result
+	return tdraw
 }
