@@ -311,7 +311,7 @@ func lastPrice(data []byte) float64 {
 }
 
 func makeOrder(orderType string) string {
-	Speed := Speed()
+	speedConfig := Speed()
 	apiresponse := APIResponseComplex{}
 	qtyOrerFloat := convert.IntToString(hand())
 	asset := Asset()
@@ -337,7 +337,7 @@ func makeOrder(orderType string) string {
 		err := json.Unmarshal(getResult, &apiresponse)
 		if err != nil && VerboseMode() {
 			fmt.Println("Error to make a order:", err)
-			time.Sleep(time.Duration(Speed) * time.Second)
+			time.Sleep(time.Duration(speedConfig) * time.Second)
 		} else {
 			return apiresponse.OrderID
 		}
@@ -469,7 +469,7 @@ func opening(data []byte) bool {
 
 // CreateOrder create the order on bitmex
 func CreateOrder(typeOrder string) {
-	Speed := Speed()
+	speedConfig := Speed()
 
 	for {
 		setLeverge()
@@ -479,13 +479,13 @@ func CreateOrder(typeOrder string) {
 			TelegramSend(display.OrderCreatedMsg(Asset(), typeOrder))
 			break
 		}
-		time.Sleep(time.Duration(Speed) * time.Second)
+		time.Sleep(time.Duration(speedConfig) * time.Second)
 
 	}
 }
 
 func waitCreateOrder() bool {
-	Speed := Speed()
+	speedConfig := Speed()
 
 	for {
 		if statusOrder() == true {
@@ -493,13 +493,13 @@ func waitCreateOrder() bool {
 			TelegramSend(display.OrderDoneMsg(Asset()))
 			return true
 		}
-		time.Sleep(time.Duration(Speed) * time.Second)
+		time.Sleep(time.Duration(speedConfig) * time.Second)
 	}
 }
 
 // ClosePositionProfitBuy the Buy position
 func ClosePositionProfitBuy() bool {
-	Speed := Speed()
+	speedConfig := Speed()
 	position := getPosition()
 
 	for {
@@ -510,13 +510,13 @@ func ClosePositionProfitBuy() bool {
 			closePosition()
 			return true
 		}
-		time.Sleep(time.Duration(Speed) * time.Second)
+		time.Sleep(time.Duration(speedConfig) * time.Second)
 	}
 }
 
 // ClosePositionProfitSell the Buy position
 func ClosePositionProfitSell() bool {
-	Speed := Speed()
+	speedConfig := Speed()
 	position := getPosition()
 
 	for {
@@ -527,13 +527,13 @@ func ClosePositionProfitSell() bool {
 			closePosition()
 			return true
 		}
-		time.Sleep(time.Duration(Speed) * time.Second)
+		time.Sleep(time.Duration(speedConfig) * time.Second)
 	}
 }
 
 // GetProfit waint to start a new trade round
 func GetProfit() bool {
-	Speed := Speed()
+	speedConfig := Speed()
 	fmt.Println(display.OrderWaintMsg(Asset()))
 	TelegramSend(display.OrderWaintMsg(Asset()))
 
@@ -541,9 +541,9 @@ func GetProfit() bool {
 		if statusOrder() == false {
 			fmt.Println(display.ProfitMsg(Asset()))
 			TelegramSend(display.ProfitMsg(Asset()))
-			time.Sleep(time.Duration(Speed+50) * time.Second)
+			time.Sleep(time.Duration(speedConfig+50) * time.Second)
 			return true
 		}
-		time.Sleep(time.Duration(Speed) * time.Second)
+		time.Sleep(time.Duration(speedConfig) * time.Second)
 	}
 }
