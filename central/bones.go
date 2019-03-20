@@ -291,23 +291,23 @@ func timeStamp() int64 {
 }
 
 func parserAmount(data []byte) int {
-	apiresponse := APIResponseComplex{}
-	err := json.Unmarshal(data, &apiresponse)
+	apiResponse := APIResponseComplex{}
+	err := json.Unmarshal(data, &apiResponse)
 	if err != nil && VerboseMode() {
 		fmt.Println("Error to get Amount: ", err)
 	}
-	return apiresponse.Amount
+	return apiResponse.Amount
 }
 
 func lastPrice(data []byte) float64 {
-	var apiresponse []APIResponseComplex
+	var apiResponse []APIResponseComplex
 	var result float64
 
-	err := json.Unmarshal(data, &apiresponse)
+	err := json.Unmarshal(data, &apiResponse)
 	if err != nil {
 		fmt.Println("Error to get last price: ", err)
 	}
-	for _, value := range apiresponse[:] {
+	for _, value := range apiResponse[:] {
 		result = value.LastPrice
 	}
 	return result
@@ -315,7 +315,7 @@ func lastPrice(data []byte) float64 {
 
 func makeOrder(orderType string) string {
 	speedConfig := Speed()
-	apiresponse := APIResponseComplex{}
+	apiResponse := APIResponseComplex{}
 	qtyOrerFloat := convert.IntToString(hand())
 	asset := Asset()
 	path := orderpath
@@ -337,18 +337,18 @@ func makeOrder(orderType string) string {
 
 	for {
 		getResult := ClientRobot(requestTipe, path, data)
-		err := json.Unmarshal(getResult, &apiresponse)
+		err := json.Unmarshal(getResult, &apiResponse)
 		if err != nil && VerboseMode() {
 			fmt.Println("Error to make a order:", err)
 			time.Sleep(time.Duration(speedConfig) * time.Second)
 		} else {
-			return apiresponse.OrderID
+			return apiResponse.OrderID
 		}
 	}
 }
 
 func getPosition() float64 {
-	var apiresponse []APIResponseComplex
+	var apiResponse []APIResponseComplex
 	var result float64
 	path := positionpath + `filter={"symbol":"` + Asset() + `"}&count=1`
 	requestTipe := "GET"
@@ -357,12 +357,12 @@ func getPosition() float64 {
 	if VerboseMode() {
 		fmt.Println("Data get position" + convert.BytesToString(getResult))
 	}
-	err := json.Unmarshal(getResult, &apiresponse)
+	err := json.Unmarshal(getResult, &apiResponse)
 	if err != nil && VerboseMode() {
 		fmt.Println("Error to get position:", err)
 	}
 
-	for _, value := range apiresponse[:] {
+	for _, value := range apiResponse[:] {
 		result = value.AvgEntryPrice
 	}
 	return result
@@ -457,14 +457,14 @@ func statusOrder() bool {
 }
 
 func opening(data []byte) bool {
-	var apiresponse []APIResponseComplex
+	var apiResponse []APIResponseComplex
 	var result bool
 
-	err := json.Unmarshal(data, &apiresponse)
+	err := json.Unmarshal(data, &apiResponse)
 	if err != nil && VerboseMode() {
 		fmt.Println("Json open error:", err)
 	}
-	for _, value := range apiresponse[:] {
+	for _, value := range apiResponse[:] {
 		result = value.IsOpen
 	}
 	return result

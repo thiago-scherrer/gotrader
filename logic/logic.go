@@ -63,7 +63,7 @@ func order(cBuy, cSell int) string {
 }
 
 func logicSystem() string {
-	var apiresponse []central.APIResponseComplex
+	var apiResponse []central.APIResponseComplex
 	var countSell int
 	var countBuy int
 	depth := convert.IntToString(central.Depth())
@@ -83,12 +83,12 @@ func logicSystem() string {
 	for count := 0; count < candleTime; count++ {
 
 		getResult := central.ClientRobot("GET", path, data)
-		err := json.Unmarshal(getResult, &apiresponse)
+		err := json.Unmarshal(getResult, &apiResponse)
 		if err != nil {
 			fmt.Println("Error to get data to the logic, got", err)
 		}
 
-		for _, value := range apiresponse[:] {
+		for _, value := range apiResponse[:] {
 			if value.Side == tsell {
 				countSell = countSell + value.Size
 			} else if value.Side == tbuy {
