@@ -9,12 +9,7 @@ COPY . ${APP}/src/gotrader
 COPY configs/config*.yml /opt/
 RUN cd ${APP}/src/gotrader \
     && go mod download
-RUN cd central \
-    && go test -args config /opt/config-test.yml 
-RUN cd convert \
-    && go test -args config /opt/config-test.yml 
-RUN cd display \
-    && go test -args config /opt/config-test.yml 
+RUN go test ./... -args config /opt/config-test.yml 
 RUN CGO_ENABLED=0 GOOS=linux \
     go build -a -installsuffix cgo -o /bin/gotrader \
     && useradd gotrader
