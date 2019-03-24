@@ -3,6 +3,7 @@
 Project to create a trade bot for bitmex trade platform.
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/thiago-scherrer/gotrader)](https://goreportcard.com/report/github.com/thiago-scherrer/gotrader) [![Build Status](https://travis-ci.org/thiago-scherrer/gotrader.svg?branch=master)](https://travis-ci.org/thiago-scherrer/gotrader)
+[![GoDoc](https://godoc.org/github.com/thiago-scherrer/gotrader?status.svg)](https://godoc.org/github.com/thiago-scherrer/gotrader)
 
 ![gopher](assets/gopher.png)
 
