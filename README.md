@@ -19,7 +19,7 @@ This robot still under construction. Its purpose is to automate a rule created b
 
 ## Caution
 
-This robo does not guarantee anything, it may not even work properly. You can lose money with it! Test the robo in the test network first.
+This robot does not guarantee anything, it may not even work properly. You can lose money with it! Test the robo in the test network first.
 
 You have been warned.
 
