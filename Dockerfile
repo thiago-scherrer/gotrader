@@ -24,4 +24,4 @@ COPY --from=builder /etc/group /etc/group
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /opt/*.yml /opt/
 COPY --from=builder /bin/gotrader /bin/gotrader
-CMD ["gotrader", "config", "/opt/config.yml"]
+CMD ["/bin/gotrader", "config", "/opt/config.yml"]
