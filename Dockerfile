@@ -10,14 +10,13 @@ COPY configs/config*.yml /opt/
 RUN cd ${APP}/src/gotrader \
     && go mod download
 RUN go test ./... -args config /opt/config-test.yml 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
-    go build -a -installsuffix cgo -ldflags="-w -s" -o /bin/gotrader \
+RUN go build -o /bin/gotrader \
     && useradd gotrader
 
 # ------------------------------------------------------------------------------
 # daemon image
 # ------------------------------------------------------------------------------
-FROM scratch AS runner
+FROM golang@sha256:908ea6b956394d7a7006453e6a16011a6f86fd47996f2ccc32711f1eeff6b9fc AS runner
 USER gotrader
 COPY --from=builder /etc/ssl /etc/ssl
 COPY --from=builder /etc/group /etc/group
