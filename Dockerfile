@@ -10,7 +10,8 @@ COPY configs/config*.yml /opt/
 RUN cd ${APP}/src/gotrader \
     && go mod download
 RUN go test ./... -args config /opt/config-test.yml 
-RUN go build -o /bin/gotrader \
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+    go build -a -installsuffix cgo -ldflags="-w -s" -o /bin/gotrader \
     && useradd gotrader
 
 # ------------------------------------------------------------------------------
