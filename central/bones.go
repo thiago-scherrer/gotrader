@@ -224,11 +224,11 @@ func ClientRobot(requestType, path string, data []byte) []byte {
 		}
 
 		if VerboseMode() {
-			fmt.Println("Bitmex API Status code are: ", response.StatusCode)
+			log.Println("Bitmex API Status code are: ", response.StatusCode)
 		}
 
 		if response.StatusCode == 200 {
-			log.Println(body)
+			return body
 		}
 		time.Sleep(time.Duration(60) * time.Second)
 	}
