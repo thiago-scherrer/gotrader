@@ -216,6 +216,7 @@ func ClientRobot(requestType, path string, data []byte) []byte {
 		if err != nil {
 			fmt.Println("Error to send the request to the API bitmex, got: ", err)
 		}
+
 		defer response.Body.Close()
 		body, err := ioutil.ReadAll(response.Body)
 		if err != nil {
@@ -227,7 +228,7 @@ func ClientRobot(requestType, path string, data []byte) []byte {
 		}
 
 		if response.StatusCode == 200 {
-			return body
+			log.Println(body)
 		}
 		time.Sleep(time.Duration(60) * time.Second)
 	}
