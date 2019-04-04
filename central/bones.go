@@ -190,47 +190,40 @@ func Speed() int {
 
 // ClientRobot are the curl from the bot
 func ClientRobot(requestType, path string, data []byte) []byte {
-	client := &http.Client{}
-	endpoint := endpoint()
-	secretQuery := secret()
-	userIDquery := userid()
-	expire := convert.IntToString((timeExpired()))
-	hexResult := hexCreator(secretQuery, requestType, path, expire, convert.BytesToString(data))
-
-	url := endpoint + path
-
-	request, err := http.NewRequest(requestType, url, bytes.NewBuffer(data))
-	if err != nil {
-		fmt.Println("Error create a request on bitmex, got: ", err)
-	}
-
-	request.Header.Set("api-signature", hexResult)
-	request.Header.Set("api-expires", expire)
-	request.Header.Set("api-key", userIDquery)
-	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	request.Header.Set("Accept", "application/json")
-	request.Header.Set("User-Agent", "gotrader-r0b0tnull")
-
 	for {
+		client := &http.Client{}
+		endpoint := endpoint()
+		secretQuery := secret()
+		userIDquery := userid()
+		expire := convert.IntToString((timeExpired()))
+		hexResult := hexCreator(secretQuery, requestType, path, expire, convert.BytesToString(data))
+
+		url := endpoint + path
+
+		request, err := http.NewRequest(requestType, url, bytes.NewBuffer(data))
+		if err != nil {
+			log.Println("Error create a request on bitmex, got: ", err)
+		}
+
+		request.Header.Set("api-signature", hexResult)
+		request.Header.Set("api-expires", expire)
+		request.Header.Set("api-key", userIDquery)
+		request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+		request.Header.Set("Accept", "application/json")
+		request.Header.Set("User-Agent", "gotrader-r0b0tnull")
+
 		response, err := client.Do(request)
 		if err != nil {
-			fmt.Println("Error to send the request to the API bitmex, got: ", err)
+			log.Println("Error to send the request to the API bitmex, got: ", err)
 		}
 
-		defer response.Body.Close()
-		body, err := ioutil.ReadAll(response.Body)
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		if VerboseMode() {
+		if response.StatusCode != 200 {
 			log.Println("Bitmex API Status code are: ", response.StatusCode)
-		}
-
-		if response.StatusCode == 200 {
+			time.Sleep(time.Duration(60) * time.Second)
+		} else {
+			body, _ := ioutil.ReadAll(response.Body)
 			return body
 		}
-		time.Sleep(time.Duration(60) * time.Second)
 	}
 }
 
