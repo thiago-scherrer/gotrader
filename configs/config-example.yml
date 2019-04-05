@@ -40,6 +40,3 @@ telegramurl: "https://api.telegram.org/"
 
 # Telegram channel
 telegramchannel: "@xxxxxxxx"
-
-# Verbose mode (true/fase) (required)
-verbose: false
