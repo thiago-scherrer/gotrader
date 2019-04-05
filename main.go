@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/thiago-scherrer/gotrader/central"
 	"github.com/thiago-scherrer/gotrader/display"
@@ -16,7 +16,7 @@ func main() {
 
 func daemonize() {
 	central.InitFlag()
-	fmt.Println(
+	log.Println(
 		display.HelloMsg(central.Asset()),
 	)
 
