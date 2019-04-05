@@ -296,22 +296,6 @@ func Test_telegramChannel(t *testing.T) {
 	}
 }
 
-func Test_VerboseMode(t *testing.T) {
-	tests := []struct {
-		name string
-		want bool
-	}{
-		{"Test", false},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := VerboseMode(); got != tt.want {
-				t.Errorf("VerboseMode() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func Test_Speed(t *testing.T) {
 	tests := []struct {
 		name string

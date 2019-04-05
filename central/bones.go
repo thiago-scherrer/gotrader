@@ -71,7 +71,6 @@ type Conf struct {
 	TelegramKey     string  `yaml:"telegram_key"`
 	TelegramURL     string  `yaml:"telegramurl"`
 	TelegramChannel string  `yaml:"telegramchannel"`
-	Verbose         bool    `yaml:"verbose"`
 }
 
 // InitFlag verify if config file has found
@@ -177,12 +176,6 @@ func telegramChannel() string {
 	return conf.TelegramChannel
 }
 
-// VerboseMode if true show debbug mode
-func VerboseMode() bool {
-	conf := configReader()
-	return conf.Verbose
-}
-
 // Speed set the daemon daemon, dont change
 func Speed() int {
 	return 10
@@ -242,7 +235,7 @@ func TelegramSend(msg string) int {
 
 	request, err := http.NewRequest("POST", url, bytes.NewBuffer(data))
 	if err != nil {
-		fmt.Println("Error create a request on telegram, got: ", err)
+		log.Println("Error create a request on telegram, got: ", err)
 	}
 
 	request.Header.Set("User-Agent", "gotrader-r0b0tnull")
@@ -250,18 +243,13 @@ func TelegramSend(msg string) int {
 	request.Header.Set("Accept", "application/json")
 	response, err := client.Do(request)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 	}
 	defer response.Body.Close()
 	_, err = ioutil.ReadAll(response.Body)
-	if err != nil && VerboseMode() {
-		fmt.Println("Error to get body from Telegram API, got", err)
+	if err != nil {
+		log.Println("Error to get body from Telegram API, got", err)
 	}
-
-	if VerboseMode() {
-		fmt.Println("Telegram API Status code are: ", response.StatusCode)
-	}
-
 	return response.StatusCode
 }
 
@@ -287,8 +275,8 @@ func timeStamp() int64 {
 func parserAmount(data []byte) int {
 	apiResponse := APIResponseComplex{}
 	err := json.Unmarshal(data, &apiResponse)
-	if err != nil && VerboseMode() {
-		fmt.Println("Error to get Amount: ", err)
+	if err != nil {
+		log.Println("Error to get Amount: ", err)
 	}
 	return apiResponse.Amount
 }
@@ -299,7 +287,7 @@ func lastPrice(data []byte) float64 {
 
 	err := json.Unmarshal(data, &apiResponse)
 	if err != nil {
-		fmt.Println("Error to get last price: ", err)
+		log.Println("Error to get last price: ", err)
 	}
 	for _, value := range apiResponse[:] {
 		result = value.LastPrice
@@ -322,18 +310,13 @@ func makeOrder(orderType string) string {
 	urlmap.Add("orderQty", handFloat)
 	urlmap.Add("price", price)
 	urlmap.Add("ordType", "Limit")
-
-	if VerboseMode() {
-		fmt.Println("DATA make order: ", urlmap.Encode())
-	}
-
 	data := convert.StringToBytes(urlmap.Encode())
 
 	for {
 		getResult := ClientRobot(requestTipe, path, data)
 		err := json.Unmarshal(getResult, &apiResponse)
-		if err != nil && VerboseMode() {
-			fmt.Println("Error to make a order:", err)
+		if err != nil {
+			log.Println("Error to make a order:", err)
 			time.Sleep(time.Duration(speedConfig) * time.Second)
 		} else {
 			return apiResponse.OrderID
@@ -348,12 +331,9 @@ func getPosition() float64 {
 	requestTipe := "GET"
 	data := convert.StringToBytes("message=GoTrader bot&channelID=1")
 	getResult := ClientRobot(requestTipe, path, data)
-	if VerboseMode() {
-		fmt.Println("Data get position" + convert.BytesToString(getResult))
-	}
 	err := json.Unmarshal(getResult, &apiResponse)
-	if err != nil && VerboseMode() {
-		fmt.Println("Error to get position:", err)
+	if err != nil {
+		log.Println("Error to get position:", err)
 	}
 
 	for _, value := range apiResponse[:] {
@@ -379,18 +359,10 @@ func price() float64 {
 }
 
 func closePositionBuy(position float64) bool {
-	if VerboseMode() {
-		fmt.Println("Close Position Buy: ", position+
-			(position/100)*profit())
-	}
 	return price() >= (position + ((position / 100) * profit()))
 }
 
 func closePositionSell(position float64) bool {
-	if VerboseMode() {
-		fmt.Println("Close Position Sell: ", position-
-			(position/100)*profit())
-	}
 	return price() <= (position - ((position / 100) * profit()))
 }
 
@@ -407,13 +379,9 @@ func closePosition() string {
 	urlmap.Add("execInst", "Close")
 	urlmap.Add("price", priceClose)
 	urlmap.Add("ordType", "Limit")
-
-	if VerboseMode() {
-		fmt.Println("Data close position: ", urlmap.Encode())
-	}
-
 	data := convert.StringToBytes(urlmap.Encode())
 	getResult := ClientRobot(requestTipe, path, data)
+
 	return convert.BytesToString(getResult)
 }
 
@@ -422,31 +390,21 @@ func setLeverge() {
 	path := leveragepath
 	requestTipe := "POST"
 	leverage := leverage()
-
 	urlmap := url.Values{}
 	urlmap.Set("symbol", asset)
 	urlmap.Add("leverage", leverage)
-
-	if VerboseMode() {
-		fmt.Println("Data leverge: ", urlmap.Encode())
-	}
-
 	data := convert.StringToBytes(urlmap.Encode())
 
 	ClientRobot(requestTipe, path, data)
-	fmt.Println(display.SetlavarageMsg(Asset(), leverage))
+	log.Println(display.SetlavarageMsg(Asset(), leverage))
 	TelegramSend(display.SetlavarageMsg(Asset(), leverage))
 
 }
 
 func statusOrder() bool {
 	path := positionpath + `filter={"symbol":"` + Asset() + `"}&count=1`
-
 	data := convert.StringToBytes("message=GoTrader bot&channelID=1")
 	getResult := ClientRobot("GET", path, data)
-	if VerboseMode() {
-		fmt.Println("Data status order: " + convert.BytesToString(getResult))
-	}
 	return opening(getResult)
 }
 
@@ -455,8 +413,8 @@ func opening(data []byte) bool {
 	var result bool
 
 	err := json.Unmarshal(data, &apiResponse)
-	if err != nil && VerboseMode() {
-		fmt.Println("Json open error:", err)
+	if err != nil {
+		log.Println("json open error:", err)
 	}
 	for _, value := range apiResponse[:] {
 		result = value.IsOpen
@@ -472,7 +430,7 @@ func CreateOrder(typeOrder string) {
 		setLeverge()
 		makeOrder(typeOrder)
 		if waitCreateOrder() {
-			fmt.Println(display.OrderCreatedMsg(Asset(), typeOrder))
+			log.Println(display.OrderCreatedMsg(Asset(), typeOrder))
 			TelegramSend(display.OrderCreatedMsg(Asset(), typeOrder))
 			break
 		}
@@ -486,7 +444,7 @@ func waitCreateOrder() bool {
 
 	for {
 		if statusOrder() == true {
-			fmt.Println(display.OrderDoneMsg(Asset()))
+			log.Println(display.OrderDoneMsg(Asset()))
 			TelegramSend(display.OrderDoneMsg(Asset()))
 			return true
 		}
@@ -501,9 +459,8 @@ func ClosePositionProfitBuy() bool {
 
 	for {
 		if closePositionBuy(position) {
-			fmt.Println(display.OrdertriggerMsg(Asset()))
+			log.Println(display.OrdertriggerMsg(Asset()))
 			TelegramSend(display.OrdertriggerMsg(Asset()))
-
 			closePosition()
 			return true
 		}
@@ -518,9 +475,8 @@ func ClosePositionProfitSell() bool {
 
 	for {
 		if closePositionSell(position) {
-			fmt.Println(display.OrdertriggerMsg(Asset()))
+			log.Println(display.OrdertriggerMsg(Asset()))
 			TelegramSend(display.OrdertriggerMsg(Asset()))
-
 			closePosition()
 			return true
 		}
@@ -531,12 +487,12 @@ func ClosePositionProfitSell() bool {
 // GetProfit waint to start a new trade round
 func GetProfit() bool {
 	speedConfig := Speed()
-	fmt.Println(display.OrderWaintMsg(Asset()))
+	log.Println(display.OrderWaintMsg(Asset()))
 	TelegramSend(display.OrderWaintMsg(Asset()))
 
 	for {
 		if statusOrder() == false {
-			fmt.Println(display.ProfitMsg(Asset()))
+			log.Println(display.ProfitMsg(Asset()))
 			TelegramSend(display.ProfitMsg(Asset()))
 			time.Sleep(time.Duration(speedConfig+timeToSleep) * time.Second)
 			return true
