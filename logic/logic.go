@@ -2,7 +2,6 @@ package logic
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/url"
 	"time"
@@ -38,9 +37,6 @@ func CandleRunner() string {
 		} else {
 			index = -1
 		}
-	}
-	if central.VerboseMode() {
-		fmt.Println("Buy orders:", cBuy, "Sell orders: ", cSell)
 	}
 	return order(cBuy, cSell)
 }
@@ -85,7 +81,7 @@ func logicSystem() string {
 		getResult := central.ClientRobot("GET", path, data)
 		err := json.Unmarshal(getResult, &apiResponse)
 		if err != nil {
-			fmt.Println("Error to get data to the logic, got", err)
+			log.Println("Error to get data to the logic, got", err)
 		}
 
 		for _, value := range apiResponse[:] {
@@ -94,11 +90,6 @@ func logicSystem() string {
 			} else if value.Side == tbuy {
 				countBuy = countBuy + value.Size
 			}
-		}
-
-		if central.VerboseMode() {
-			fmt.Println("Number of Sell orders: ", countSell)
-			fmt.Println("Number of Buy orders: ", countBuy)
 		}
 		time.Sleep(time.Duration(speed) * time.Second)
 	}
