@@ -1,4 +1,9 @@
 ---
+sudo: true
+dist: trusty
+
+language: minimal
+
 env:
   - DOCKER_COMPOSE_VERSION=1.23.2
 
