@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 
-	"github.com/thiago-scherrer/gotrader/central"
-	"github.com/thiago-scherrer/gotrader/display"
-	"github.com/thiago-scherrer/gotrader/logic"
+	"github.com/thiago-scherrer/gotrader/internal/central"
+	"github.com/thiago-scherrer/gotrader/internal/display"
+	"github.com/thiago-scherrer/gotrader/internal/logic"
 )
 
 func main() {

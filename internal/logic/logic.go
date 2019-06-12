@@ -6,8 +6,8 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/thiago-scherrer/gotrader/central"
-	"github.com/thiago-scherrer/gotrader/convert"
+	"github.com/thiago-scherrer/gotrader/internal/central"
+	"github.com/thiago-scherrer/gotrader/internal/convert"
 )
 
 // Path from api to view the orderbook

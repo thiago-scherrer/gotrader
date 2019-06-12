@@ -1,7 +1,9 @@
 # ------------------------------------------------------------------------------
 # Test and build
 # ------------------------------------------------------------------------------
-FROM golang@sha256:908ea6b956394d7a7006453e6a16011a6f86fd47996f2ccc32711f1eeff6b9fc AS builder
+FROM golang@sha256:f6b9f5d9da411dd88772b0829d8f382113c6b34f1a54aac5867dd2471afc6512 AS builder
+LABEL NAME golang
+LABEL VERSION 1.0
 ENV APP /src/gotrader
 WORKDIR ${APP}/src/gotrader
 RUN mkdir -p ${APP}/src/gotrader
@@ -10,7 +12,8 @@ COPY configs/config*.yml /opt/
 RUN cd ${APP}/src/gotrader \
     && go mod download
 RUN go test ./... -args config /opt/config-test.yml 
-RUN CGO_ENABLED=0 GOOS=linux \
+RUN cd cmd/gotrader/ \
+    && CGO_ENABLED=0 GOOS=linux \
     go build -a -installsuffix cgo -o /bin/gotrader \
     && useradd gotrader
 
@@ -18,6 +21,8 @@ RUN CGO_ENABLED=0 GOOS=linux \
 # daemon image
 # ------------------------------------------------------------------------------
 FROM scratch AS runner
+LABEL NAME scratch
+LABEL VERSION 1.0
 USER gotrader
 COPY --from=builder /etc/ssl /etc/ssl
 COPY --from=builder /etc/group /etc/group

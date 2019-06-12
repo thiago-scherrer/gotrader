@@ -69,7 +69,7 @@ wget https://raw.githubusercontent.com/thiago-scherrer/gotrader/master/configs/c
 Get the bot:
 
 ```bash
-go get github.com/thiago-scherrer/gotrader
+go get github.com/thiago-scherrer/gotrader/cmd/gotrader
 ```
 
 Run the bot like:
@@ -86,10 +86,11 @@ Anothers logics or examples can be found on *configs/logics/*.
 ## References
 
 - [bitmex api](https://www.bitmex.com/api/explorer/)
+- [docker-compose install](https://docs.docker.com/compose/install/)
 - [goreportcard](https://goreportcard.com/)
 - [gopherize](https://gopherize.me)
-- [docker-compose install](https://docs.docker.com/compose/install/)
 - [go-yaml](https://github.com/go-yaml/yaml)
+- [project-layout](https://github.com/golang-standards/project-layout)
 
 ## IRC
 

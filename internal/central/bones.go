@@ -15,8 +15,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/thiago-scherrer/gotrader/convert"
-	"github.com/thiago-scherrer/gotrader/display"
+	"github.com/thiago-scherrer/gotrader/internal/convert"
+	"github.com/thiago-scherrer/gotrader/internal/display"
 
 	yaml "gopkg.in/yaml.v2"
 )

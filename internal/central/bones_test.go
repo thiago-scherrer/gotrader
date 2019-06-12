@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/thiago-scherrer/gotrader/convert"
+	"github.com/thiago-scherrer/gotrader/internal/convert"
 )
 
 func TestFlag(t *testing.T) {
