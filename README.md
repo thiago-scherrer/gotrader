@@ -83,6 +83,13 @@ $GOPATH/bin/gotrader config config.yml
 The acual logic can be changed on *internal/logic/*.
 Anothers logics or examples can be found on *configs/logics/*.
 
+## TOO
+
+- [ ] riot integration
+- [ ] best log control
+- [ ] more logic
+- [ ] more documentation
+
 ## References
 
 - [bitmex api](https://www.bitmex.com/api/explorer/)
