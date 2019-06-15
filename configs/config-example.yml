@@ -7,7 +7,7 @@ secret: "xxxxxxxxxxxxxxx"
 # API endpoint/url. Aways use HTTPS! (required)
 endpoint: "https://testnet.bitmex.com"
 
-# Percentage to use on trade from total wallet value (required)
+# Amount of asset for trade. Only integers (required)
 hand: 3
 
 # Asset to trade (required)
