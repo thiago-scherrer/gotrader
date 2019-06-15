@@ -87,7 +87,7 @@ func InitFlag() string {
 	return config
 }
 
-// ConfigReader ascsacacscac
+// ConfigReader - read the file from PC
 func configReader() *Conf {
 	confFile := InitFlag()
 	conf := Conf{}
@@ -209,9 +209,9 @@ func ClientRobot(requestType, path string, data []byte) []byte {
 		if err != nil {
 			log.Println("Error to send the request to the API bitmex, got: ", err)
 		}
-
 		if response.StatusCode != 200 {
 			log.Println("Bitmex API Status code are: ", response.StatusCode)
+			log.Println(response.Status)
 			time.Sleep(time.Duration(60) * time.Second)
 		} else {
 			body, _ := ioutil.ReadAll(response.Body)
