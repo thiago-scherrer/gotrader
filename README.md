@@ -85,7 +85,7 @@ Anothers logics or examples can be found on *configs/logics/*.
 
 ## TO-DO
 
-- [ ] best log contro
+- [ ] best log control
 - [ ] cancel an order that has not been executed for X time
 - [ ] riot integration
 
