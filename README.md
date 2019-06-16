@@ -23,9 +23,9 @@ This robot does not guarantee anything, it may not even work properly. You can l
 
 You have been warned.
 
-But if you have good results, share your extracts =)
+But if you have good results, share the logic =)
 
-Don't panic.
+And Don't panic!
 
 ## Supported Contracts
 
@@ -88,7 +88,6 @@ Anothers logics or examples can be found on *configs/logics/*.
 - [ ] riot integration
 - [ ] best log control
 - [ ] more logic
-- [ ] more documentation
 
 ## References
 
@@ -98,7 +97,3 @@ Anothers logics or examples can be found on *configs/logics/*.
 - [gopherize](https://gopherize.me)
 - [go-yaml](https://github.com/go-yaml/yaml)
 - [project-layout](https://github.com/golang-standards/project-layout)
-
-## IRC
-
-- freenode - Channel #gotrader

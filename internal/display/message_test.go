@@ -10,7 +10,7 @@ func TestUsageMsg(t *testing.T) {
 	}
 }
 
-func Test_setlavarageMsg(t *testing.T) {
+func Test_setleverageMsg(t *testing.T) {
 	tests := []struct {
 		name string
 		want string
@@ -19,7 +19,7 @@ func Test_setlavarageMsg(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := SetlavarageMsg("BTC", "0.1"); got != tt.want {
+			if got := SetleverageMsg("BTC", "0.1"); got != tt.want {
 				t.Errorf("setlavarageMsg() = %v, want %v", got, tt.want)
 			}
 		})

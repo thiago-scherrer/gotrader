@@ -6,98 +6,101 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/thiago-scherrer/gotrader/internal/central"
-	"github.com/thiago-scherrer/gotrader/internal/convert"
+	"github.com/thiago-scherrer/gotrader/internal/api"
+	cvt "github.com/thiago-scherrer/gotrader/internal/convert"
+	rd "github.com/thiago-scherrer/gotrader/internal/reader"
 )
 
 // Path from api to view the orderbook
-const orderbook string = "/api/v1/orderBook/L2?"
+const orb string = "/api/v1/orderBook/L2?"
 
 // Used to return Buy to te bone
-const tbuy = "Buy"
+const tby = "Buy"
 
 // Used to return Sell to te bone
-const tsell = "Sell"
+const tll = "Sell"
 
 // Used to return Draw to te bone
-const tdraw = "Draw"
+const tdw = "Draw"
 
 // CandleRunner verify the api and start the logic system
 func CandleRunner() string {
-	trigger := central.Threshold()
-	var cSell int
-	var cBuy int
+	trg := rd.Threshold()
+	var tsl int
+	var cbu int
 
-	for index := 0; index < trigger; index++ {
-		result := logicSystem()
-		if result == tbuy {
-			cBuy++
-		} else if result == tsell {
-			cSell++
+	for index := 0; index < trg; index++ {
+		res := logicSystem()
+		if res == tby {
+			cbu++
+		} else if res == tll {
+			tsl++
 		} else {
 			index = -1
 		}
 	}
-	return order(cBuy, cSell)
+	return order(cbu, tsl)
 }
-func order(cBuy, cSell int) string {
-	var typeOrder string
+
+// order return the type of the oder to create, buy and sell
+func order(cbu, tsl int) string {
+	var trd string
 
 	for {
-		if cBuy > cSell {
-			typeOrder = tbuy
+		if cbu > tsl {
+			trd = tby
 			break
-		} else if cSell > cBuy {
-			typeOrder = tsell
+		} else if tsl > cbu {
+			trd = tll
 			break
 		}
-		log.Fatalf("Draw, Starting a new round!")
-		typeOrder = tdraw
+		log.Println("Draw, Starting a new round!")
+		trd = tdw
 		break
 	}
-	return typeOrder
+	return trd
 }
 
 func logicSystem() string {
-	var apiResponse []central.APIResponseComplex
-	var countSell int
-	var countBuy int
-	depth := convert.IntToString(central.Depth())
-	asset := central.Asset()
-	candleTime := central.Candle()
+	ap := rd.APIArray()
+	var cl int
+	var cby int
+	dth := cvt.IntToString(rd.Depth())
+	ast := rd.Asset()
+	ctm := rd.Candle()
 
-	urlmap := url.Values{}
-	urlmap.Set("symbol", asset)
-	urlmap.Add("depth", depth)
-	path := orderbook + urlmap.Encode()
-	speed := central.Speed()
+	u := url.Values{}
+	u.Set("symbol", ast)
+	u.Add("depth", dth)
+	pth := orb + u.Encode()
+	spd := rd.Speed()
 
 	// There is nothing important here,
 	// but I can not leave empty so as not to break the request
-	data := convert.StringToBytes("message=GoTrader bot&channelID=1")
+	d := cvt.StringToBytes("message=GoTrader bot&channelID=1")
 
-	for count := 0; count < candleTime; count++ {
+	for i := 0; i < ctm; i++ {
 
-		getResult := central.ClientRobot("GET", path, data)
-		err := json.Unmarshal(getResult, &apiResponse)
+		g := api.ClientRobot("GET", pth, d)
+		err := json.Unmarshal(g, &ap)
 		if err != nil {
 			log.Println("Error to get data to the logic, got", err)
 		}
 
-		for _, value := range apiResponse[:] {
-			if value.Side == tsell {
-				countSell = countSell + value.Size
-			} else if value.Side == tbuy {
-				countBuy = countBuy + value.Size
+		for _, v := range ap[:] {
+			if v.Side == tll {
+				cl = cl + v.Size
+			} else if v.Side == tby {
+				cby = cby + v.Size
 			}
 		}
-		time.Sleep(time.Duration(speed) * time.Second)
+		time.Sleep(time.Duration(spd) * time.Second)
 	}
 
-	if countBuy > countSell {
-		return tbuy
-	} else if countSell > countBuy {
-		return tsell
+	if cby > cl {
+		return tby
+	} else if cl > cby {
+		return tll
 	}
-	return tdraw
+	return tdw
 }

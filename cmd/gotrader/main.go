@@ -3,9 +3,11 @@ package main
 import (
 	"log"
 
-	"github.com/thiago-scherrer/gotrader/internal/central"
-	"github.com/thiago-scherrer/gotrader/internal/display"
+	"github.com/thiago-scherrer/gotrader/internal/api"
+	ctr "github.com/thiago-scherrer/gotrader/internal/central"
+	dp "github.com/thiago-scherrer/gotrader/internal/display"
 	"github.com/thiago-scherrer/gotrader/internal/logic"
+	rd "github.com/thiago-scherrer/gotrader/internal/reader"
 )
 
 func main() {
@@ -15,22 +17,22 @@ func main() {
 }
 
 func daemonize() {
-	central.InitFlag()
+	rd.InitFlag()
 	log.Println(
-		display.HelloMsg(central.Asset()),
+		dp.HelloMsg(rd.Asset()),
 	)
 
-	central.TelegramSend(
-		display.HelloMsg(central.Asset()),
+	api.TelegramSend(
+		dp.HelloMsg(rd.Asset()),
 	)
 
-	typeOrder := logic.CandleRunner()
-	central.CreateOrder(typeOrder)
+	trd := logic.CandleRunner()
+	ctr.CreateOrder(trd)
 
-	if typeOrder == "Buy" {
-		central.ClosePositionProfitBuy()
+	if trd == "Buy" {
+		ctr.ClosePositionProfitBuy()
 	} else {
-		central.ClosePositionProfitSell()
+		ctr.ClosePositionProfitSell()
 	}
-	central.GetProfit()
+	ctr.GetProfit()
 }
