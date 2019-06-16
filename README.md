@@ -27,6 +27,13 @@ But if you have good results, share the logic =)
 
 And Don't panic!
 
+## Enabled
+
+- Creating order, buying and selling
+- Use of leverage
+- Send messages to matrix.org
+- Able to use modified rules
+
 ## Supported Contracts
 
 - XBTUSD
@@ -81,18 +88,18 @@ $GOPATH/bin/gotrader config config.yml
 ## Logic
 
 The acual logic can be changed on *internal/logic/*.
-Anothers logics or examples can be found on *configs/logics/*.
 
 ## TO-DO
 
 - [ ] best log control
 - [ ] cancel an order that has not been executed for X time
-- [ ] riot integration
+- [ ] more documentation
 
 ## References
 
 - [bitmex api](https://www.bitmex.com/api/explorer/)
 - [docker-compose install](https://docs.docker.com/compose/install/)
+- [matrix doc](https://matrix.org/docs/spec/client_server/latest#sending-events-to-a-room)
 - [goreportcard](https://goreportcard.com/)
 - [gopherize](https://gopherize.me)
 - [go-yaml](https://github.com/go-yaml/yaml)
