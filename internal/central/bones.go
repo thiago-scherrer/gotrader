@@ -17,13 +17,13 @@ import (
 const oph string = "/api/v1/order"
 
 // Position path to use on API Request
-const poh string = "/api/v1/pst?"
+const poh string = "/api/v1/position?"
 
 // Basic path to use on API Request
 const ith string = "/api/v1/instrument?"
 
 // Laverage path to use on API Request
-const lth = "/api/v1/pst/leverage"
+const lth = "/api/v1/position/leverage"
 
 // A random number to make a sleep before staring a new round
 const tlp = 50
