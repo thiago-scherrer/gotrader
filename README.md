@@ -83,11 +83,11 @@ $GOPATH/bin/gotrader config config.yml
 The acual logic can be changed on *internal/logic/*.
 Anothers logics or examples can be found on *configs/logics/*.
 
-## TOO
+## TO-DO
 
+- [ ] best log contro
+- [ ] cancel an order that has not been executed for X time
 - [ ] riot integration
-- [ ] best log control
-- [ ] more logic
 
 ## References
 
