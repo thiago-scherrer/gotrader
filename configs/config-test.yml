@@ -29,14 +29,14 @@ depth: 30
 # Send 0 to enable cross margin.
 leverage: "0.1"
 
-# Enable telegram? (true/false)
-telegramuse: false
+# Enable matrix? (true/false)
+matrixuse: false
 
-# Telegram API KEY
-telegram_key: "xxxxx"
+# Matrix API KEY
+matrix_key: "!xxxxxxx:matrix.org"
 
-# Telegram API URL
-telegramurl: "https://api.telegram.org"
+# Matrix API URL
+matrixurl: "https://matrix.org"
 
-# Telegram channel
-telegramchannel: "@"
+# Matrix channel
+matrixchannel: "@"

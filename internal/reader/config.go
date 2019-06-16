@@ -28,20 +28,20 @@ type APIResponseComplex struct {
 
 // Conf instruction are the file yaml on disc
 type Conf struct {
-	Asset           string  `yaml:"asset"`
-	Candle          int     `yaml:"candle"`
-	Depth           int64   `yaml:"depth"`
-	Endpoint        string  `yaml:"endpoint"`
-	Hand            int64   `yaml:"hand"`
-	Leverage        string  `yaml:"leverage"`
-	Profit          float64 `yaml:"profit"`
-	Secret          string  `yaml:"secret"`
-	Threshold       int     `yaml:"threshold"`
-	Userid          string  `yaml:"userid"`
-	TelegramUse     bool    `yaml:"telegramuse"`
-	TelegramKey     string  `yaml:"telegram_key"`
-	TelegramURL     string  `yaml:"telegramurl"`
-	TelegramChannel string  `yaml:"telegramchannel"`
+	Asset         string  `yaml:"asset"`
+	Candle        int     `yaml:"candle"`
+	Depth         int64   `yaml:"depth"`
+	Endpoint      string  `yaml:"endpoint"`
+	Hand          int64   `yaml:"hand"`
+	Leverage      string  `yaml:"leverage"`
+	Profit        float64 `yaml:"profit"`
+	Secret        string  `yaml:"secret"`
+	Threshold     int     `yaml:"threshold"`
+	Userid        string  `yaml:"userid"`
+	MatrixUse     bool    `yaml:"matrixuse"`
+	MatrixKey     string  `yaml:"matrix_key"`
+	MatrixURL     string  `yaml:"matrixurl"`
+	MatrixChannel string  `yaml:"matrixchannel"`
 }
 
 // Use to get the right time of the candle time
@@ -136,28 +136,28 @@ func Userid() string {
 	return conf.Userid
 }
 
-// TelegramUse return if enable or not telegram
-func TelegramUse() bool {
+// MatrixUse return if enable or not Matrix
+func MatrixUse() bool {
 	conf := configReader()
-	return conf.TelegramUse
+	return conf.MatrixUse
 }
 
-// TelegramKey return API Key from telegram
-func TelegramKey() string {
+// MatrixKey return API Key from Matrix
+func MatrixKey() string {
 	conf := configReader()
-	return conf.TelegramKey
+	return conf.MatrixKey
 }
 
-// Telegramurl return API endpoint from telegram
-func Telegramurl() string {
+// Matrixurl return API endpoint from Matrix
+func Matrixurl() string {
 	conf := configReader()
-	return conf.TelegramURL
+	return conf.MatrixURL
 }
 
-// TelegramChannel return the channel to send a msg
-func TelegramChannel() string {
+// MatrixChannel return the channel to send a msg
+func MatrixChannel() string {
 	conf := configReader()
-	return conf.TelegramChannel
+	return conf.MatrixChannel
 }
 
 // Speed set the daemon daemon, dont change

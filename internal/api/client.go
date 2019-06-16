@@ -74,22 +74,22 @@ func ClientRobot(requestType, path string, data []byte) []byte {
 	}
 }
 
-// TelegramSend send a msg to the user on settings
-func TelegramSend(msg string) int {
-	if reader.TelegramUse() == false {
+// MatrixSend send a msg to the user on settings
+func MatrixSend(msg string) int {
+	if reader.MatrixUse() == false {
 		return 200
 	}
 
 	cl := &http.Client{}
-	turl := reader.Telegramurl()
-	tch := reader.TelegramChannel()
-	tkn := reader.TelegramKey()
-	data := convert.StringToBytes("chat_id=" + tch + "&text=" + msg)
-	url := turl + "/bot" + tkn + "/sendMessage"
+	turl := reader.Matrixurl()
+	tch := reader.MatrixChannel()
+	tkn := reader.MatrixKey()
+	dt := convert.StringToBytes(`{"msgtype":"m.text", "body": "` + msg + `"}`)
+	url := turl + "_matrix/client/r0/rooms/" + tch + "/send/m.room.message?access_token=" + tkn
 
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(data))
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(dt))
 	if err != nil {
-		log.Println("Error create a request on telegram, got: ", err)
+		log.Println("Error create a request on matrix, got: ", err)
 	}
 
 	req.Header.Set("User-Agent", "gotrader-r0b0tnull")
@@ -102,7 +102,7 @@ func TelegramSend(msg string) int {
 	defer rsp.Body.Close()
 	_, err = ioutil.ReadAll(rsp.Body)
 	if err != nil {
-		log.Println("Error to get body from Telegram API, got", err)
+		log.Println("Error to get body from Matrix API, got", err)
 	}
 	return rsp.StatusCode
 }

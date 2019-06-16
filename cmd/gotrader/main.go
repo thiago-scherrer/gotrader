@@ -22,7 +22,7 @@ func daemonize() {
 		dp.HelloMsg(rd.Asset()),
 	)
 
-	api.TelegramSend(
+	api.MatrixSend(
 		dp.HelloMsg(rd.Asset()),
 	)
 

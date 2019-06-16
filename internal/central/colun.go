@@ -154,7 +154,7 @@ func setLeverge() {
 
 	api.ClientRobot(rtp, path, data)
 	log.Println(dpl.SetleverageMsg(rd.Asset(), l))
-	api.TelegramSend(dpl.SetleverageMsg(rd.Asset(), l))
+	api.MatrixSend(dpl.SetleverageMsg(rd.Asset(), l))
 
 }
 
@@ -188,7 +188,7 @@ func CreateOrder(typeOrder string) {
 		makeOrder(typeOrder)
 		if waitCreateOrder() {
 			log.Println(dpl.OrderCreatedMsg(rd.Asset(), typeOrder))
-			api.TelegramSend(dpl.OrderCreatedMsg(rd.Asset(), typeOrder))
+			api.MatrixSend(dpl.OrderCreatedMsg(rd.Asset(), typeOrder))
 			break
 		}
 		time.Sleep(time.Duration(scg) * time.Second)
@@ -202,7 +202,7 @@ func waitCreateOrder() bool {
 	for {
 		if statusOrder() == true {
 			log.Println(dpl.OrderDoneMsg(rd.Asset()))
-			api.TelegramSend(dpl.OrderDoneMsg(rd.Asset()))
+			api.MatrixSend(dpl.OrderDoneMsg(rd.Asset()))
 			return true
 		}
 		time.Sleep(time.Duration(scg) * time.Second)
@@ -217,7 +217,7 @@ func ClosePositionProfitBuy() bool {
 	for {
 		if closePositionBuy(pst) {
 			log.Println(dpl.OrdertriggerMsg(rd.Asset()))
-			api.TelegramSend(dpl.OrdertriggerMsg(rd.Asset()))
+			api.MatrixSend(dpl.OrdertriggerMsg(rd.Asset()))
 			closePosition()
 			return true
 		}
@@ -233,7 +233,7 @@ func ClosePositionProfitSell() bool {
 	for {
 		if closePositionSell(pst) {
 			log.Println(dpl.OrdertriggerMsg(rd.Asset()))
-			api.TelegramSend(dpl.OrdertriggerMsg(rd.Asset()))
+			api.MatrixSend(dpl.OrdertriggerMsg(rd.Asset()))
 			closePosition()
 			return true
 		}
@@ -245,12 +245,12 @@ func ClosePositionProfitSell() bool {
 func GetProfit() bool {
 	scg := rd.Speed()
 	log.Println(dpl.OrderWaintMsg(rd.Asset()))
-	api.TelegramSend(dpl.OrderWaintMsg(rd.Asset()))
+	api.MatrixSend(dpl.OrderWaintMsg(rd.Asset()))
 
 	for {
 		if statusOrder() == false {
 			log.Println(dpl.ProfitMsg(rd.Asset()))
-			api.TelegramSend(dpl.ProfitMsg(rd.Asset()))
+			api.MatrixSend(dpl.ProfitMsg(rd.Asset()))
 			time.Sleep(time.Duration(scg+tlp) * time.Second)
 			return true
 		}

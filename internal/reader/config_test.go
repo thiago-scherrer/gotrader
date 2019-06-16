@@ -198,7 +198,7 @@ func Test_userid(t *testing.T) {
 	}
 }
 
-func Test_telegramUse(t *testing.T) {
+func Test_matrixUse(t *testing.T) {
 	tests := []struct {
 		name string
 		want bool
@@ -207,46 +207,46 @@ func Test_telegramUse(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := TelegramUse(); got != tt.want {
-				t.Errorf("telegramUse() = %v, want %v", got, tt.want)
+			if got := MatrixUse(); got != tt.want {
+				t.Errorf("matrixUse() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_telegramKey(t *testing.T) {
+func Test_matrixKey(t *testing.T) {
 	tests := []struct {
 		name string
 		want string
 	}{
-		{"Test", "xxxxx"},
+		{"Test", "!xxxxxxx:matrix.org"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := TelegramKey(); got != tt.want {
-				t.Errorf("telegramKey() = %v, want %v", got, tt.want)
+			if got := MatrixKey(); got != tt.want {
+				t.Errorf("matrixKey() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_telegramurl(t *testing.T) {
+func Test_matrixurl(t *testing.T) {
 	tests := []struct {
 		name string
 		want string
 	}{
-		{"Test", "https://api.telegram.org"},
+		{"Test", "https://matrix.org"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := Telegramurl(); got != tt.want {
-				t.Errorf("telegramurl() = %v, want %v", got, tt.want)
+			if got := Matrixurl(); got != tt.want {
+				t.Errorf("matrixurl() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_telegramChannel(t *testing.T) {
+func Test_matrixChannel(t *testing.T) {
 	tests := []struct {
 		name string
 		want string
@@ -255,8 +255,8 @@ func Test_telegramChannel(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := TelegramChannel(); got != tt.want {
-				t.Errorf("telegramChannel() = %v, want %v", got, tt.want)
+			if got := MatrixChannel(); got != tt.want {
+				t.Errorf("matrixChannel() = %v, want %v", got, tt.want)
 			}
 		})
 	}
