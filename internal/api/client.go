@@ -5,6 +5,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -45,13 +46,17 @@ func ClientRobot(requestType, path string, data []byte) []byte {
 		uid := reader.Userid()
 		exp := convert.IntToString((timeExpired()))
 		hex := hexCreator(sq, requestType, path, exp, convert.BytesToString(data))
-
 		url := ep + path
 
+		// Log
+		fmt.Println("URL: ", url)
 		req, err := http.NewRequest(requestType, url, bytes.NewBuffer(data))
 		if err != nil {
 			log.Println("Error create a request on bitmex, got: ", err)
 		}
+
+		// Log
+		fmt.Println("Request: ", req)
 
 		req.Header.Set("api-signature", hex)
 		req.Header.Set("api-expires", exp)
@@ -64,6 +69,9 @@ func ClientRobot(requestType, path string, data []byte) []byte {
 		if err != nil {
 			log.Println("Error to send the request to the API bitmex, got: ", err)
 		}
+
+		// Log
+		fmt.Println("Body: ", rsp.Body)
 		if rsp.StatusCode != 200 {
 			log.Println("Bitmex API Status code are: ", rsp.StatusCode)
 			time.Sleep(time.Duration(60) * time.Second)
