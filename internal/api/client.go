@@ -71,12 +71,12 @@ func ClientRobot(requestType, path string, data []byte) []byte {
 		}
 
 		// Log
-		fmt.Println("Body: ", rsp.Body)
+		body, _ := ioutil.ReadAll(rsp.Body)
+		fmt.Println("Body: ", body)
 		if rsp.StatusCode != 200 {
 			log.Println("Bitmex API Status code are: ", rsp.StatusCode)
 			time.Sleep(time.Duration(60) * time.Second)
 		} else {
-			body, _ := ioutil.ReadAll(rsp.Body)
 			return body
 		}
 	}
