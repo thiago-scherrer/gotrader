@@ -2,7 +2,6 @@ package logic
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/url"
 	"time"
@@ -97,7 +96,6 @@ func logicSystem() string {
 				cby = cby + v.Size
 			}
 		}
-		fmt.Println("oolaaaa")
 		time.Sleep(time.Duration(spd) * time.Minute)
 	}
 
