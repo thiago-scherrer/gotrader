@@ -13,7 +13,7 @@ hand: 3
 # Asset to trade (required)
 asset: "XBTUSD"
 
-# Cadle time (minutes) (required)
+# Cadle time (minutes). The minimum is 1 (required)
 candle: 30
 
 # threshold to trigger the rule (required)

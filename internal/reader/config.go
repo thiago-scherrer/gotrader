@@ -154,11 +154,6 @@ func MatrixChannel() string {
 	return conf.MatrixChannel
 }
 
-// Speed set the daemon daemon, dont change
-func Speed() int {
-	return 10
-}
-
 //APISimple return JSON
 func APISimple() APIResponseComplex {
 	var ar APIResponseComplex

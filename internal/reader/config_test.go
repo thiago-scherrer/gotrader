@@ -245,19 +245,3 @@ func Test_matrixChannel(t *testing.T) {
 		})
 	}
 }
-
-func Test_Speed(t *testing.T) {
-	tests := []struct {
-		name string
-		want int
-	}{
-		{"Test", 10},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := Speed(); got != tt.want {
-				t.Errorf("Speed() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}

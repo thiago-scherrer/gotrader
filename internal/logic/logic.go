@@ -2,6 +2,7 @@ package logic
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/url"
 	"time"
@@ -75,7 +76,7 @@ func logicSystem() string {
 	u.Set("symbol", ast)
 	u.Add("depth", dth)
 	pth := orb + u.Encode()
-	spd := rd.Speed()
+	spd := rd.Candle()
 
 	// There is nothing important here,
 	// but I can not leave empty so as not to break the request
@@ -96,6 +97,7 @@ func logicSystem() string {
 				cby = cby + v.Size
 			}
 		}
+		fmt.Println("oolaaaa")
 		time.Sleep(time.Duration(spd) * time.Minute)
 	}
 
