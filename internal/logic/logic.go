@@ -129,7 +129,7 @@ func returnDepth() string {
 
 	err := json.Unmarshal(res, &ap)
 	if err != nil {
-		log.Println("Error to get pst:", err)
+		log.Println("Error to get trade numbers:", err)
 	}
 
 	for _, v := range ap[:] {
