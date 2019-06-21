@@ -96,7 +96,7 @@ func logicSystem() string {
 				cby = cby + v.Size
 			}
 		}
-		time.Sleep(time.Duration(spd) * time.Second)
+		time.Sleep(time.Duration(spd) * time.Minute)
 	}
 
 	if cby > cl {
