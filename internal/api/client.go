@@ -70,6 +70,8 @@ func ClientRobot(requestType, path string, data []byte) []byte {
 			log.Println("Error to send the request to the API bitmex, got: ", err)
 		}
 
+		body, _ := ioutil.ReadAll(rsp.Body)
+
 		if rsp.StatusCode != 200 {
 			log.Println("Bitmex API Status code are: ", rsp.StatusCode)
 			log.Println("Body: ", convert.BytesToString(body))
