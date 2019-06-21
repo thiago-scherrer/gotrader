@@ -73,7 +73,7 @@ func Test_Candle(t *testing.T) {
 		name string
 		want int
 	}{
-		{"Test", 6},
+		{"Test", 1},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

@@ -85,7 +85,7 @@ func Asset() string {
 // Candle return the time of candle setting
 func Candle() int {
 	conf := configReader()
-	return conf.Candle * fixtime
+	return conf.Candle
 }
 
 // Endpoint return url from bitmex
