@@ -54,7 +54,6 @@ func lastPrice(d []byte) float64 {
 }
 
 func makeOrder(orderType string) string {
-	scg := rd.Speed()
 	ap := rd.APISimple()
 	hfl := cvt.IntToString(rd.Hand())
 	ast := rd.Asset()
@@ -74,7 +73,7 @@ func makeOrder(orderType string) string {
 		err := json.Unmarshal(glt, &ap)
 		if err != nil {
 			log.Println("Error to make a order:", err)
-			time.Sleep(time.Duration(scg) * time.Second)
+			time.Sleep(time.Duration(5) * time.Second)
 		} else {
 			return ap.OrderID
 		}
@@ -181,7 +180,6 @@ func opening(data []byte) bool {
 
 // CreateOrder create the order on bitmex
 func CreateOrder(typeOrder string) {
-	scg := rd.Speed()
 
 	for {
 		setLeverge()
@@ -191,13 +189,12 @@ func CreateOrder(typeOrder string) {
 			api.MatrixSend(dpl.OrderCreatedMsg(rd.Asset(), typeOrder))
 			break
 		}
-		time.Sleep(time.Duration(scg) * time.Second)
+		time.Sleep(time.Duration(10) * time.Second)
 
 	}
 }
 
 func waitCreateOrder() bool {
-	scg := rd.Speed()
 
 	for {
 		if statusOrder() == true {
@@ -205,13 +202,12 @@ func waitCreateOrder() bool {
 			api.MatrixSend(dpl.OrderDoneMsg(rd.Asset()))
 			return true
 		}
-		time.Sleep(time.Duration(scg) * time.Second)
+		time.Sleep(time.Duration(10) * time.Second)
 	}
 }
 
 // ClosePositionProfitBuy the Buy pst
 func ClosePositionProfitBuy() bool {
-	scg := rd.Speed()
 	pst := getPosition()
 
 	for {
@@ -221,13 +217,12 @@ func ClosePositionProfitBuy() bool {
 			closePosition()
 			return true
 		}
-		time.Sleep(time.Duration(scg) * time.Second)
+		time.Sleep(time.Duration(10) * time.Second)
 	}
 }
 
-// ClosePositionProfitSell the Buy pst
+// ClosePositionProfitSell cloe the Buy position
 func ClosePositionProfitSell() bool {
-	scg := rd.Speed()
 	pst := getPosition()
 
 	for {
@@ -237,13 +232,12 @@ func ClosePositionProfitSell() bool {
 			closePosition()
 			return true
 		}
-		time.Sleep(time.Duration(scg) * time.Second)
+		time.Sleep(time.Duration(10) * time.Second)
 	}
 }
 
 // GetProfit waint to start a new trade round
 func GetProfit() bool {
-	scg := rd.Speed()
 	log.Println(dpl.OrderWaintMsg(rd.Asset()))
 	api.MatrixSend(dpl.OrderWaintMsg(rd.Asset()))
 
@@ -251,9 +245,9 @@ func GetProfit() bool {
 		if statusOrder() == false {
 			log.Println(dpl.ProfitMsg(rd.Asset()))
 			api.MatrixSend(dpl.ProfitMsg(rd.Asset()))
-			time.Sleep(time.Duration(scg+tlp) * time.Second)
+			time.Sleep(time.Duration(tlp) * time.Second)
 			return true
 		}
-		time.Sleep(time.Duration(scg) * time.Second)
+		time.Sleep(time.Duration(10) * time.Second)
 	}
 }
