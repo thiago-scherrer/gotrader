@@ -27,6 +27,9 @@ func daemonize() {
 	)
 
 	trd := logic.CandleRunner()
+	if trd == "Draw" {
+		break
+	}
 	ctr.CreateOrder(trd)
 
 	if trd == "Buy" {

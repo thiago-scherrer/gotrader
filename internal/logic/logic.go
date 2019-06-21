@@ -45,7 +45,7 @@ func CandleRunner() string {
 
 // order return the type of the oder to create, buy and sell
 func order(cbu, tsl int) string {
-	var trd string
+	trd := tdw
 
 	for {
 		if cbu > tsl {
