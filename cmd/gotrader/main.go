@@ -28,7 +28,7 @@ func daemonize() {
 
 	trd := logic.CandleRunner()
 	if trd == "Draw" {
-		break
+		return
 	}
 	ctr.CreateOrder(trd)
 
