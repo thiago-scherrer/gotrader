@@ -2,7 +2,6 @@ package logic
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/url"
 	"time"
@@ -112,15 +111,7 @@ func returnDepth() string {
 	poh := "/trade/bucketed"
 	ap := rd.APIArray()
 	t := time.Now().UTC()
-
-	year := fmt.Sprintln(t.Year())
-	month := fmt.Sprintln(t.Month())
-	day := fmt.Sprintln(t.Day())
-	hour := fmt.Sprintln(t.Hour())
-	min := fmt.Sprintln(t.Minute())
-
-	timestamp := year + "-" + month + "-" + day + " " + hour + ":" + min
-
+	timestamp := t.Format("2006-01-02 15:04")
 	path := poh + `&symbol=` + rd.Asset() + `&filter={"timestamp.date": ` +
 		timestamp + `&count=1&reverse=false'`
 	data := cvt.StringToBytes("message=GoTrader bot&channelID=1")
@@ -135,5 +126,5 @@ func returnDepth() string {
 		return convert.IntToString(v.Trades)
 	}
 
-	return convert.BytesToString(res)
+	return "30"
 }
