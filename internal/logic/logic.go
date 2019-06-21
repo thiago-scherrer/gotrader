@@ -108,12 +108,12 @@ func logicSystem() string {
 }
 
 func returnDepth() string {
-	poh := "/trade/bucketed"
+	poh := "/api/v1/trade/bucketed?"
 	ap := rd.APIArray()
 	t := time.Now().UTC()
 	timestamp := t.Format("2006-01-02 15:04")
-	path := poh + `&symbol=` + rd.Asset() + `&filter={"timestamp.date": ` +
-		timestamp + `&count=1&reverse=false'`
+	path := poh + `&symbol=` + rd.Asset() + `&filter={"timestamp": "` +
+		timestamp + `"}&count=1&reverse=false'`
 	data := cvt.StringToBytes("message=GoTrader bot&channelID=1")
 	res := api.ClientRobot("GET", path, data)
 
