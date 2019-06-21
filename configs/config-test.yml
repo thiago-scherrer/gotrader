@@ -22,9 +22,6 @@ threshold: 1
 # Profit percentage to close a position
 profit: 1
 
-# How many depth orders
-depth: 30
-
 # Leverage value. Set a number between 0.01 and 100. 
 # Send 0 to enable cross margin.
 leverage: "0.1"

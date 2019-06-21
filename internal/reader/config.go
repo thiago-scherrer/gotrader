@@ -24,13 +24,13 @@ type APIResponseComplex struct {
 	Price         float64 `json:"price"`
 	Side          string  `json:"side"`
 	Size          int     `json:"size"`
+	Trades        int64   `json:"trades"`
 }
 
 // Conf instruction are the file yaml on disc
 type Conf struct {
 	Asset         string  `yaml:"asset"`
 	Candle        int     `yaml:"candle"`
-	Depth         int64   `yaml:"depth"`
 	Endpoint      string  `yaml:"endpoint"`
 	Hand          int64   `yaml:"hand"`
 	Leverage      string  `yaml:"leverage"`
@@ -86,12 +86,6 @@ func Asset() string {
 func Candle() int {
 	conf := configReader()
 	return conf.Candle * fixtime
-}
-
-// Depth get how many ordersbooks can see
-func Depth() int64 {
-	conf := configReader()
-	return conf.Depth
 }
 
 // Endpoint return url from bitmex

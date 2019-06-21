@@ -2,11 +2,13 @@ package logic
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/url"
 	"time"
 
 	"github.com/thiago-scherrer/gotrader/internal/api"
+	"github.com/thiago-scherrer/gotrader/internal/convert"
 	cvt "github.com/thiago-scherrer/gotrader/internal/convert"
 	rd "github.com/thiago-scherrer/gotrader/internal/reader"
 )
@@ -63,9 +65,10 @@ func order(cbu, tsl int) string {
 
 func logicSystem() string {
 	ap := rd.APIArray()
+
 	var cl int
 	var cby int
-	dth := cvt.IntToString(rd.Depth())
+	dth := returnDepth()
 	ast := rd.Asset()
 	ctm := rd.Candle()
 
@@ -103,4 +106,34 @@ func logicSystem() string {
 		return tll
 	}
 	return tdw
+}
+
+func returnDepth() string {
+	poh := "/trade/bucketed"
+	ap := rd.APIArray()
+	t := time.Now().UTC()
+
+	year := fmt.Sprintln(t.Year())
+	month := fmt.Sprintln(t.Month())
+	day := fmt.Sprintln(t.Day())
+	hour := fmt.Sprintln(t.Hour())
+	min := fmt.Sprintln(t.Minute())
+
+	timestamp := year + "-" + month + "-" + day + " " + hour + ":" + min
+
+	path := poh + `&symbol=` + rd.Asset() + `&filter={"timestamp.date": ` +
+		timestamp + `&count=1&reverse=false'`
+	data := cvt.StringToBytes("message=GoTrader bot&channelID=1")
+	res := api.ClientRobot("GET", path, data)
+
+	err := json.Unmarshal(res, &ap)
+	if err != nil {
+		log.Println("Error to get pst:", err)
+	}
+
+	for _, v := range ap[:] {
+		return convert.IntToString(v.Trades)
+	}
+
+	return convert.BytesToString(res)
 }

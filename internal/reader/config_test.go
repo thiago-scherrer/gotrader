@@ -84,22 +84,6 @@ func Test_Candle(t *testing.T) {
 	}
 }
 
-func Test_Depth(t *testing.T) {
-	tests := []struct {
-		name string
-		want int64
-	}{
-		{"Test", 30},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := Depth(); got != tt.want {
-				t.Errorf("Depth() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func Test_endpoint(t *testing.T) {
 	tests := []struct {
 		name string
