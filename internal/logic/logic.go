@@ -112,10 +112,20 @@ func returnDepth() string {
 	ap := rd.APIArray()
 	t := time.Now().UTC()
 	timestamp := t.Format("2006-01-02 15:04")
-	path := poh + `&symbol=` + rd.Asset() + `&filter={"timestamp": "` +
-		timestamp + `"}&count=1&reverse=false'`
+
 	data := cvt.StringToBytes("message=GoTrader bot&channelID=1")
-	res := api.ClientRobot("GET", path, data)
+
+	u := url.Values{}
+	u.Set("symbol", rd.Asset())
+	u.Add("binSize", "1m")
+	u.Add("partial", "false")
+	u.Add("count", "1")
+	u.Add("reverse", "false")
+	u.Add("filter", `{"timestamp":"`+timestamp+`"}`)
+
+	p := poh + u.Encode()
+
+	res := api.ClientRobot("GET", p, data)
 
 	err := json.Unmarshal(res, &ap)
 	if err != nil {
