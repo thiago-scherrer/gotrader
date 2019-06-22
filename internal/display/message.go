@@ -20,6 +20,11 @@ func OrderCreatedMsg(a, t string) string {
 	return " " + a + " - A new order type: " + t + " as been created! "
 }
 
+// OrderCancelMsg display cancell msg
+func OrderCancelMsg() string {
+	return "Canceling trade, order not executed"
+}
+
 // OrderDoneMsg display a msg when order fulfilled
 func OrderDoneMsg(a string) string {
 	return " " + a + " - Order fulfilled!"

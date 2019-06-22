@@ -179,19 +179,33 @@ func opening(data []byte) bool {
 }
 
 // CreateOrder create the order on bitmex
-func CreateOrder(typeOrder string) {
+func CreateOrder(typeOrder string) bool {
+	setLeverge()
+	orderTimeOut()
+	makeOrder(typeOrder)
 
-	for {
-		setLeverge()
-		makeOrder(typeOrder)
+	for i := 0; i <= 5; i++ {
 		if waitCreateOrder() {
 			log.Println(dpl.OrderCreatedMsg(rd.Asset(), typeOrder))
 			api.MatrixSend(dpl.OrderCreatedMsg(rd.Asset(), typeOrder))
-			break
+			return true
 		}
-		time.Sleep(time.Duration(10) * time.Second)
-
+		time.Sleep(time.Duration(1) * time.Minute)
 	}
+	return false
+}
+
+func orderTimeOut() {
+	poh := "/api/v1/order/cancelAllAfter?"
+	data := cvt.StringToBytes("message=GoTrader bot&channelID=1")
+
+	u := url.Values{}
+	u.Set("timeout", "300000")
+
+	p := poh + u.Encode()
+
+	api.ClientRobot("POST", p, data)
+
 }
 
 func waitCreateOrder() bool {
