@@ -81,7 +81,7 @@ func returnDepth() string {
 	u.Add("filter", t)
 
 	for index := 1; ; index++ {
-		u.Add("start", strconv.Itoa(index))
+		u.Set("start", strconv.Itoa(index))
 
 		p := poh + u.Encode()
 		res := api.ClientRobot("GET", p, d)
