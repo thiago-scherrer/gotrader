@@ -80,7 +80,7 @@ func returnDepth() string {
 	u.Add("reverse", "false")
 	u.Add("filter", t)
 
-	for index := 0; ; index++ {
+	for index := 1; ; index++ {
 		u.Add("start", strconv.Itoa(index))
 
 		p := poh + u.Encode()
