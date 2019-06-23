@@ -58,7 +58,9 @@ func logicSystem(buy, sell int) string {
 func timeStamp() string {
 	ctm := rd.Candle()
 	t := time.Now().UTC().Add(time.Duration(-ctm) * time.Minute)
-	return t.Format("15:04")
+	date := t.Format("2006-01-02")
+	time := t.Format("15:04")
+	return `{"timestamp.date":"` + date + `" + "timestamp.minute":"` + time + `" }`
 }
 
 func returnDepth() string {
@@ -72,11 +74,10 @@ func returnDepth() string {
 
 	u := url.Values{}
 	u.Set("symbol", rd.Asset())
-	u.Add("binSize", "1m")
 	u.Add("partial", "false")
 	u.Add("count", "500")
 	u.Add("reverse", "false")
-	u.Add("filter", `{"timestamp.time":"`+t+`"}`)
+	u.Add("filter", t)
 
 	p := poh + u.Encode()
 	res := api.ClientRobot("GET", p, d)
