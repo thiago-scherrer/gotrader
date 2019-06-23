@@ -80,7 +80,7 @@ func returnDepth() string {
 	u.Add("reverse", "false")
 	u.Add("filter", t)
 
-	for index := 1; ; index++ {
+	for index := 1; index <= 60; index++ {
 		u.Set("start", strconv.Itoa(index))
 
 		p := poh + u.Encode()
@@ -98,6 +98,7 @@ func returnDepth() string {
 			}
 		}
 		fmt.Println("paginacao: ", index)
+		time.Sleep(time.Duration(1) * time.Second)
 
 	}
 	fmt.Println("paginacao")
