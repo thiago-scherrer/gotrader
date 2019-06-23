@@ -60,7 +60,7 @@ func timeStamp() string {
 	t := time.Now().UTC().Add(time.Duration(-ctm) * time.Minute)
 	date := t.Format("2006-01-02")
 	time := t.Format("15:04")
-	return `{"timestamp.date":"` + date + `"timestamp.minute":"` + time + `" }`
+	return `{"timestamp.date": "` + date + `, "timestamp.minute": "` + time + `" }`
 }
 
 func returnDepth() string {
