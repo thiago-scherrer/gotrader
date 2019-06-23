@@ -6,6 +6,7 @@ import (
 	"os"
 	"sync"
 
+	"github.com/thiago-scherrer/gotrader/internal/convert"
 	"github.com/thiago-scherrer/gotrader/internal/display"
 	"gopkg.in/yaml.v2"
 )
@@ -164,4 +165,9 @@ func APISimple() APIResponseComplex {
 func APIArray() []APIResponseComplex {
 	var ar []APIResponseComplex
 	return ar
+}
+
+// Data I can not be leave empty
+func Data() []byte {
+	return convert.StringToBytes("message=GoTrader bot&channelID=1")
 }

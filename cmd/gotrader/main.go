@@ -27,10 +27,11 @@ func daemonize() {
 	)
 
 	trd := logic.CandleRunner()
-	if trd == "Draw" {
+
+	if ctr.CreateOrder(trd) == false {
+		dp.OrderCancelMsg()
 		return
 	}
-	ctr.CreateOrder(trd)
 
 	if trd == "Buy" {
 		ctr.ClosePositionProfitBuy()
