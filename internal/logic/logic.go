@@ -22,7 +22,6 @@ const tdw = "Draw"
 // CandleRunner verify the api and start the logic system
 func CandleRunner() string {
 	t := rd.Threshold()
-	ctm := rd.Candle()
 	var tsl int
 	var cby int
 
@@ -35,7 +34,6 @@ func CandleRunner() string {
 		} else {
 			i = -1
 		}
-		time.Sleep(time.Duration(ctm) * time.Minute)
 	}
 
 	if cby > tsl {
