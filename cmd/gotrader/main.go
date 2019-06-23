@@ -28,11 +28,6 @@ func daemonize() {
 
 	trd := logic.CandleRunner()
 
-	if trd == "Draw" {
-		dp.OrderCancelMsg()
-		return
-	}
-
 	if ctr.CreateOrder(trd) == false {
 		dp.OrderCancelMsg()
 		return
