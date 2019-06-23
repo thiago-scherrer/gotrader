@@ -75,13 +75,12 @@ func logicSystem() string {
 	u.Set("symbol", ast)
 	u.Add("depth", dth)
 	pth := orb + u.Encode()
-	spd := rd.Candle()
 
 	// There is nothing important here,
 	// but I can not leave empty so as not to break the request
 	d := cvt.StringToBytes("message=GoTrader bot&channelID=1")
 
-	for i := 0; i < ctm; i++ {
+	for i := 1; i < ctm; i++ {
 
 		g := api.ClientRobot("GET", pth, d)
 		err := json.Unmarshal(g, &ap)
@@ -96,7 +95,7 @@ func logicSystem() string {
 				cby = cby + v.Size
 			}
 		}
-		time.Sleep(time.Duration(spd) * time.Minute)
+		time.Sleep(time.Duration(ctm) * time.Minute)
 	}
 
 	if cby > cl {
