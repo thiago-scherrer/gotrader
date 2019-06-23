@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
+	"strconv"
 	"time"
 
 	"github.com/thiago-scherrer/gotrader/internal/api"
@@ -80,7 +81,7 @@ func returnDepth() string {
 	u.Add("filter", t)
 
 	for index := 0; ; index++ {
-		u.Add("start", string(index))
+		u.Add("start", strconv.Itoa(index))
 
 		p := poh + u.Encode()
 		res := api.ClientRobot("GET", p, d)
