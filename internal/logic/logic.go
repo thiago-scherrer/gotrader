@@ -2,7 +2,6 @@ package logic
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/url"
 	"strconv"
 	"time"
@@ -22,17 +21,20 @@ const tdw = "Draw"
 // CandleRunner verify the api and start the logic system
 func CandleRunner() string {
 	t := rd.Threshold()
+	c := rd.Candle()
 	var tsl int
 	var cby int
 
 	for i := 0; i <= t; i++ {
-		res := returnDepth()
-		if res == tby {
-			cby++
-		} else if res == tll {
-			tsl++
-		} else {
-			i = -1
+		for i2 := 0; i2 <= c; i2++ {
+			res := returnDepth()
+			if res == tby {
+				cby++
+			} else if res == tll {
+				tsl++
+			} else {
+				i = -1
+			}
 		}
 	}
 
@@ -43,23 +45,6 @@ func CandleRunner() string {
 	}
 
 	return "Draw"
-}
-
-func logicSystem(buy, sell int) string {
-	if buy > sell {
-		return tby
-	} else if sell > buy {
-		return tll
-	}
-	return tdw
-}
-
-func timeStamp() string {
-	ctm := rd.Candle()
-	t := time.Now().UTC().Add(time.Duration(-ctm) * time.Minute)
-	date := t.Format("2006-01-02")
-	time := t.Format("15:04")
-	return `{"timestamp.date": "` + date + `", "timestamp.minute": "` + time + `" }`
 }
 
 func returnDepth() string {
@@ -95,10 +80,25 @@ func returnDepth() string {
 				buy = buy + v.Size
 			}
 		}
-		fmt.Println("paginacao: ", index)
 		time.Sleep(time.Duration(1) * time.Second)
 
 	}
-	fmt.Println("paginacao")
 	return logicSystem(buy, sell)
+}
+
+func timeStamp() string {
+	ctm := rd.Candle()
+	t := time.Now().UTC().Add(time.Duration(-ctm) * time.Minute)
+	date := t.Format("2006-01-02")
+	time := t.Format("15:04")
+	return `{"timestamp.date": "` + date + `", "timestamp.minute": "` + time + `" }`
+}
+
+func logicSystem(buy, sell int) string {
+	if buy > sell {
+		return tby
+	} else if sell > buy {
+		return tll
+	}
+	return tdw
 }
