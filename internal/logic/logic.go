@@ -56,7 +56,7 @@ func logicSystem(buy, sell int) string {
 func timeStamp() string {
 	ctm := rd.Candle()
 	t := time.Now().UTC().Add(time.Duration(-ctm) * time.Minute)
-	return t.Format("2006-01-02 15:04")
+	return t.Format("15:04")
 }
 
 func returnDepth() string {
@@ -74,7 +74,7 @@ func returnDepth() string {
 	u.Add("partial", "false")
 	u.Add("count", "500")
 	u.Add("reverse", "false")
-	u.Add("filter", `{"timestamp":"`+t+`"}`)
+	u.Add("filter", `{"timestamp.time":"`+t+`"}`)
 
 	p := poh + u.Encode()
 	res := api.ClientRobot("GET", p, d)
