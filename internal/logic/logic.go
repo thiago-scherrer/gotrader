@@ -2,7 +2,7 @@ package logic
 
 import (
 	"encoding/json"
-	"log"
+	"fmt"
 	"net/url"
 	"time"
 
@@ -79,20 +79,26 @@ func returnDepth() string {
 	u.Add("reverse", "false")
 	u.Add("filter", t)
 
-	p := poh + u.Encode()
-	res := api.ClientRobot("GET", p, d)
-	err := json.Unmarshal(res, &ap)
-	if err != nil {
-		log.Println("Error to get trade numbers:", err)
-		return "Draw"
-	}
+	for index := 0; ; index++ {
+		u.Add("start", string(index))
 
-	for _, v := range ap[:] {
-		if v.Side == tll {
-			sell = sell + v.Size
-		} else if v.Side == tby {
-			buy = buy + v.Size
+		p := poh + u.Encode()
+		res := api.ClientRobot("GET", p, d)
+		err := json.Unmarshal(res, &ap)
+		if err != nil {
+			break
 		}
+
+		for _, v := range ap[:] {
+			if v.Side == tll {
+				sell = sell + v.Size
+			} else if v.Side == tby {
+				buy = buy + v.Size
+			}
+		}
+		fmt.Println("paginacao: ", index)
+
 	}
+	fmt.Println("paginacao")
 	return logicSystem(buy, sell)
 }
