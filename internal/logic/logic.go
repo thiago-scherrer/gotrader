@@ -56,7 +56,7 @@ func logicSystem(buy, sell int) string {
 func timeStamp() string {
 	ctm := rd.Candle()
 	t := time.Now().UTC().Add(time.Duration(-ctm) * time.Minute)
-	return t.Format("2006-01-02 16:20")
+	return t.Format("2006-01-02 15:04")
 }
 
 func returnDepth() string {
