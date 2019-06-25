@@ -74,16 +74,18 @@ func returnDepth() string {
 			break
 		}
 
+		fmt.Println("olamundoooo: ", len(res))
+		if len(res) <= 5 {
+			break
+		}
+
 		for _, v := range ap[:] {
 			if v.Side == tll {
 				sell = sell + v.Size
 			} else if v.Side == tby {
 				buy = buy + v.Size
 			}
-			fmt.Println("olamundoooo: ", len(v.Side))
-			if len(v.Side) <= 1 {
-				break
-			}
+
 		}
 		time.Sleep(time.Duration(1) * time.Second)
 
