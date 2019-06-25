@@ -5,6 +5,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -63,7 +64,8 @@ func ClientRobot(requestType, path string, data []byte) []byte {
 		if err != nil {
 			log.Println("Error to send the request to the API bitmex, got: ", err)
 		}
-
+		// Log
+		fmt.Println("Request: ", req)
 		body, _ := ioutil.ReadAll(rsp.Body)
 
 		if rsp.StatusCode != 200 {
