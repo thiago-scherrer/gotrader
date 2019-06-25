@@ -79,6 +79,10 @@ func returnDepth() string {
 			} else if v.Side == tby {
 				buy = buy + v.Size
 			}
+
+			if len(v.Side) <= 1 {
+				break
+			}
 		}
 		time.Sleep(time.Duration(1) * time.Second)
 
