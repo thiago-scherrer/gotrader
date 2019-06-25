@@ -2,7 +2,6 @@ package logic
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/url"
 	"strconv"
 	"time"
@@ -26,8 +25,8 @@ func CandleRunner() string {
 	var tsl int
 	var cby int
 
-	for i := 0; i <= t; i++ {
-		for i2 := 0; i2 <= c; i2++ {
+	for i := 0; i < t; i++ {
+		for ii := 0; ii < c; ii++ {
 			res := returnDepth()
 			if res == tby {
 				cby++
@@ -74,7 +73,6 @@ func returnDepth() string {
 			break
 		}
 
-		fmt.Println("olamundoooo: ", len(res))
 		if len(res) <= 5 {
 			break
 		}

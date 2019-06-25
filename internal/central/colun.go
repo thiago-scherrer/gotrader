@@ -184,7 +184,7 @@ func CreateOrder(typeOrder string) bool {
 	orderTimeOut()
 	makeOrder(typeOrder)
 
-	for i := 0; i <= 5; i++ {
+	for i := 0; i < 3; i++ {
 		if waitCreateOrder() {
 			log.Println(dpl.OrderCreatedMsg(rd.Asset(), typeOrder))
 			api.MatrixSend(dpl.OrderCreatedMsg(rd.Asset(), typeOrder))
@@ -208,15 +208,12 @@ func orderTimeOut() {
 }
 
 func waitCreateOrder() bool {
-
-	for {
-		if statusOrder() == true {
-			log.Println(dpl.OrderDoneMsg(rd.Asset()))
-			api.MatrixSend(dpl.OrderDoneMsg(rd.Asset()))
-			return true
-		}
-		time.Sleep(time.Duration(10) * time.Second)
+	if statusOrder() == true {
+		log.Println(dpl.OrderDoneMsg(rd.Asset()))
+		api.MatrixSend(dpl.OrderDoneMsg(rd.Asset()))
+		return true
 	}
+	return false
 }
 
 // ClosePositionProfitBuy the Buy pst
