@@ -2,6 +2,7 @@ package logic
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/url"
 	"strconv"
 	"time"
@@ -79,7 +80,7 @@ func returnDepth() string {
 			} else if v.Side == tby {
 				buy = buy + v.Size
 			}
-
+			fmt.Println("olamundoooo: ", len(v.Side))
 			if len(v.Side) <= 1 {
 				break
 			}
