@@ -43,8 +43,7 @@ And Don't panic!
 
 Go to the config folder and then, copy **config-example.yml** to the **config.yml**. Add your settings to the file and then, go back to the root dir and run *docker-compose*:
 
-This bot comes with a standard logic, modify logic in **logic/logic.go**.
-Other logics can be found in **example/** folder.
+Go to the **example/** folder and then, choose or create a strategy and modify with your trade strategies and, after this, copy the file like **logic-short-trade.go** to the folder **internal/logic** with the name **logic.go**. Go back to the root dir and run *docker-compose*:
 
 ```bash
 docker-compose build
