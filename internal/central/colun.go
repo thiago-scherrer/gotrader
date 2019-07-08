@@ -2,7 +2,6 @@ package central
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/url"
 	"time"
@@ -57,7 +56,7 @@ func makeOrder(orderType string) string {
 	ap := rd.APISimple()
 	hfl := cvt.IntToString(rd.Hand())
 	ast := rd.Asset()
-	prc := cvt.FloatToString(price())
+	prc := cvt.FloatToString(Price())
 	rtp := "POST"
 
 	u := url.Values{}
@@ -99,7 +98,8 @@ func GetPosition() float64 {
 	return r
 }
 
-func price() float64 {
+// Price return the actual asset price
+func Price() float64 {
 	ast := rd.Asset()
 
 	u := url.Values{}
@@ -115,25 +115,11 @@ func price() float64 {
 	return lastPrice(g)
 }
 
-// ClosePositionBuy show the value to close position (sell)
-func ClosePositionBuy(pst float64, profit float64) bool {
-	return price() >= (pst + ((pst / 100) * profit))
-}
-
-// ClosePositionSell show the value to close position (buy)
-func ClosePositionSell(pst float64, profit float64) bool {
-	return price() <= (pst - ((pst / 100) * profit))
-}
-
 // ClosePosition close all opened position
-func ClosePosition(profit float64) string {
+func ClosePosition(priceClose string) string {
 	ast := rd.Asset()
 	path := oph
 	rtp := "POST"
-	pst := GetPosition()
-	priceClose := fmt.Sprintf("%2.f",
-		(pst + ((pst / 100) * profit)),
-	)
 
 	u := url.Values{}
 	u.Set("symbol", ast)

@@ -2,6 +2,7 @@ package logic
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/url"
 	"strconv"
@@ -114,12 +115,29 @@ func logicSystem(buy, sell int) string {
 	return tdw
 }
 
+func closePositionBuy(pst float64, profit float64) bool {
+	return central.Price() >= (pst + ((pst / 100) * profit))
+}
+
+func closePositionSell(pst float64, profit float64) bool {
+	return central.Price() <= (pst - ((pst / 100) * profit))
+}
+
+func priceClose() string {
+	pst := central.GetPosition()
+	priceClose := fmt.Sprintf("%2.f",
+		(pst + ((pst / 100) * profit)),
+	)
+	return priceClose
+}
+
 // ClosePositionProfitBuy the Buy position
 func ClosePositionProfitBuy() bool {
 	pst := central.GetPosition()
 
 	for {
-		if central.ClosePositionBuy(pst, profit) {
+		if closePositionBuy(pst, profit) {
+			profit := priceClose()
 			log.Println(display.OrdertriggerMsg(rd.Asset()))
 			api.MatrixSend(display.OrdertriggerMsg(rd.Asset()))
 			central.ClosePosition(profit)
@@ -134,7 +152,8 @@ func ClosePositionProfitSell() bool {
 	pst := central.GetPosition()
 
 	for {
-		if central.ClosePositionSell(pst, profit) {
+		if closePositionSell(pst, profit) {
+			profit := priceClose()
 			log.Println(display.OrdertriggerMsg(rd.Asset()))
 			api.MatrixSend(display.OrdertriggerMsg(rd.Asset()))
 			central.ClosePosition(profit)
