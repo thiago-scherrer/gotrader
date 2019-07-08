@@ -118,22 +118,6 @@ func Test_leverage(t *testing.T) {
 	}
 }
 
-func Test_profit(t *testing.T) {
-	tests := []struct {
-		name string
-		want float64
-	}{
-		{"Test", 1},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := Profit(); got != tt.want {
-				t.Errorf("profit() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func Test_secret(t *testing.T) {
 	tests := []struct {
 		name string

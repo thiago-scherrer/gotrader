@@ -9,7 +9,7 @@ import (
 
 	"github.com/thiago-scherrer/gotrader/internal/api"
 	cvt "github.com/thiago-scherrer/gotrader/internal/convert"
-	dpl "github.com/thiago-scherrer/gotrader/internal/display"
+	"github.com/thiago-scherrer/gotrader/internal/display"
 	rd "github.com/thiago-scherrer/gotrader/internal/reader"
 )
 
@@ -80,7 +80,8 @@ func makeOrder(orderType string) string {
 	}
 }
 
-func getPosition() float64 {
+// GetPosition get the actual open possitions
+func GetPosition() float64 {
 	ap := rd.APIArray()
 	var r float64
 	pth := poh + `filter={"symbol":"` + rd.Asset() + `"}&count=1`
@@ -114,21 +115,25 @@ func price() float64 {
 	return lastPrice(g)
 }
 
-func closePositionBuy(pst float64) bool {
-	return price() >= (pst + ((pst / 100) * rd.Profit()))
+// ClosePositionBuy show the value to close position (sell)
+func ClosePositionBuy(pst float64, profit float64) bool {
+	return price() >= (pst + ((pst / 100) * profit))
 }
 
-func closePositionSell(pst float64) bool {
-	return price() <= (pst - ((pst / 100) * rd.Profit()))
+// ClosePositionSell show the value to close position (buy)
+func ClosePositionSell(pst float64, profit float64) bool {
+	return price() <= (pst - ((pst / 100) * profit))
 }
 
-func closePosition() string {
+// ClosePosition close all opened position
+func ClosePosition(profit float64) string {
 	ast := rd.Asset()
 	path := oph
 	rtp := "POST"
-	pst := getPosition()
-	priceClose := fmt.Sprintf("%2.f", (pst +
-		((pst / 100) * rd.Profit())))
+	pst := GetPosition()
+	priceClose := fmt.Sprintf("%2.f",
+		(pst + ((pst / 100) * profit)),
+	)
 
 	u := url.Values{}
 	u.Set("symbol", ast)
@@ -152,8 +157,8 @@ func setLeverge() {
 	data := cvt.StringToBytes(u.Encode())
 
 	api.ClientRobot(rtp, path, data)
-	log.Println(dpl.SetleverageMsg(rd.Asset(), l))
-	api.MatrixSend(dpl.SetleverageMsg(rd.Asset(), l))
+	log.Println(display.SetleverageMsg(rd.Asset(), l))
+	api.MatrixSend(display.SetleverageMsg(rd.Asset(), l))
 
 }
 
@@ -186,8 +191,8 @@ func CreateOrder(typeOrder string) bool {
 
 	for i := 0; i < 3; i++ {
 		if waitCreateOrder() {
-			log.Println(dpl.OrderCreatedMsg(rd.Asset(), typeOrder))
-			api.MatrixSend(dpl.OrderCreatedMsg(rd.Asset(), typeOrder))
+			log.Println(display.OrderCreatedMsg(rd.Asset(), typeOrder))
+			api.MatrixSend(display.OrderCreatedMsg(rd.Asset(), typeOrder))
 			return true
 		}
 		time.Sleep(time.Duration(1) * time.Minute)
@@ -209,52 +214,22 @@ func orderTimeOut() {
 
 func waitCreateOrder() bool {
 	if statusOrder() == true {
-		log.Println(dpl.OrderDoneMsg(rd.Asset()))
-		api.MatrixSend(dpl.OrderDoneMsg(rd.Asset()))
+		log.Println(display.OrderDoneMsg(rd.Asset()))
+		api.MatrixSend(display.OrderDoneMsg(rd.Asset()))
 		return true
 	}
 	return false
 }
 
-// ClosePositionProfitBuy the Buy pst
-func ClosePositionProfitBuy() bool {
-	pst := getPosition()
-
-	for {
-		if closePositionBuy(pst) {
-			log.Println(dpl.OrdertriggerMsg(rd.Asset()))
-			api.MatrixSend(dpl.OrdertriggerMsg(rd.Asset()))
-			closePosition()
-			return true
-		}
-		time.Sleep(time.Duration(10) * time.Second)
-	}
-}
-
-// ClosePositionProfitSell cloe the Buy position
-func ClosePositionProfitSell() bool {
-	pst := getPosition()
-
-	for {
-		if closePositionSell(pst) {
-			log.Println(dpl.OrdertriggerMsg(rd.Asset()))
-			api.MatrixSend(dpl.OrdertriggerMsg(rd.Asset()))
-			closePosition()
-			return true
-		}
-		time.Sleep(time.Duration(10) * time.Second)
-	}
-}
-
 // GetProfit waint to start a new trade round
 func GetProfit() bool {
-	log.Println(dpl.OrderWaintMsg(rd.Asset()))
-	api.MatrixSend(dpl.OrderWaintMsg(rd.Asset()))
+	log.Println(display.OrderWaintMsg(rd.Asset()))
+	api.MatrixSend(display.OrderWaintMsg(rd.Asset()))
 
 	for {
 		if statusOrder() == false {
-			log.Println(dpl.ProfitMsg(rd.Asset()))
-			api.MatrixSend(dpl.ProfitMsg(rd.Asset()))
+			log.Println(display.ProfitMsg(rd.Asset()))
+			api.MatrixSend(display.ProfitMsg(rd.Asset()))
 			time.Sleep(time.Duration(tlp) * time.Second)
 			return true
 		}

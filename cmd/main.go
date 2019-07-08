@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/thiago-scherrer/gotrader/internal/api"
-	ctr "github.com/thiago-scherrer/gotrader/internal/central"
+	"github.com/thiago-scherrer/gotrader/internal/central"
 	dp "github.com/thiago-scherrer/gotrader/internal/display"
 	"github.com/thiago-scherrer/gotrader/internal/logic"
 	rd "github.com/thiago-scherrer/gotrader/internal/reader"
@@ -33,15 +33,15 @@ func daemonize() {
 		return
 	}
 
-	if ctr.CreateOrder(trd) == false {
+	if central.CreateOrder(trd) == false {
 		dp.OrderCancelMsg()
 		return
 	}
 
 	if trd == "Buy" {
-		ctr.ClosePositionProfitBuy()
-	} else {
-		ctr.ClosePositionProfitSell()
+		logic.ClosePositionProfitBuy()
+	} else if trd == "Sell" {
+		logic.ClosePositionProfitSell()
 	}
-	ctr.GetProfit()
+	central.GetProfit()
 }
