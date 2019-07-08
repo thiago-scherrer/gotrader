@@ -76,7 +76,7 @@ wget https://raw.githubusercontent.com/thiago-scherrer/gotrader/master/configs/c
 Get the bot:
 
 ```bash
-go get github.com/thiago-scherrer/gotrader/cmd/gotrader
+go get github.com/thiago-scherrer/gotrader/cmd/
 ```
 
 Run the bot like:
@@ -92,7 +92,6 @@ The acual logic can be changed on *internal/logic/*.
 ## TO-DO
 
 - [ ] best log control
-- [ ] cancel an order that has not been executed for X time
 - [ ] more documentation
 
 ## References
