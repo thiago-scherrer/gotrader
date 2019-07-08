@@ -43,6 +43,9 @@ And Don't panic!
 
 Go to the config folder and then, copy **config-example.yml** to the **config.yml**. Add your settings to the file and then, go back to the root dir and run *docker-compose*:
 
+This bot comes with a standard logic, modify logic in **logic/logic.go**.
+Other logics can be found in **example/** folder.
+
 ```bash
 docker-compose build
 ```
