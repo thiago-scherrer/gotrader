@@ -58,19 +58,19 @@ func ClientRobot(requestType, path string, data []byte) []byte {
 		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 		req.Header.Set("Accept", "application/json")
 		req.Header.Set("User-Agent", "gotrader-r0b0tnull")
-
-		rsp, err := cl.Do(req)
-		if err != nil {
-			log.Println("Error to send the request to the API bitmex, got: ", err)
-		}
-		body, _ := ioutil.ReadAll(rsp.Body)
-		if rsp.StatusCode != 200 {
-			log.Println("Bitmex API Status code are: ", rsp.StatusCode)
-			log.Println("Body: ", convert.BytesToString(body))
-
-			time.Sleep(time.Duration(60) * time.Second)
-		} else {
-			return body
+		for index := 0; index < 5; index++ {
+			rsp, err := cl.Do(req)
+			if err != nil {
+				log.Println("Error to send the request to the API bitmex, got: ", err)
+			}
+			body, _ := ioutil.ReadAll(rsp.Body)
+			if rsp.StatusCode != 200 {
+				log.Println("Bitmex API Status code are: ", rsp.StatusCode)
+				log.Println("Body: ", convert.BytesToString(body))
+				time.Sleep(time.Duration(60) * time.Second)
+			} else {
+				return body
+			}
 		}
 	}
 }

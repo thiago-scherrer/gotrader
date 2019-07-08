@@ -10,6 +10,7 @@ import (
 
 	"github.com/thiago-scherrer/gotrader/internal/api"
 	"github.com/thiago-scherrer/gotrader/internal/central"
+	"github.com/thiago-scherrer/gotrader/internal/convert"
 	"github.com/thiago-scherrer/gotrader/internal/display"
 	rd "github.com/thiago-scherrer/gotrader/internal/reader"
 )
@@ -17,8 +18,11 @@ import (
 // Path from api to view the orderbook
 const orb string = "/api/v1/orderBook/L2?"
 
-// Profit porcentage value to exit the trader
+// Profit percentage value to exit the trader
 const profit float64 = 0.60
+
+// Stop loss percentage value to close the trade
+const stopLoss float64 = 3.5
 
 // Return types to Buy
 const tby = "Buy"
@@ -115,11 +119,19 @@ func logicSystem(buy, sell int) string {
 	return tdw
 }
 
-func closePositionBuy(pst float64, profit float64) bool {
+func stopLossBuy(pst float64) bool {
+	return central.Price() <= (pst + ((pst / 100) * stopLoss))
+}
+
+func stopLossSell(pst float64) bool {
+	return central.Price() >= (pst + ((pst / 100) * stopLoss))
+}
+
+func closePositionBuy(pst float64) bool {
 	return central.Price() >= (pst + ((pst / 100) * profit))
 }
 
-func closePositionSell(pst float64, profit float64) bool {
+func closePositionSell(pst float64) bool {
 	return central.Price() <= (pst - ((pst / 100) * profit))
 }
 
@@ -136,11 +148,17 @@ func ClosePositionProfitBuy() bool {
 	pst := central.GetPosition()
 
 	for {
-		if closePositionBuy(pst, profit) {
+		if closePositionBuy(pst) {
 			profitTarget := priceClose()
 			log.Println(display.OrdertriggerMsg(rd.Asset()))
 			api.MatrixSend(display.OrdertriggerMsg(rd.Asset()))
 			central.ClosePosition(profitTarget)
+			return true
+		} else if stopLossBuy(pst) {
+			log.Println(display.StopLossMsg(rd.Asset()))
+			api.MatrixSend(display.StopLossMsg(rd.Asset()))
+			lossTarget := convert.FloatToString(central.Price())
+			central.ClosePosition(lossTarget)
 			return true
 		}
 		time.Sleep(time.Duration(10) * time.Second)
@@ -152,11 +170,17 @@ func ClosePositionProfitSell() bool {
 	pst := central.GetPosition()
 
 	for {
-		if closePositionSell(pst, profit) {
+		if closePositionSell(pst) {
 			profitTarget := priceClose()
 			log.Println(display.OrdertriggerMsg(rd.Asset()))
 			api.MatrixSend(display.OrdertriggerMsg(rd.Asset()))
 			central.ClosePosition(profitTarget)
+			return true
+		} else if stopLossSell(pst) {
+			log.Println(display.StopLossMsg(rd.Asset()))
+			api.MatrixSend(display.StopLossMsg(rd.Asset()))
+			lossTarget := convert.FloatToString(central.Price())
+			central.ClosePosition(lossTarget)
 			return true
 		}
 		time.Sleep(time.Duration(10) * time.Second)

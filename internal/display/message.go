@@ -40,6 +40,11 @@ func OrderWaintMsg(a string) string {
 	return " " + a + " - Waiting to get order fulfilled..."
 }
 
+//StopLossMsg show stop loss msg
+func StopLossMsg(a string) string {
+	return " " + a + " - Stop Loss trigged!"
+}
+
 // ProfitMsg display msg  when the trade get profit
 func ProfitMsg(a string) string {
 	return " " + a + " - Profit done!"
