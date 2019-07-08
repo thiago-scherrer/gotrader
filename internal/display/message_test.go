@@ -5,7 +5,7 @@ import (
 )
 
 func TestUsageMsg(t *testing.T) {
-	if UsageMsg() != "Config not found! Usage: config config.yml" {
+	if UsageMsg() != "Config not found! Usage: gotrader config some_config.yml" {
 		t.Error("error to get usage msg, got:", UsageMsg())
 	}
 }

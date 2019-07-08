@@ -7,7 +7,7 @@ func HelloMsg(a string) string {
 
 // UsageMsg display a basic msg when not found the config file
 func UsageMsg() string {
-	return "Config not found! Usage: config config.yml"
+	return "Config not found! Usage: gotrader config some_config.yml"
 }
 
 // SetleverageMsg display set the l
