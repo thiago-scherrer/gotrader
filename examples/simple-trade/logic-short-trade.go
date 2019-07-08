@@ -120,11 +120,13 @@ func logicSystem(buy, sell int) string {
 }
 
 func stopLossBuy(pst float64) bool {
-	return central.Price() <= (pst + ((pst / 100) * stopLoss))
+	actualPrice := central.Price()
+	return pst <= (actualPrice - ((actualPrice / 100) * stopLoss))
 }
 
 func stopLossSell(pst float64) bool {
-	return central.Price() >= (pst + ((pst / 100) * stopLoss))
+	actualPrice := central.Price()
+	return pst >= (actualPrice + ((actualPrice / 100) * stopLoss))
 }
 
 func closePositionBuy(pst float64) bool {
