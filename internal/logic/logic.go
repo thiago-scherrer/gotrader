@@ -137,10 +137,10 @@ func ClosePositionProfitBuy() bool {
 
 	for {
 		if closePositionBuy(pst, profit) {
-			profit := priceClose()
+			profitTarget := priceClose()
 			log.Println(display.OrdertriggerMsg(rd.Asset()))
 			api.MatrixSend(display.OrdertriggerMsg(rd.Asset()))
-			central.ClosePosition(profit)
+			central.ClosePosition(profitTarget)
 			return true
 		}
 		time.Sleep(time.Duration(10) * time.Second)
@@ -153,10 +153,10 @@ func ClosePositionProfitSell() bool {
 
 	for {
 		if closePositionSell(pst, profit) {
-			profit := priceClose()
+			profitTarget := priceClose()
 			log.Println(display.OrdertriggerMsg(rd.Asset()))
 			api.MatrixSend(display.OrdertriggerMsg(rd.Asset()))
-			central.ClosePosition(profit)
+			central.ClosePosition(profitTarget)
 			return true
 		}
 		time.Sleep(time.Duration(10) * time.Second)
