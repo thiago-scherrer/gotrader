@@ -126,10 +126,15 @@ func ClosePosition(priceClose string) string {
 	u.Add("execInst", "Close")
 	u.Add("price", priceClose)
 	u.Add("ordType", "Limit")
-	data := cvt.StringToBytes(u.Encode())
-	glt := api.ClientRobot(rtp, path, data)
 
-	return cvt.BytesToString(glt)
+	data := cvt.StringToBytes(u.Encode())
+
+	for {
+		glt := api.ClientRobot(rtp, path, data)
+		if statusOrder() == true {
+			return cvt.BytesToString(glt)
+		}
+	}
 }
 
 func setLeverge() {
@@ -176,7 +181,7 @@ func CreateOrder(typeOrder string) bool {
 	makeOrder(typeOrder)
 
 	for i := 0; i < 3; i++ {
-		if waitCreateOrder() {
+		if statusOrder() {
 			log.Println(display.OrderCreatedMsg(rd.Asset(), typeOrder))
 			api.MatrixSend(display.OrderCreatedMsg(rd.Asset(), typeOrder))
 			return true
@@ -196,15 +201,6 @@ func orderTimeOut() {
 	p := poh + u.Encode()
 	api.ClientRobot("POST", p, data)
 
-}
-
-func waitCreateOrder() bool {
-	if statusOrder() == true {
-		log.Println(display.OrderDoneMsg(rd.Asset()))
-		api.MatrixSend(display.OrderDoneMsg(rd.Asset()))
-		return true
-	}
-	return false
 }
 
 // GetProfit waint to start a new trade round
