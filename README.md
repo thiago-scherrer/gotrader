@@ -15,11 +15,11 @@ Project to create a trade bot for bitmex trade platform.
 
 ## How it works
 
-This robot still under construction. Its purpose is to automate a rule created by the trader. It's not a money machine ...
+This bot still under construction. Its purpose is to automate a rule created by the trader. It's not a money machine ...
 
 ## Caution
 
-This robot does not guarantee anything, it may not even work properly. You can lose money with it! Test the robo in the test network first.
+This bot does not guarantee anything, it may not even work properly. You can lose money with it! Test the gotrader bot in the test network first!
 
 You have been warned.
 
@@ -61,7 +61,7 @@ You can see the logs with *docker logs* command, like:
 docker logs -f gotrader_runner_1
 ```
 
-To stop the robot, run:
+To stop the bot, run:
 
 ```bash
 docker-compose down
