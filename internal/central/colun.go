@@ -116,7 +116,7 @@ func Price() float64 {
 }
 
 // ClosePosition close all opened position
-func ClosePosition(priceClose string) string {
+func ClosePosition(priceClose string) {
 	ast := rd.Asset()
 	path := oph
 	rtp := "POST"
@@ -128,8 +128,10 @@ func ClosePosition(priceClose string) string {
 	u.Add("ordType", "Limit")
 
 	data := cvt.StringToBytes(u.Encode())
-	glt := api.ClientRobot(rtp, path, data)
-	return cvt.BytesToString(glt)
+	for index := 0; index < 3; index++ {
+		api.ClientRobot(rtp, path, data)
+		time.Sleep(time.Duration(5) * time.Second)
+	}
 
 }
 
