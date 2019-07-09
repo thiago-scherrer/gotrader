@@ -128,13 +128,13 @@ func ClosePosition(priceClose string) string {
 	u.Add("ordType", "Limit")
 
 	data := cvt.StringToBytes(u.Encode())
-
-	for {
-		glt := api.ClientRobot(rtp, path, data)
-		if waitCreateOrder() {
-			return cvt.BytesToString(glt)
-		}
+	var glt []byte
+	for index := 0; index < 3; index++ {
+		glt = api.ClientRobot(rtp, path, data)
+		time.Sleep(time.Duration(15) * time.Second)
 	}
+	return cvt.BytesToString(glt)
+
 }
 
 func setLeverge() {
