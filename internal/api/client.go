@@ -58,20 +58,28 @@ func ClientRobot(requestType, path string, data []byte) []byte {
 		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 		req.Header.Set("Accept", "application/json")
 		req.Header.Set("User-Agent", "gotrader-r0b0tnull")
-		for index := 0; index < 5; index++ {
-			rsp, err := cl.Do(req)
-			if err != nil {
-				log.Println("Error to send the request to the API bitmex, got: ", err)
-			}
-			body, _ := ioutil.ReadAll(rsp.Body)
-			if rsp.StatusCode != 200 {
-				log.Println("Bitmex API Status code are: ", rsp.StatusCode)
-				log.Println("Body: ", convert.BytesToString(body))
-				time.Sleep(time.Duration(60) * time.Second)
-			} else {
-				return body
-			}
+		rsp, err := cl.Do(req)
+		if err != nil {
+			log.Println("Error to send the request to the API bitmex, got: ", err)
 		}
+		body, _ := ioutil.ReadAll(rsp.Body)
+		if rsp.StatusCode == 503 {
+			log.Println("The bitmex system is currently overloaded: ", rsp.StatusCode)
+			log.Println("Body: ", convert.BytesToString(body))
+			time.Sleep(time.Duration(15) * time.Second)
+		} else if rsp.StatusCode == 502 {
+			log.Println("The bitmex API is down: ", rsp.StatusCode)
+			log.Println("Body: ", convert.BytesToString(body))
+			time.Sleep(time.Duration(15) * time.Second)
+		} else if rsp.StatusCode == 400 {
+			log.Println("Something wrong was sent:: ", rsp.StatusCode)
+			log.Println("Url: ", url)
+			log.Println("Data: ", convert.BytesToString(data))
+			return body
+		} else {
+			return body
+		}
+
 	}
 }
 
