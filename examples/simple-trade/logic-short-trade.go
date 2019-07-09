@@ -19,10 +19,10 @@ import (
 const orb string = "/api/v1/orderBook/L2?"
 
 // Profit percentage value to exit the trader
-const profit float64 = 0.60
+const profit float64 = 0.02
 
 // Stop loss percentage value to close the trade
-const stopLoss float64 = 3.5
+const stopLoss float64 = 0.1
 
 // Return types to Buy
 const tby = "Buy"
@@ -121,12 +121,12 @@ func logicSystem(buy, sell int) string {
 
 func stopLossBuy(pst float64) bool {
 	actualPrice := central.Price()
-	return pst <= (actualPrice - ((actualPrice / 100) * stopLoss))
+	return actualPrice <= (pst - ((pst / 100) * stopLoss))
 }
 
 func stopLossSell(pst float64) bool {
 	actualPrice := central.Price()
-	return pst >= (actualPrice + ((actualPrice / 100) * stopLoss))
+	return actualPrice >= (pst + ((pst / 100) * stopLoss))
 }
 
 func closePositionBuy(pst float64) bool {
