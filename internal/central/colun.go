@@ -181,7 +181,7 @@ func CreateOrder(typeOrder string) bool {
 	makeOrder(typeOrder)
 
 	for i := 0; i < 3; i++ {
-		if statusOrder() {
+		if waitCreateOrder() {
 			log.Println(display.OrderCreatedMsg(rd.Asset(), typeOrder))
 			api.MatrixSend(display.OrderCreatedMsg(rd.Asset(), typeOrder))
 			return true
@@ -191,12 +191,21 @@ func CreateOrder(typeOrder string) bool {
 	return false
 }
 
+func waitCreateOrder() bool {
+	if statusOrder() == true {
+		log.Println(display.OrderDoneMsg(rd.Asset()))
+		api.MatrixSend(display.OrderDoneMsg(rd.Asset()))
+		return true
+	}
+	return false
+}
+
 func orderTimeOut() {
 	poh := "/api/v1/order/cancelAllAfter?"
 	data := cvt.StringToBytes("message=GoTrader bot&channelID=1")
 
 	u := url.Values{}
-	u.Set("timeout", "300000")
+	u.Set("timeout", "120000")
 
 	p := poh + u.Encode()
 	api.ClientRobot("POST", p, data)
