@@ -131,7 +131,7 @@ func ClosePosition(priceClose string) string {
 
 	for {
 		glt := api.ClientRobot(rtp, path, data)
-		if statusOrder() == true {
+		if waitCreateOrder() {
 			return cvt.BytesToString(glt)
 		}
 	}
