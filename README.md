@@ -89,7 +89,7 @@ $GOPATH/bin/gotrader config config.yml
 
 ## Logic
 
-The acual logic can be changed on *internal/logic/*.
+The acual logic can be changed on *internal/logic/*. A simple example can be found on *examples/*.
 
 ## TO-DO
 
