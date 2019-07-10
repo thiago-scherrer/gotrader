@@ -158,9 +158,9 @@ func priceCloseSell(pst float64) string {
 // ClosePositionProfitBuy the Buy position
 func ClosePositionProfitBuy() bool {
 	pst := central.GetPosition()
-	price := central.Price()
 
 	for {
+		price := central.Price()
 		if closePositionBuy(pst, price) {
 			profitTarget := priceCloseBuy(pst)
 			log.Println(display.OrdertriggerMsg(rd.Asset()))
@@ -181,9 +181,9 @@ func ClosePositionProfitBuy() bool {
 // ClosePositionProfitSell close the Sell position
 func ClosePositionProfitSell() bool {
 	pst := central.GetPosition()
-	price := central.Price()
 
 	for {
+		price := central.Price()
 		if closePositionSell(pst, price) {
 			profitTarget := priceCloseSell(pst)
 			log.Println(display.OrdertriggerMsg(rd.Asset()))
