@@ -81,7 +81,7 @@ func returnDepth() string {
 		res, code := api.ClientRobot("GET", p, d)
 
 		if code != 200 {
-			log.Println("Something wrong with api:", code, "Response: ", res)
+			log.Println("Something wrong with api:", code, "Response: ", convert.BytesToString(res))
 			time.Sleep(time.Duration(2) * time.Second)
 		}
 

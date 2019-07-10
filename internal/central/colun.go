@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/thiago-scherrer/gotrader/internal/api"
+	"github.com/thiago-scherrer/gotrader/internal/convert"
 	cvt "github.com/thiago-scherrer/gotrader/internal/convert"
 	"github.com/thiago-scherrer/gotrader/internal/display"
 	rd "github.com/thiago-scherrer/gotrader/internal/reader"
@@ -82,7 +83,7 @@ func makeOrder(orderType string) string {
 				return ap.OrderID
 			}
 		} else {
-			log.Println("Something wrong with api:", code, "Response: ", glt)
+			log.Println("Something wrong with api:", code, "Response: ", convert.BytesToString(glt))
 			time.Sleep(time.Duration(elp) * time.Second)
 		}
 	}
@@ -107,7 +108,7 @@ func GetPosition() float64 {
 				break
 			}
 		} else {
-			log.Println("Something wrong with api:", code, "Response: ", glt)
+			log.Println("Something wrong with api:", code, "Response: ", convert.BytesToString(glt))
 			time.Sleep(time.Duration(elp) * time.Second)
 		}
 	}
@@ -136,7 +137,7 @@ func Price() float64 {
 		if code == 200 {
 			break
 		} else {
-			log.Println("Something wrong with api:", code, "Response: ", g)
+			log.Println("Something wrong with api:", code, "Response: ", convert.BytesToString(g))
 			time.Sleep(time.Duration(elp) * time.Second)
 		}
 	}
@@ -162,7 +163,7 @@ func ClosePosition(priceClose string) {
 		if code == 200 {
 			break
 		} else {
-			log.Println("Something wrong with api:", code, "Response: ", g)
+			log.Println("Something wrong with api:", code, "Response: ", convert.BytesToString(g))
 			time.Sleep(time.Duration(elp) * time.Second)
 		}
 	}
@@ -193,7 +194,7 @@ func statusOrder() bool {
 		if code == 200 {
 			return opening(glt)
 		}
-		log.Println("Something wrong with api:", code, "Response: ", glt)
+		log.Println("Something wrong with api:", code, "Response: ", convert.BytesToString(glt))
 		time.Sleep(time.Duration(elp) * time.Second)
 	}
 }
