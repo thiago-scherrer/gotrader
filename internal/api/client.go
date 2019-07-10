@@ -36,7 +36,7 @@ func timeStamp() int64 {
 	return timestamp
 }
 
-// ClientRobot are the curl from the bot
+// ClientRobot make all request to the bitmex API
 func ClientRobot(requestType, path string, data []byte) ([]byte, int) {
 	cl := &http.Client{}
 	ep := reader.Endpoint()
