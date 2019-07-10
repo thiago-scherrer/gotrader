@@ -64,25 +64,6 @@ func ClientRobot(requestType, path string, data []byte) ([]byte, int) {
 	body, _ := ioutil.ReadAll(rsp.Body)
 
 	return body, rsp.StatusCode
-
-	/*
-		if rsp.StatusCode == 503 {
-			log.Println("The bitmex system is currently overloaded: ", rsp.StatusCode)
-			log.Println("Body: ", convert.BytesToString(body))
-			time.Sleep(time.Duration(15) * time.Second)
-		} else if rsp.StatusCode == 502 {
-			log.Println("The bitmex API is down: ", rsp.StatusCode)
-			log.Println("Body: ", convert.BytesToString(body))
-			time.Sleep(time.Duration(15) * time.Second)
-		} else if rsp.StatusCode == 400 {
-			log.Println("Something wrong was sent:: ", rsp.StatusCode)
-			log.Println("Url: ", url)
-			log.Println("Data: ", convert.BytesToString(data))
-			return body
-		} else {
-			return body
-		}
-	*/
 }
 
 // MatrixSend send a msg to the user on settings
