@@ -48,7 +48,7 @@ func ClientRobot(requestType, path string, data []byte) ([]byte, int) {
 
 	req, err := http.NewRequest(requestType, url, bytes.NewBuffer(data))
 	if err != nil {
-		log.Println("Error create a request on bitmex, got: ", err)
+		log.Println("Error create a request, got: ", err)
 	}
 
 	req.Header.Set("api-signature", hex)
