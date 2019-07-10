@@ -78,7 +78,13 @@ func returnDepth() string {
 		u.Set("start", strconv.Itoa(index))
 
 		p := poh + u.Encode()
-		res := api.ClientRobot("GET", p, d)
+		res, code := api.ClientRobot("GET", p, d)
+
+		if code != 200 {
+			log.Println("Something wrong with api:", code, "Response: ", res)
+			time.Sleep(time.Duration(2) * time.Second)
+		}
+
 		err := json.Unmarshal(res, &ap)
 		if err != nil {
 			break

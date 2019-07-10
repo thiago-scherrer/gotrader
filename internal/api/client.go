@@ -37,32 +37,35 @@ func timeStamp() int64 {
 }
 
 // ClientRobot are the curl from the bot
-func ClientRobot(requestType, path string, data []byte) []byte {
-	for {
-		cl := &http.Client{}
-		ep := reader.Endpoint()
-		sq := reader.Secret()
-		uid := reader.Userid()
-		exp := convert.IntToString((timeExpired()))
-		hex := hexCreator(sq, requestType, path, exp, convert.BytesToString(data))
-		url := ep + path
+func ClientRobot(requestType, path string, data []byte) ([]byte, int) {
+	cl := &http.Client{}
+	ep := reader.Endpoint()
+	sq := reader.Secret()
+	uid := reader.Userid()
+	exp := convert.IntToString((timeExpired()))
+	hex := hexCreator(sq, requestType, path, exp, convert.BytesToString(data))
+	url := ep + path
 
-		req, err := http.NewRequest(requestType, url, bytes.NewBuffer(data))
-		if err != nil {
-			log.Println("Error create a request on bitmex, got: ", err)
-		}
+	req, err := http.NewRequest(requestType, url, bytes.NewBuffer(data))
+	if err != nil {
+		log.Println("Error create a request on bitmex, got: ", err)
+	}
 
-		req.Header.Set("api-signature", hex)
-		req.Header.Set("api-expires", exp)
-		req.Header.Set("api-key", uid)
-		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-		req.Header.Set("Accept", "application/json")
-		req.Header.Set("User-Agent", "gotrader-r0b0tnull")
-		rsp, err := cl.Do(req)
-		if err != nil {
-			log.Println("Error to send the request to the API bitmex, got: ", err)
-		}
-		body, _ := ioutil.ReadAll(rsp.Body)
+	req.Header.Set("api-signature", hex)
+	req.Header.Set("api-expires", exp)
+	req.Header.Set("api-key", uid)
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", "gotrader-r0b0tnull")
+	rsp, err := cl.Do(req)
+	if err != nil {
+		log.Println("Error to send the request to the API bitmex, got: ", err)
+	}
+	body, _ := ioutil.ReadAll(rsp.Body)
+
+	return body, rsp.StatusCode
+
+	/*
 		if rsp.StatusCode == 503 {
 			log.Println("The bitmex system is currently overloaded: ", rsp.StatusCode)
 			log.Println("Body: ", convert.BytesToString(body))
@@ -79,8 +82,7 @@ func ClientRobot(requestType, path string, data []byte) []byte {
 		} else {
 			return body
 		}
-
-	}
+	*/
 }
 
 // MatrixSend send a msg to the user on settings

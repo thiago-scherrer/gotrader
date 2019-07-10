@@ -27,6 +27,9 @@ const lth = "/api/v1/position/leverage"
 // A random number to make a sleep before staring a new round
 const tlp = 50
 
+// A random number to make a sleep before staring a new request after a error
+const elp = 50
+
 // parserAmount unmarshal a r API to return the wallet amount
 func parserAmount(data []byte) int {
 	ap := rd.APISimple()
@@ -68,13 +71,19 @@ func makeOrder(orderType string) string {
 	data := cvt.StringToBytes(u.Encode())
 
 	for {
-		glt := api.ClientRobot(rtp, oph, data)
-		err := json.Unmarshal(glt, &ap)
-		if err != nil {
-			log.Println("Error to make a order:", err)
-			time.Sleep(time.Duration(5) * time.Second)
+		glt, code := api.ClientRobot(rtp, oph, data)
+
+		if code == 200 {
+			err := json.Unmarshal(glt, &ap)
+			if err != nil {
+				log.Println("Error to make a order:", err)
+				time.Sleep(time.Duration(elp) * time.Second)
+			} else {
+				return ap.OrderID
+			}
 		} else {
-			return ap.OrderID
+			log.Println("Something wrong with api:", code, "Response: ", glt)
+			time.Sleep(time.Duration(elp) * time.Second)
 		}
 	}
 }
@@ -86,10 +95,21 @@ func GetPosition() float64 {
 	pth := poh + `filter={"symbol":"` + rd.Asset() + `"}&count=1`
 	rtp := "GET"
 	dt := cvt.StringToBytes("message=GoTrader bot&channelID=1")
-	glt := api.ClientRobot(rtp, pth, dt)
-	err := json.Unmarshal(glt, &ap)
-	if err != nil {
-		log.Println("Error to get pst:", err)
+
+	for {
+		glt, code := api.ClientRobot(rtp, pth, dt)
+		if code == 200 {
+			err := json.Unmarshal(glt, &ap)
+			if err != nil {
+				log.Println("Error to get position:", err)
+				time.Sleep(time.Duration(elp) * time.Second)
+			} else {
+				break
+			}
+		} else {
+			log.Println("Something wrong with api:", code, "Response: ", glt)
+			time.Sleep(time.Duration(elp) * time.Second)
+		}
 	}
 
 	for _, v := range ap[:] {
@@ -101,7 +121,8 @@ func GetPosition() float64 {
 // Price return the actual asset price
 func Price() float64 {
 	ast := rd.Asset()
-
+	var g []byte
+	var code int
 	u := url.Values{}
 	u.Set("symbol", ast)
 	u.Add("count", "100")
@@ -110,8 +131,15 @@ func Price() float64 {
 
 	p := ith + u.Encode()
 	d := cvt.StringToBytes("message=GoTrader bot&channelID=1")
-	g := api.ClientRobot("GET", p, d)
-
+	for {
+		g, code = api.ClientRobot("GET", p, d)
+		if code == 200 {
+			break
+		} else {
+			log.Println("Something wrong with api:", code, "Response: ", g)
+			time.Sleep(time.Duration(elp) * time.Second)
+		}
+	}
 	return lastPrice(g)
 }
 
@@ -128,11 +156,16 @@ func ClosePosition(priceClose string) {
 	u.Add("ordType", "Limit")
 
 	data := cvt.StringToBytes(u.Encode())
-	for index := 0; index < 3; index++ {
-		api.ClientRobot(rtp, path, data)
-		time.Sleep(time.Duration(5) * time.Second)
-	}
 
+	for {
+		g, code := api.ClientRobot(rtp, path, data)
+		if code == 200 {
+			break
+		} else {
+			log.Println("Something wrong with api:", code, "Response: ", g)
+			time.Sleep(time.Duration(elp) * time.Second)
+		}
+	}
 }
 
 func setLeverge() {
@@ -154,8 +187,15 @@ func setLeverge() {
 func statusOrder() bool {
 	path := poh + `filter={"symbol":"` + rd.Asset() + `"}&count=1`
 	data := cvt.StringToBytes("message=GoTrader bot&channelID=1")
-	glt := api.ClientRobot("GET", path, data)
-	return opening(glt)
+
+	for {
+		glt, code := api.ClientRobot("GET", path, data)
+		if code == 200 {
+			return opening(glt)
+		}
+		log.Println("Something wrong with api:", code, "Response: ", glt)
+		time.Sleep(time.Duration(elp) * time.Second)
+	}
 }
 
 func opening(data []byte) bool {
