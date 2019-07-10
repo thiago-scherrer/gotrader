@@ -31,6 +31,9 @@ const tlp = 50
 // A random number to make a sleep before staring a new request after a error
 const elp = 50
 
+// A simple order timout to auto cancel if not executed
+const timeoutOrd = "120000"
+
 // parserAmount unmarshal a r API to return the wallet amount
 func parserAmount(data []byte) int {
 	ap := rd.APISimple()
@@ -242,13 +245,19 @@ func waitCreateOrder() bool {
 func orderTimeOut() {
 	poh := "/api/v1/order/cancelAllAfter?"
 	data := cvt.StringToBytes("message=GoTrader bot&channelID=1")
-
 	u := url.Values{}
-	u.Set("timeout", "120000")
+	u.Set("timeout", timeoutOrd)
 
 	p := poh + u.Encode()
-	api.ClientRobot("POST", p, data)
 
+	for {
+		res, code := api.ClientRobot("POST", p, data)
+		if code == 200 {
+			break
+		}
+		log.Println("Something wrong with api:", code, "Response: ", convert.BytesToString(res))
+		time.Sleep(time.Duration(elp) * time.Second)
+	}
 }
 
 // GetProfit waint to start a new trade round
