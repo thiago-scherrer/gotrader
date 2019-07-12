@@ -31,7 +31,7 @@ const tlp = 50
 // A random number to make a sleep before staring a new request after a error
 const elp = 50
 
-// A simple order timout to auto cancel if not executed
+// A simple order timout to auto cancel if not executed in ms (3min)
 const timeoutOrd = "120000"
 
 // parserAmount unmarshal a r API to return the wallet amount
@@ -147,31 +147,6 @@ func Price() float64 {
 	return lastPrice(g)
 }
 
-// ClosePosition close all opened position
-func ClosePosition(priceClose string) {
-	ast := rd.Asset()
-	path := oph
-	rtp := "POST"
-
-	u := url.Values{}
-	u.Set("symbol", ast)
-	u.Add("execInst", "Close")
-	u.Add("price", priceClose)
-	u.Add("ordType", "Limit")
-
-	data := cvt.StringToBytes(u.Encode())
-
-	for {
-		g, code := api.ClientRobot(rtp, path, data)
-		if code == 200 {
-			break
-		} else {
-			log.Println("Something wrong with api:", code, "Response: ", convert.BytesToString(g))
-			time.Sleep(time.Duration(elp) * time.Second)
-		}
-	}
-}
-
 func setLeverge() {
 	ast := rd.Asset()
 	path := lth
@@ -260,18 +235,43 @@ func orderTimeOut() {
 	}
 }
 
+// ClosePosition close all opened position
+func ClosePosition(priceClose string) {
+	ast := rd.Asset()
+	path := oph
+	rtp := "POST"
+
+	u := url.Values{}
+	u.Set("symbol", ast)
+	u.Add("execInst", "Close")
+	u.Add("price", priceClose)
+	u.Add("ordType", "Limit")
+
+	data := cvt.StringToBytes(u.Encode())
+
+	for {
+		g, code := api.ClientRobot(rtp, path, data)
+		if code == 200 {
+			break
+		} else {
+			log.Println("Something wrong with api:", code, "Response: ", convert.BytesToString(g))
+			time.Sleep(time.Duration(elp) * time.Second)
+		}
+	}
+}
+
 // GetProfit waint to start a new trade round
 func GetProfit() bool {
 	log.Println(display.OrderWaintMsg(rd.Asset()))
 	api.MatrixSend(display.OrderWaintMsg(rd.Asset()))
 
-	for {
+	for index := 0; index < 4; index++ {
 		if statusOrder() == false {
 			log.Println(display.ProfitMsg(rd.Asset()))
 			api.MatrixSend(display.ProfitMsg(rd.Asset()))
-			time.Sleep(time.Duration(tlp) * time.Second)
 			return true
 		}
-		time.Sleep(time.Duration(10) * time.Second)
+		time.Sleep(time.Duration(3) * time.Minute)
 	}
+	return false
 }

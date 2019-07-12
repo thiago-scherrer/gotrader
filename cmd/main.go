@@ -43,5 +43,4 @@ func daemonize() {
 	} else if trd == "Sell" {
 		logic.ClosePositionProfitSell()
 	}
-	central.GetProfit()
 }

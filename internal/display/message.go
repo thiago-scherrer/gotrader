@@ -47,5 +47,5 @@ func StopLossMsg(a string) string {
 
 // ProfitMsg display msg  when the trade get profit
 func ProfitMsg(a string) string {
-	return " " + a + " - Order fulfilled!"
+	return " " + a + " - Profit done!"
 }

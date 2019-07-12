@@ -156,7 +156,7 @@ func priceCloseSell(pst float64) string {
 }
 
 // ClosePositionProfitBuy the Buy position
-func ClosePositionProfitBuy() bool {
+func ClosePositionProfitBuy() {
 	pst := central.GetPosition()
 
 	for {
@@ -166,20 +166,24 @@ func ClosePositionProfitBuy() bool {
 			log.Println(display.OrdertriggerMsg(rd.Asset()))
 			api.MatrixSend(display.OrdertriggerMsg(rd.Asset()))
 			central.ClosePosition(profitTarget)
-			return true
+			if central.GetProfit() {
+				break
+			}
 		} else if stopLossBuy(pst, price) {
 			log.Println(display.StopLossMsg(rd.Asset()))
 			api.MatrixSend(display.StopLossMsg(rd.Asset()))
 			lossTarget := convert.FloatToString(central.Price())
 			central.ClosePosition(lossTarget)
-			return true
+			if central.GetProfit() {
+				break
+			}
 		}
 		time.Sleep(time.Duration(10) * time.Second)
 	}
 }
 
 // ClosePositionProfitSell close the Sell position
-func ClosePositionProfitSell() bool {
+func ClosePositionProfitSell() {
 	pst := central.GetPosition()
 
 	for {
@@ -189,13 +193,17 @@ func ClosePositionProfitSell() bool {
 			log.Println(display.OrdertriggerMsg(rd.Asset()))
 			api.MatrixSend(display.OrdertriggerMsg(rd.Asset()))
 			central.ClosePosition(profitTarget)
-			return true
+			if central.GetProfit() {
+				break
+			}
 		} else if stopLossSell(pst, price) {
 			log.Println(display.StopLossMsg(rd.Asset()))
 			api.MatrixSend(display.StopLossMsg(rd.Asset()))
 			lossTarget := convert.FloatToString(central.Price())
 			central.ClosePosition(lossTarget)
-			return true
+			if central.GetProfit() {
+				break
+			}
 		}
 		time.Sleep(time.Duration(10) * time.Second)
 	}
