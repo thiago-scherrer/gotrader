@@ -30,18 +30,20 @@ type APIResponseComplex struct {
 
 // Conf instruction are the file yaml on disc
 type Conf struct {
-	Asset         string `yaml:"asset"`
-	Candle        int    `yaml:"candle"`
-	Endpoint      string `yaml:"endpoint"`
-	Hand          int64  `yaml:"hand"`
-	Leverage      string `yaml:"leverage"`
-	Secret        string `yaml:"secret"`
-	Threshold     int    `yaml:"threshold"`
-	Userid        string `yaml:"userid"`
-	MatrixUse     bool   `yaml:"matrixuse"`
-	MatrixKey     string `yaml:"matrix_key"`
-	MatrixURL     string `yaml:"matrixurl"`
-	MatrixChannel string `yaml:"matrixchannel"`
+	Asset         string  `yaml:"asset"`
+	Candle        int     `yaml:"candle"`
+	Endpoint      string  `yaml:"endpoint"`
+	Hand          int64   `yaml:"hand"`
+	Leverage      string  `yaml:"leverage"`
+	MatrixUse     bool    `yaml:"matrixuse"`
+	MatrixKey     string  `yaml:"matrix_key"`
+	MatrixURL     string  `yaml:"matrixurl"`
+	MatrixChannel string  `yaml:"matrixchannel"`
+	Profit        float64 `yaml:"profit"`
+	Secret        string  `yaml:"secret"`
+	StopLoss      float64 `yaml:"stoploss"`
+	Threshold     int     `yaml:"threshold"`
+	Userid        string  `yaml:"userid"`
 }
 
 // Use to get the right time of the candle time
@@ -146,6 +148,18 @@ func Matrixurl() string {
 func MatrixChannel() string {
 	conf := configReader()
 	return conf.MatrixChannel
+}
+
+// Profit return the profit percentage
+func Profit() float64 {
+	conf := configReader()
+	return conf.Profit
+}
+
+// StopLoss return the StopLoss percentage
+func StopLoss() float64 {
+	conf := configReader()
+	return conf.StopLoss
 }
 
 //APISimple return JSON

@@ -18,12 +18,6 @@ import (
 // Path from api to view the orderbook
 const orb string = "/api/v1/orderBook/L2?"
 
-// Profit percentage value to exit the trader
-const profit float64 = 0.02
-
-// Stop loss percentage value to close the trade
-const stopLoss float64 = 0.1
-
 // Return types to Buy
 const tby = "Buy"
 const tll = "Sell"
@@ -126,31 +120,31 @@ func logicSystem(buy, sell int) string {
 }
 
 func stopLossBuy(pst float64, price float64) bool {
-	return price <= (pst - ((pst / 100) * stopLoss))
+	return price <= (pst - ((pst / 100) * rd.StopLoss()))
 }
 
 func stopLossSell(pst float64, price float64) bool {
-	return price >= (pst + ((pst / 100) * stopLoss))
+	return price >= (pst + ((pst / 100) * rd.StopLoss()))
 }
 
 func closePositionBuy(pst float64, price float64) bool {
-	return price >= (pst + ((pst / 100) * profit))
+	return price >= (pst + ((pst / 100) * rd.Profit()))
 }
 
 func closePositionSell(pst float64, price float64) bool {
-	return price <= (pst - ((pst / 100) * profit))
+	return price <= (pst - ((pst / 100) * rd.Profit()))
 }
 
 func priceCloseBuy(pst float64) string {
 	priceClose := fmt.Sprintf("%2.f",
-		(pst + ((pst / 100) * profit)),
+		(pst + ((pst / 100) * rd.Profit()) + 2),
 	)
 	return priceClose
 }
 
 func priceCloseSell(pst float64) string {
 	priceClose := fmt.Sprintf("%2.f",
-		(pst - ((pst / 100) * profit)),
+		(pst - ((pst / 100) * rd.Profit()) - 1),
 	)
 	return priceClose
 }

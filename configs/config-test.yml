@@ -23,6 +23,12 @@ threshold: 1
 # Send 0 to enable cross margin.
 leverage: "0.1"
 
+# Profit value to close (percentage)
+profit: 0.1
+
+# Stop Loss trigger (percentage)
+stoploss: 1.0
+
 # Enable matrix? (true/false)
 matrixuse: false
 
