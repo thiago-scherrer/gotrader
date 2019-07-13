@@ -32,7 +32,7 @@ const tlp = 50
 const elp = 50
 
 // A simple order timout to auto cancel if not executed in ms (3min)
-const timeoutOrd = "120000"
+const timeoutOrd = "60000"
 
 // parserAmount unmarshal a r API to return the wallet amount
 func parserAmount(data []byte) int {
@@ -90,7 +90,7 @@ func makeOrder(orderType string) string {
 			if waitCreateOrder() {
 				return ap.OrderID
 			}
-			time.Sleep(time.Duration(180) * time.Second)
+			time.Sleep(time.Duration(60) * time.Second)
 		} else {
 			log.Println("Something wrong with api:", code, "Response: ", convert.BytesToString(glt))
 			time.Sleep(time.Duration(5) * time.Second)
@@ -203,6 +203,8 @@ func CreateOrder(typeOrder string) bool {
 	orderTimeOut()
 	makeOrder(typeOrder)
 	if waitCreateOrder() {
+		log.Println(display.OrderDoneMsg(rd.Asset()))
+		api.MatrixSend(display.OrderDoneMsg(rd.Asset()))
 		log.Println(display.OrderCreatedMsg(rd.Asset(), typeOrder))
 		api.MatrixSend(display.OrderCreatedMsg(rd.Asset(), typeOrder))
 		return true
@@ -212,8 +214,6 @@ func CreateOrder(typeOrder string) bool {
 
 func waitCreateOrder() bool {
 	if statusOrder() == true {
-		log.Println(display.OrderDoneMsg(rd.Asset()))
-		api.MatrixSend(display.OrderDoneMsg(rd.Asset()))
 		return true
 	}
 	return false
@@ -274,7 +274,7 @@ func GetProfit() bool {
 			api.MatrixSend(display.ProfitMsg(rd.Asset()))
 			return true
 		}
-		time.Sleep(time.Duration(3) * time.Minute)
+		time.Sleep(time.Duration(15) * time.Second)
 	}
 	return false
 }
