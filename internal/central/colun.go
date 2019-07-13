@@ -72,6 +72,7 @@ func makeOrder(orderType string) string {
 	u.Add("orderQty", hfl)
 	u.Add("price", prc)
 	u.Add("ordType", "Limit")
+	u.Add("execInst", "ParticipateDoNotInitiate")
 	data := cvt.StringToBytes(u.Encode())
 
 	for {
@@ -246,6 +247,7 @@ func ClosePosition(priceClose string) {
 	u.Add("execInst", "Close")
 	u.Add("price", priceClose)
 	u.Add("ordType", "Limit")
+	u.Add("execInst", "ParticipateDoNotInitiate")
 
 	data := cvt.StringToBytes(u.Encode())
 
