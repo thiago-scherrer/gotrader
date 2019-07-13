@@ -25,10 +25,10 @@ const ith string = "/api/v1/instrument?"
 // Laverage path to use on API Request
 const lth = "/api/v1/position/leverage"
 
-// A random number to make a sleep before staring a new round
+// A random number to make a sleep before starting  a new round
 const tlp = 50
 
-// A random number to make a sleep before staring a new request after a error
+// A random number to make a sleep before starting a new request after a error
 const elp = 50
 
 // A simple order timout to auto cancel if not executed in ms (3min)
@@ -60,22 +60,22 @@ func lastPrice(d []byte) float64 {
 }
 
 func makeOrder(orderType string) string {
-	ap := rd.APISimple()
-	hfl := cvt.IntToString(rd.Hand())
-	ast := rd.Asset()
-	prc := cvt.FloatToString(Price())
-	rtp := "POST"
-
-	u := url.Values{}
-	u.Set("symbol", ast)
-	u.Add("side", orderType)
-	u.Add("orderQty", hfl)
-	u.Add("price", prc)
-	u.Add("ordType", "Limit")
-	u.Add("execInst", "ParticipateDoNotInitiate")
-	data := cvt.StringToBytes(u.Encode())
-
 	for {
+		ap := rd.APISimple()
+		hfl := cvt.IntToString(rd.Hand())
+		ast := rd.Asset()
+		prc := cvt.FloatToString(Price())
+		rtp := "POST"
+
+		u := url.Values{}
+		u.Set("symbol", ast)
+		u.Add("side", orderType)
+		u.Add("orderQty", hfl)
+		u.Add("price", prc)
+		u.Add("ordType", "Limit")
+		u.Add("execInst", "ParticipateDoNotInitiate")
+		data := cvt.StringToBytes(u.Encode())
+
 		glt, code := api.ClientRobot(rtp, oph, data)
 
 		if code == 200 {
@@ -83,9 +83,12 @@ func makeOrder(orderType string) string {
 			if err != nil {
 				log.Println("Error to make a order:", err)
 				time.Sleep(time.Duration(elp) * time.Second)
-			} else {
+			}
+
+			if waitCreateOrder() {
 				return ap.OrderID
 			}
+
 		} else {
 			log.Println("Something wrong with api:", code, "Response: ", convert.BytesToString(glt))
 			time.Sleep(time.Duration(elp) * time.Second)
@@ -197,14 +200,10 @@ func CreateOrder(typeOrder string) bool {
 	setLeverge()
 	orderTimeOut()
 	makeOrder(typeOrder)
-
-	for i := 0; i < 3; i++ {
-		if waitCreateOrder() {
-			log.Println(display.OrderCreatedMsg(rd.Asset(), typeOrder))
-			api.MatrixSend(display.OrderCreatedMsg(rd.Asset(), typeOrder))
-			return true
-		}
-		time.Sleep(time.Duration(1) * time.Minute)
+	if waitCreateOrder() {
+		log.Println(display.OrderCreatedMsg(rd.Asset(), typeOrder))
+		api.MatrixSend(display.OrderCreatedMsg(rd.Asset(), typeOrder))
+		return true
 	}
 	return false
 }
