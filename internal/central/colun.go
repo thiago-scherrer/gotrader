@@ -61,6 +61,9 @@ func lastPrice(d []byte) float64 {
 
 func makeOrder(orderType string) string {
 	for {
+		if waitCreateOrder() {
+			return "Order Created"
+		}
 		ap := rd.APISimple()
 		hfl := cvt.IntToString(rd.Hand())
 		ast := rd.Asset()
@@ -84,11 +87,10 @@ func makeOrder(orderType string) string {
 				log.Println("Error to make a order:", err)
 				time.Sleep(time.Duration(5) * time.Second)
 			}
-
 			if waitCreateOrder() {
 				return ap.OrderID
 			}
-
+			time.Sleep(time.Duration(180) * time.Second)
 		} else {
 			log.Println("Something wrong with api:", code, "Response: ", convert.BytesToString(glt))
 			time.Sleep(time.Duration(5) * time.Second)
