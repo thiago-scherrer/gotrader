@@ -82,7 +82,7 @@ func makeOrder(orderType string) string {
 			err := json.Unmarshal(glt, &ap)
 			if err != nil {
 				log.Println("Error to make a order:", err)
-				time.Sleep(time.Duration(elp) * time.Second)
+				time.Sleep(time.Duration(5) * time.Second)
 			}
 
 			if waitCreateOrder() {
@@ -91,7 +91,7 @@ func makeOrder(orderType string) string {
 
 		} else {
 			log.Println("Something wrong with api:", code, "Response: ", convert.BytesToString(glt))
-			time.Sleep(time.Duration(elp) * time.Second)
+			time.Sleep(time.Duration(5) * time.Second)
 		}
 	}
 }
