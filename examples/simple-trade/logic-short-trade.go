@@ -137,14 +137,14 @@ func closePositionSell(pst float64, price float64) bool {
 
 func priceCloseBuy(pst float64) string {
 	priceClose := fmt.Sprintf("%2.f",
-		(pst + ((pst/100)*rd.Profit() + 1)),
+		((pst + 0.5) + ((pst / 100) * rd.Profit())),
 	)
 	return priceClose
 }
 
 func priceCloseSell(pst float64) string {
 	priceClose := fmt.Sprintf("%2.f",
-		(pst - ((pst/100)*rd.Profit() - 1)),
+		((pst - 0.5) - ((pst / 100) * rd.Profit())),
 	)
 	return priceClose
 }
