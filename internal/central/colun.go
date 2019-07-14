@@ -61,6 +61,7 @@ func lastPrice(d []byte) float64 {
 
 func makeOrder(orderType string) string {
 	for {
+		orderTimeOut()
 		if waitCreateOrder() {
 			return "Order Created"
 		}
@@ -200,7 +201,6 @@ func opening(data []byte) bool {
 // CreateOrder create the order on bitmex
 func CreateOrder(typeOrder string) bool {
 	setLeverge()
-	orderTimeOut()
 	makeOrder(typeOrder)
 	if waitCreateOrder() {
 		log.Println(display.OrderDoneMsg(rd.Asset()))
@@ -233,7 +233,7 @@ func orderTimeOut() {
 			break
 		}
 		log.Println("Something wrong with api:", code, "Response: ", convert.BytesToString(res))
-		time.Sleep(time.Duration(elp) * time.Second)
+		time.Sleep(time.Duration(5) * time.Second)
 	}
 }
 
