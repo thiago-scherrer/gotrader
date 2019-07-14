@@ -253,6 +253,7 @@ func ClosePosition(priceClose string) {
 	data := cvt.StringToBytes(u.Encode())
 
 	for {
+		orderTimeOut()
 		g, code := api.ClientRobot(rtp, path, data)
 		if code == 200 {
 			break
