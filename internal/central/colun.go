@@ -108,7 +108,7 @@ func statusOrder() bool {
 		return false
 	}
 
-	err := json.Unmarshal(data, &ap)
+	err := json.Unmarshal(glt, &ap)
 	if err != nil {
 		log.Println("json open error:", err)
 	}
