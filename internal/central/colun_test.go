@@ -55,19 +55,3 @@ func Test_parserAmount(t *testing.T) {
 		})
 	}
 }
-
-func Test_opening(t *testing.T) {
-	tests := []struct {
-		name string
-		want bool
-	}{
-		{"Test", true},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := opening(convert.StringToBytes(`[{"isOpen":true}]`)); got != tt.want {
-				t.Errorf("opening() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}

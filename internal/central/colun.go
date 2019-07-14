@@ -59,16 +59,19 @@ func lastPrice(d []byte) float64 {
 	return r
 }
 
-func makeOrder(orderType string) string {
+func makeOrder(orderType string) bool {
 	for {
 		orderTimeOut()
-		if waitCreateOrder() {
-			return "Order Created"
+		if statusOrder() == true {
+			return true
 		}
-		ap := rd.APISimple()
-		hfl := cvt.IntToString(rd.Hand())
+		hfl := cvt.IntToString(
+			rd.Hand(),
+		)
 		ast := rd.Asset()
-		prc := cvt.FloatToString(Price())
+		prc := cvt.FloatToString(
+			Price(),
+		)
 		rtp := "POST"
 
 		u := url.Values{}
@@ -81,22 +84,38 @@ func makeOrder(orderType string) string {
 		data := cvt.StringToBytes(u.Encode())
 
 		glt, code := api.ClientRobot(rtp, oph, data)
-
-		if code == 200 {
-			err := json.Unmarshal(glt, &ap)
-			if err != nil {
-				log.Println("Error to make a order:", err)
-				time.Sleep(time.Duration(5) * time.Second)
-			}
-			if waitCreateOrder() {
-				return ap.OrderID
-			}
-			time.Sleep(time.Duration(60) * time.Second)
-		} else {
+		if code != 200 {
 			log.Println("Something wrong with api:", code, "Response: ", convert.BytesToString(glt))
-			time.Sleep(time.Duration(5) * time.Second)
+		} else {
+			if statusOrder() == true {
+				return true
+			}
 		}
+
+		time.Sleep(time.Duration(65) * time.Second)
 	}
+}
+
+func statusOrder() bool {
+	path := poh + `filter={"symbol":"` + rd.Asset() + `"}&count=1`
+	data := cvt.StringToBytes("message=GoTrader bot&channelID=1")
+	glt, code := api.ClientRobot("GET", path, data)
+	ap := rd.APIArray()
+	var r bool
+
+	if code != 200 {
+		log.Println("Something wrong with api:", code, "Response: ", convert.BytesToString(glt))
+		return false
+	}
+
+	err := json.Unmarshal(data, &ap)
+	if err != nil {
+		log.Println("json open error:", err)
+	}
+	for _, v := range ap[:] {
+		r = v.IsOpen
+	}
+	return r
 }
 
 // GetPosition get the actual open possitions
@@ -129,7 +148,7 @@ func GetPosition() float64 {
 	return r
 }
 
-// Price return the actual asset price
+// Price return the actual asset value
 func Price() float64 {
 	ast := rd.Asset()
 	var g []byte
@@ -170,50 +189,15 @@ func setLeverge() {
 
 }
 
-func statusOrder() bool {
-	path := poh + `filter={"symbol":"` + rd.Asset() + `"}&count=1`
-	data := cvt.StringToBytes("message=GoTrader bot&channelID=1")
-
-	for {
-		glt, code := api.ClientRobot("GET", path, data)
-		if code == 200 {
-			return opening(glt)
-		}
-		log.Println("Something wrong with api:", code, "Response: ", convert.BytesToString(glt))
-		time.Sleep(time.Duration(elp) * time.Second)
-	}
-}
-
-func opening(data []byte) bool {
-	ap := rd.APIArray()
-	var r bool
-
-	err := json.Unmarshal(data, &ap)
-	if err != nil {
-		log.Println("json open error:", err)
-	}
-	for _, v := range ap[:] {
-		r = v.IsOpen
-	}
-	return r
-}
-
 // CreateOrder create the order on bitmex
 func CreateOrder(typeOrder string) bool {
 	setLeverge()
 	makeOrder(typeOrder)
-	if waitCreateOrder() {
+	if statusOrder() {
 		log.Println(display.OrderDoneMsg(rd.Asset()))
 		api.MatrixSend(display.OrderDoneMsg(rd.Asset()))
 		log.Println(display.OrderCreatedMsg(rd.Asset(), typeOrder))
 		api.MatrixSend(display.OrderCreatedMsg(rd.Asset(), typeOrder))
-		return true
-	}
-	return false
-}
-
-func waitCreateOrder() bool {
-	if statusOrder() == true {
 		return true
 	}
 	return false
