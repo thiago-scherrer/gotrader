@@ -135,30 +135,30 @@ func closePositionSell(pst float64, price float64) bool {
 	return price <= (pst - ((pst / 100) * rd.Profit()))
 }
 
-func priceCloseBuy(pst float64) string {
+func priceCloseBuy(price float64) string {
 	priceClose := fmt.Sprintf("%2.f",
-		((pst + 1.5) + ((pst / 100) * rd.Profit())),
+		((price + 0.5) + ((price / 100) * rd.Profit())),
 	)
 	return priceClose
 }
 
-func priceCloseSell(pst float64) string {
+func priceCloseSell(price float64) string {
 	priceClose := fmt.Sprintf("%2.f",
-		((pst - 1.5) - ((pst / 100) * rd.Profit())),
+		((price - 0.5) - ((price / 100) * rd.Profit())),
 	)
 	return priceClose
 }
 
 func lossTargetBuy(price float64) string {
 	priceClose := fmt.Sprintf("%2.f",
-		(price - 1.5),
+		(price - 0.5),
 	)
 	return priceClose
 }
 
 func lossTargetSell(price float64) string {
 	priceClose := fmt.Sprintf("%2.f",
-		(price + 1.5),
+		(price + 0.5),
 	)
 	return priceClose
 }
@@ -170,7 +170,7 @@ func ClosePositionProfitBuy() {
 	for {
 		price := central.Price()
 		if closePositionBuy(pst, price) {
-			profitTarget := priceCloseBuy(pst)
+			profitTarget := priceCloseBuy(price)
 			log.Println(display.OrdertriggerMsg(rd.Asset()))
 			api.MatrixSend(display.OrdertriggerMsg(rd.Asset()))
 			central.ClosePosition(profitTarget)
@@ -196,7 +196,7 @@ func ClosePositionProfitSell() {
 	for {
 		price := central.Price()
 		if closePositionSell(pst, price) {
-			profitTarget := priceCloseSell(pst)
+			profitTarget := priceCloseSell(price)
 			log.Println(display.OrdertriggerMsg(rd.Asset()))
 			api.MatrixSend(display.OrdertriggerMsg(rd.Asset()))
 			central.ClosePosition(profitTarget)
