@@ -38,9 +38,7 @@ func timeStamp() int64 {
 
 // ClientRobot make all request to the bitmex API
 func ClientRobot(requestType, path string, data []byte) ([]byte, int) {
-	cl := &http.Client{
-		Timeout: time.Second * 10,
-	}
+	cl := &http.Client{}
 	ep := reader.Endpoint()
 	sq := reader.Secret()
 	uid := reader.Userid()
@@ -74,9 +72,7 @@ func MatrixSend(msg string) int {
 		return 200
 	}
 
-	cl := &http.Client{
-		Timeout: time.Second * 10,
-	}
+	cl := &http.Client{}
 	turl := reader.Matrixurl()
 	tch := reader.MatrixChannel()
 	tkn := reader.MatrixKey()
