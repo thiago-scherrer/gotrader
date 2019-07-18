@@ -1,3 +1,5 @@
+github.com/thiago-scherrer/metrobot v0.0.0-20190324064145-043636d14367 h1:phW4QNbY0rrroHVpXXlTMM3Mki8I4cv9O8kJl7TvcKU=
+github.com/thiago-scherrer/metrobot v0.0.0-20190324064145-043636d14367/go.mod h1:n5mkEeqVs5Yxh8yDIQkhWkjlSfD/3gi67gAik2Ldwsk=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v2 v2.2.2 h1:ZCJp+EgiOT7lHqUV2J862kp8Qj64Jo6az82+3Td9dZw=

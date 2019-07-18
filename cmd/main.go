@@ -18,10 +18,10 @@ func main() {
 
 func daemonize() {
 	rd.InitFlag()
+
 	log.Println(
 		dp.HelloMsg(rd.Asset()),
 	)
-
 	api.MatrixSend(
 		dp.HelloMsg(rd.Asset()),
 	)
@@ -29,8 +29,7 @@ func daemonize() {
 	trd := logic.CandleRunner()
 
 	if central.CreateOrder(trd) == false {
-		dp.OrderCancelMsg()
-		return
+		trd = "Error"
 	}
 
 	if trd == "Buy" {

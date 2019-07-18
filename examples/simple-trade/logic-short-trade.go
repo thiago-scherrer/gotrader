@@ -18,11 +18,6 @@ import (
 // Path from api to view the orderbook
 const orb string = "/api/v1/orderBook/L2?"
 
-// Return types to Buy
-const tby = "Buy"
-const tll = "Sell"
-const tdw = "Draw"
-
 // CandleRunner verify the api and start the logic system
 func CandleRunner() string {
 	t := rd.Threshold()
@@ -33,9 +28,9 @@ func CandleRunner() string {
 	for i := 0; i < t; i++ {
 		for ii := 0; ii < c; ii++ {
 			res := returnDepth()
-			if res == tby {
+			if res == "Buy" {
 				cby++
-			} else if res == tll {
+			} else if res == "Sell" {
 				tsl++
 			} else {
 				i = -1
@@ -89,9 +84,9 @@ func returnDepth() string {
 		}
 
 		for _, v := range ap[:] {
-			if v.Side == tll {
+			if v.Side == "Sell" {
 				sell = sell + v.Size
-			} else if v.Side == tby {
+			} else if v.Side == "Buy" {
 				buy = buy + v.Size
 			}
 
@@ -112,11 +107,11 @@ func timeStamp() string {
 
 func logicSystem(buy, sell int) string {
 	if buy > sell {
-		return tby
+		return "Buy"
 	} else if sell > buy {
-		return tll
+		return "Sell"
 	}
-	return tdw
+	return "Draw"
 }
 
 func stopLossBuy(pst float64, price float64) bool {
