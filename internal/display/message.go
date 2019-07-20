@@ -1,5 +1,9 @@
 package display
 
+import (
+	"github.com/thiago-scherrer/gotrader/internal/convert"
+)
+
 // HelloMsg will be see when the bot start a new trade
 func HelloMsg(a string) string {
 	return " " + a + " - Starting a new round"
@@ -48,4 +52,9 @@ func StopLossMsg(a string) string {
 // ProfitMsg display msg  when the trade get profit
 func ProfitMsg(a string) string {
 	return " " + a + " - Round done."
+}
+
+// OrderPrice display the current price
+func OrderPrice(asset string, price float64) string {
+	return " " + asset + " - Price now: " + convert.FloatToString(price)
 }

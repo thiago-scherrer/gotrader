@@ -32,6 +32,20 @@ func daemonize() {
 		trd = "Error"
 	}
 
+	log.Println(
+		display.OrderPrice(
+			reader.Asset(),
+			central.Price(),
+		),
+	)
+
+	api.MatrixSend(
+		display.OrderPrice(
+			reader.Asset(),
+			central.Price(),
+		),
+	)
+
 	if trd == "Buy" {
 		logic.ClosePositionProfitBuy()
 	} else if trd == "Sell" {
