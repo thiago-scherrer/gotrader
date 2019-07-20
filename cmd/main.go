@@ -5,9 +5,9 @@ import (
 
 	"github.com/thiago-scherrer/gotrader/internal/api"
 	"github.com/thiago-scherrer/gotrader/internal/central"
-	dp "github.com/thiago-scherrer/gotrader/internal/display"
+	"github.com/thiago-scherrer/gotrader/internal/display"
 	"github.com/thiago-scherrer/gotrader/internal/logic"
-	rd "github.com/thiago-scherrer/gotrader/internal/reader"
+	"github.com/thiago-scherrer/gotrader/internal/reader"
 )
 
 func main() {
@@ -17,13 +17,13 @@ func main() {
 }
 
 func daemonize() {
-	rd.InitFlag()
+	reader.InitFlag()
 
 	log.Println(
-		dp.HelloMsg(rd.Asset()),
+		display.HelloMsg(reader.Asset()),
 	)
 	api.MatrixSend(
-		dp.HelloMsg(rd.Asset()),
+		display.HelloMsg(reader.Asset()),
 	)
 
 	trd := logic.CandleRunner()
@@ -37,6 +37,6 @@ func daemonize() {
 	} else if trd == "Sell" {
 		logic.ClosePositionProfitSell()
 	} else {
-		dp.OrderCancelMsg()
+		display.OrderCancelMsg()
 	}
 }
