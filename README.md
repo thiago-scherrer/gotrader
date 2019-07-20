@@ -93,11 +93,9 @@ The acual logic can be changed on *internal/logic/*. A simple example can be fou
 
 ## TO-DO
 
-- [ ] best log control
-- [ ] best retry order logic
-- [ ] more documentation
-- [ ] more logic
-- [ ] websocket socket support
+- best log control
+- more documentation
+- more logic
 
 ## References
 
