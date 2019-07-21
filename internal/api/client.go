@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/go-redis/redis"
 	"github.com/thiago-scherrer/gotrader/internal/convert"
 	"github.com/thiago-scherrer/gotrader/internal/reader"
 )
@@ -97,4 +98,13 @@ func MatrixSend(msg string) int {
 		log.Println("Error to get body from Matrix API, got", err)
 	}
 	return rsp.StatusCode
+}
+
+// RDclient create a client to the redis container
+func RDclient() *redis.Client {
+	return redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "",
+		DB:       0,
+	})
 }

@@ -9,3 +9,15 @@ services:
     build:
       context: .
       target: runner
+    links:
+    - redis
+    environment:
+    - REDIS_URL=redis://redis
+  redis:
+    container_name: redis
+    image: redis
+    command: redis-server
+    ports:
+    - "6379:6379"
+
+  

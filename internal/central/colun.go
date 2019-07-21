@@ -10,6 +10,7 @@ import (
 	"github.com/thiago-scherrer/gotrader/internal/convert"
 	cvt "github.com/thiago-scherrer/gotrader/internal/convert"
 	"github.com/thiago-scherrer/gotrader/internal/display"
+	"github.com/thiago-scherrer/gotrader/internal/logic"
 	rd "github.com/thiago-scherrer/gotrader/internal/reader"
 )
 
@@ -65,9 +66,7 @@ func makeOrder(orderType string) bool {
 		if statusOrder() == true {
 			return true
 		}
-		hfl := cvt.IntToString(
-			rd.Hand(),
-		)
+		hand := logic.GetHand()
 		ast := rd.Asset()
 		prc := cvt.FloatToString(
 			Price(),
@@ -77,7 +76,7 @@ func makeOrder(orderType string) bool {
 		u := url.Values{}
 		u.Set("symbol", ast)
 		u.Add("side", orderType)
-		u.Add("orderQty", hfl)
+		u.Add("orderQty", hand)
 		u.Add("price", prc)
 		u.Add("ordType", "Limit")
 		u.Add("execInst", "ParticipateDoNotInitiate")

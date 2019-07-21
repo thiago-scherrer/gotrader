@@ -1,22 +1,34 @@
 package logic
 
 import (
-	"fmt"
+	"github.com/thiago-scherrer/gotrader/internal/convert"
+	"github.com/thiago-scherrer/gotrader/internal/reader"
 )
+
+// Path from api to view the orderbook
+const orb string = "/api/v1/orderBook/L2?"
 
 // CandleRunner verify the api and start the logic system
 func CandleRunner() string {
-	return "Example of candle"
+	return "statusLogic"
+}
+
+func returnDepth() string {
+	return "Buy/Sell/Draw"
 }
 
 // ClosePositionProfitBuy the Buy position
-func ClosePositionProfitBuy() bool {
-	fmt.Println("Example of logic")
-	return false
+func ClosePositionProfitBuy() {
+
 }
 
 // ClosePositionProfitSell close the Sell position
-func ClosePositionProfitSell() bool {
-	fmt.Println("Example of logic")
-	return false
+func ClosePositionProfitSell() {
+}
+
+// GetHand change the hand according to a strategy
+func GetHand() string {
+	return convert.IntToString(
+		reader.Hand(),
+	)
 }
