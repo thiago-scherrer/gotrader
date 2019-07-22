@@ -21,5 +21,3 @@ services:
     command: redis-server
     ports:
     - "6379:6379"
-
-  
