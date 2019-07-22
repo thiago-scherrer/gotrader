@@ -58,33 +58,13 @@ docker-compose up -d
 You can see the logs with *docker logs* command, like:
 
 ```bash
-docker logs -f gotrader_runner_1
+docker logs -f gotrader
 ```
 
 To stop the bot, run:
 
 ```bash
 docker-compose down
-```
-
-## Runing local
-
-Download the example configuration file, and after this, change the *config.yml* with your configurations:
-
-```bash
-wget https://raw.githubusercontent.com/thiago-scherrer/gotrader/master/configs/config-example.yml -O config.yml
-```
-
-Get the bot:
-
-```bash
-go get github.com/thiago-scherrer/gotrader/cmd/
-```
-
-Run the bot like:
-
-```bash
-$GOPATH/bin/gotrader config config.yml
 ```
 
 ## Logic
@@ -96,6 +76,7 @@ The acual logic can be changed on *internal/logic/*. A simple example can be fou
 - best log control
 - more documentation
 - more logic
+- more redis 
 
 ## References
 
