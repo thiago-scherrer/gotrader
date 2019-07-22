@@ -246,15 +246,9 @@ func martingaleDecrease() {
 // GetHand change the hand according to a strategy
 func GetHand() string {
 	cli := api.RDclient()
-	mstatus, err := cli.Get("mstatus").Result()
-	if err != nil {
-		log.Println("Error to get value on redis: ", err)
-	}
-
-	mvalue, err := cli.Get("mvalue").Result()
-	if err != nil {
-		log.Println("Error to get value on redis: ", err)
-	}
+	
+	mstatus, _ := cli.Get("mstatus").Result()
+	mvalue, _ := cli.Get("mvalue").Result()
 
 	mval := convert.StringToInt(mvalue)
 	if mstatus == "true" {
