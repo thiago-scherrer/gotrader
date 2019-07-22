@@ -27,8 +27,9 @@ func daemonize() {
 	)
 
 	trd := logic.CandleRunner()
+	hand := logic.GetHand()
 
-	if central.CreateOrder(trd) == false {
+	if central.CreateOrder(trd, hand) == false {
 		trd = "Error"
 	}
 

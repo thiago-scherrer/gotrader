@@ -103,7 +103,7 @@ func MatrixSend(msg string) int {
 // RDclient create a client to the redis container
 func RDclient() *redis.Client {
 	return redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     "redis:6379",
 		Password: "",
 		DB:       0,
 	})

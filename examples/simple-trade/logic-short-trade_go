@@ -78,7 +78,6 @@ func returnDepth() string {
 		if err != nil {
 			break
 		}
-
 		if len(res) <= 5 {
 			break
 		}

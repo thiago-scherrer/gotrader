@@ -8,9 +8,7 @@ import (
 
 	"github.com/thiago-scherrer/gotrader/internal/api"
 	"github.com/thiago-scherrer/gotrader/internal/convert"
-	cvt "github.com/thiago-scherrer/gotrader/internal/convert"
 	"github.com/thiago-scherrer/gotrader/internal/display"
-	"github.com/thiago-scherrer/gotrader/internal/logic"
 	rd "github.com/thiago-scherrer/gotrader/internal/reader"
 )
 
@@ -60,15 +58,15 @@ func lastPrice(d []byte) float64 {
 	return r
 }
 
-func makeOrder(orderType string) bool {
+func makeOrder(orderType, hand string) bool {
 	for {
 		orderTimeOut()
 		if statusOrder() == true {
 			return true
 		}
-		hand := logic.GetHand()
+		hand := hand
 		ast := rd.Asset()
-		prc := cvt.FloatToString(
+		prc := convert.FloatToString(
 			Price(),
 		)
 		rtp := "POST"
@@ -80,7 +78,7 @@ func makeOrder(orderType string) bool {
 		u.Add("price", prc)
 		u.Add("ordType", "Limit")
 		u.Add("execInst", "ParticipateDoNotInitiate")
-		data := cvt.StringToBytes(u.Encode())
+		data := convert.StringToBytes(u.Encode())
 
 		glt, code := api.ClientRobot(rtp, oph, data)
 		if code != 200 {
@@ -97,7 +95,7 @@ func makeOrder(orderType string) bool {
 
 func statusOrder() bool {
 	path := poh + `filter={"symbol":"` + rd.Asset() + `"}&count=1`
-	data := cvt.StringToBytes("message=GoTrader bot&channelID=1")
+	data := convert.StringToBytes("message=GoTrader bot&channelID=1")
 	glt, code := api.ClientRobot("GET", path, data)
 	ap := rd.APIArray()
 	var r bool
@@ -123,7 +121,7 @@ func GetPosition() float64 {
 	var r float64
 	pth := poh + `filter={"symbol":"` + rd.Asset() + `"}&count=1`
 	rtp := "GET"
-	dt := cvt.StringToBytes("message=GoTrader bot&channelID=1")
+	dt := convert.StringToBytes("message=GoTrader bot&channelID=1")
 
 	for {
 		glt, code := api.ClientRobot(rtp, pth, dt)
@@ -159,7 +157,7 @@ func Price() float64 {
 	u.Add("columns", "lastPrice")
 
 	p := ith + u.Encode()
-	d := cvt.StringToBytes("message=GoTrader bot&channelID=1")
+	d := convert.StringToBytes("message=GoTrader bot&channelID=1")
 	for {
 		g, code = api.ClientRobot("GET", p, d)
 		if code == 200 {
@@ -180,7 +178,7 @@ func setLeverge() {
 	u := url.Values{}
 	u.Set("symbol", ast)
 	u.Add("leverage", l)
-	data := cvt.StringToBytes(u.Encode())
+	data := convert.StringToBytes(u.Encode())
 
 	api.ClientRobot(rtp, path, data)
 	log.Println(display.SetleverageMsg(rd.Asset(), l))
@@ -189,9 +187,9 @@ func setLeverge() {
 }
 
 // CreateOrder create the order on bitmex
-func CreateOrder(typeOrder string) bool {
+func CreateOrder(typeOrder, hand string) bool {
 	setLeverge()
-	makeOrder(typeOrder)
+	makeOrder(typeOrder, hand)
 	if statusOrder() {
 		log.Println(display.OrderDoneMsg(rd.Asset()))
 		api.MatrixSend(display.OrderDoneMsg(rd.Asset()))
@@ -204,7 +202,7 @@ func CreateOrder(typeOrder string) bool {
 
 func orderTimeOut() {
 	poh := "/api/v1/order/cancelAllAfter?"
-	data := cvt.StringToBytes("message=GoTrader bot&channelID=1")
+	data := convert.StringToBytes("message=GoTrader bot&channelID=1")
 	u := url.Values{}
 	u.Set("timeout", timeoutOrd)
 
@@ -233,7 +231,7 @@ func ClosePosition(priceClose string) {
 	u.Add("ordType", "Limit")
 	u.Add("execInst", "ParticipateDoNotInitiate")
 
-	data := cvt.StringToBytes(u.Encode())
+	data := convert.StringToBytes(u.Encode())
 
 	for {
 		orderTimeOut()

@@ -262,7 +262,6 @@ func GetHand() string {
 			reader.Hand() * mval,
 		)
 	}
-
 	return convert.IntToString(
 		reader.Hand(),
 	)
