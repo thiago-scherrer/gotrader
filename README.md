@@ -15,24 +15,21 @@ Project to create a trade bot for bitmex trade platform.
 
 ## How it works
 
-This bot still under construction. Its purpose is to automate a rule created by the trader. It's not a money machine ...
+Its purpose is to automate a rule created by the trader.
 
 ## Caution
 
-This bot does not guarantee anything, it may not even work properly. You can lose money with it! Test the gotrader bot in the test network first!
+This bot still under construction and does not guarantee anything, it may not even work properly. You can lose money with it! **Test the gotrader bot in the test network first!**
+But if you have good results, PR the logic =)
 
-You have been warned.
-
-But if you have good results, share the logic =)
-
-And Don't panic!
+Don't panic!
 
 ## Enabled
 
-- Creating order, buying and selling
-- Use of leverage
+- New and close order, buy or sell
+- leverage
 - Send messages to matrix.org
-- Able to use modified rules
+- Able to use custom logic
 
 ## Supported Contracts
 
