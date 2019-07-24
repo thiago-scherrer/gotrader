@@ -223,9 +223,12 @@ func martingaleIncrease() {
 		log.Println("Error to save on redis: ", err)
 	}
 
-	err = cli.IncrBy("mvalue", 1).Err()
-	if err != nil {
-		log.Println("Error to save on redis: ", err)
+	mvalue, _ := cli.Get("mvalue").Result()
+
+	if convert.StringToInt(mvalue) < 1 {
+		cli.IncrBy("mvalue", 2).Err()
+	} else {
+		cli.IncrBy("mvalue", 1).Err()
 	}
 }
 
