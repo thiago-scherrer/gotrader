@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
 # Test and build
 # ------------------------------------------------------------------------------
-FROM golang@sha256:f6b9f5d9da411dd88772b0829d8f382113c6b34f1a54aac5867dd2471afc6512 AS builder
+FROM golang:latest AS builder
 LABEL NAME golang
 LABEL VERSION 1.0
 ENV APP /src/gotrader
