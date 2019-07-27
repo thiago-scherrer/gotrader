@@ -14,4 +14,5 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 script:
+  - docker build . -f Dockerfile.test
   - docker-compose build
