@@ -25,8 +25,8 @@ func CandleRunner() string {
 	var tsl int
 	var cby int
 
-	for i := 0; i < t; i++ {
-		for ii := 0; ii < c; ii++ {
+	for i := int64(0); i < t; i++ {
+		for ii := int64(0); ii < c; ii++ {
 			res := returnDepth()
 			if res == "Buy" {
 				cby++

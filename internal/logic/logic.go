@@ -1,10 +1,5 @@
 package logic
 
-import (
-	"github.com/thiago-scherrer/gotrader/internal/convert"
-	"github.com/thiago-scherrer/gotrader/internal/reader"
-)
-
 // Path from api to view the orderbook
 const orb string = "/api/v1/orderBook/L2?"
 
@@ -24,11 +19,4 @@ func ClosePositionProfitBuy() {
 
 // ClosePositionProfitSell close the Sell position
 func ClosePositionProfitSell() {
-}
-
-// GetHand change the hand according to a strategy
-func GetHand() string {
-	return convert.IntToString(
-		reader.Hand(),
-	)
 }

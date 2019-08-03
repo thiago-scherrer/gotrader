@@ -6,6 +6,7 @@ import (
 	"os"
 	"sync"
 
+	"github.com/go-redis/redis"
 	"github.com/thiago-scherrer/gotrader/internal/convert"
 	"github.com/thiago-scherrer/gotrader/internal/display"
 	"gopkg.in/yaml.v2"
@@ -78,16 +79,44 @@ func configReader() *Conf {
 
 }
 
+// RDclient create a client to the redis container
+func RDclient() *redis.Client {
+	return redis.NewClient(&redis.Options{
+		Addr:     "redis:6379",
+		Password: "",
+		DB:       0,
+	})
+}
+
+// Boot create the initial Bootstrap config
+func Boot() {
+	conf := configReader()
+	db := RDclient()
+	bootStatus, _ := db.Get("reload").Result()
+
+	if bootStatus != "true" {
+		db.Set("hand", conf.Hand, 0).Err()
+		db.Set("asset", conf.Asset, 0).Err()
+		db.Set("candle", conf.Candle, 0).Err()
+		db.Set("threshold", conf.Threshold, 0).Err()
+		db.Set("leverage", conf.Leverage, 0).Err()
+		db.Set("profit", conf.Profit, 0).Err()
+		db.Set("stoploss", conf.StopLoss, 0).Err()
+	}
+}
+
 // Asset set the contract type to trade
 func Asset() string {
-	conf := configReader()
-	return conf.Asset
+	db := RDclient()
+	result, _ := db.Get("asset").Result()
+	return result
 }
 
 // Candle return the time of candle setting
-func Candle() int {
-	conf := configReader()
-	return conf.Candle
+func Candle() int64 {
+	db := RDclient()
+	result, _ := db.Get("candle").Result()
+	return convert.StringToInt(result)
 }
 
 // Endpoint return url from bitmex
@@ -97,15 +126,17 @@ func Endpoint() string {
 }
 
 // Hand return value to trade
-func Hand() int64 {
-	conf := configReader()
-	return conf.Hand
+func Hand() string {
+	db := RDclient()
+	result, _ := db.Get("hand").Result()
+	return result
 }
 
 // Leverage return the value to set on laverage trading
 func Leverage() string {
-	conf := configReader()
-	return conf.Leverage
+	db := RDclient()
+	result, _ := db.Get("leverage").Result()
+	return result
 }
 
 // Secret return API password
@@ -115,9 +146,10 @@ func Secret() string {
 }
 
 // Threshold return the the value from config file
-func Threshold() int {
-	conf := configReader()
-	return conf.Threshold
+func Threshold() int64 {
+	db := RDclient()
+	result, _ := db.Get("threshold").Result()
+	return convert.StringToInt(result)
 }
 
 // Userid return user identify from bitmex
@@ -152,14 +184,16 @@ func MatrixChannel() string {
 
 // Profit return the profit percentage
 func Profit() float64 {
-	conf := configReader()
-	return conf.Profit
+	db := RDclient()
+	result, _ := db.Get("profit").Result()
+	return convert.StringToFloat64(result)
 }
 
 // StopLoss return the StopLoss percentage
 func StopLoss() float64 {
-	conf := configReader()
-	return conf.StopLoss
+	db := RDclient()
+	result, _ := db.Get("stoploss").Result()
+	return convert.StringToFloat64(result)
 }
 
 //APISimple return JSON

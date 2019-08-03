@@ -12,6 +12,7 @@ import (
 
 func main() {
 	for {
+		reader.Boot()
 		daemonize()
 	}
 }
@@ -27,7 +28,7 @@ func daemonize() {
 	)
 
 	trd := logic.CandleRunner()
-	hand := logic.GetHand()
+	hand := reader.Hand()
 
 	if central.CreateOrder(trd, hand) == false {
 		trd = "Error"

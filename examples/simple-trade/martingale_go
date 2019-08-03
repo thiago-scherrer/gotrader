@@ -26,8 +26,8 @@ func CandleRunner() string {
 	var tsl int
 	var cby int
 
-	for i := 0; i < t; i++ {
-		for ii := 0; ii < c; ii++ {
+	for i := int64(0); i < t; i++ {
+		for ii := int64(0); ii < c; ii++ {
 			res := returnDepth()
 			if res == "Buy" {
 				cby++
@@ -216,50 +216,51 @@ func ClosePositionProfitSell() {
 }
 
 func martingaleIncrease() {
-	cli := api.RDclient()
+	db := reader.RDclient()
 
-	err := cli.Set("mstatus", "true", 0).Err()
+	err := db.Set("reload", "true", 0).Err()
 	if err != nil {
 		log.Println("Error to save on redis: ", err)
 	}
 
-	mvalue, _ := cli.Get("mvalue").Result()
+	mvalue, _ := db.Get("mvalue").Result()
 
 	if convert.StringToInt(mvalue) < 1 {
-		cli.IncrBy("mvalue", 2).Err()
+		db.IncrBy("mvalue", 2).Err()
 	} else {
-		cli.IncrBy("mvalue", 1).Err()
+		db.IncrBy("mvalue", 1).Err()
 	}
+
+	setHand()
 }
 
 func martingaleDecrease() {
-	cli := api.RDclient()
+	db := reader.RDclient()
 
-	err := cli.Set("mstatus", "false", 0).Err()
+	err := db.Set("reload", "false", 0).Err()
 	if err != nil {
 		log.Println("Error to save on redis: ", err)
 	}
 
-	err = cli.Set("mvalue", 0, 0).Err()
+	err = db.Set("mvalue", 0, 0).Err()
 	if err != nil {
 		log.Println("Error to save on redis: ", err)
 	}
 }
 
-// GetHand change the hand according to a strategy
-func GetHand() string {
-	cli := api.RDclient()
-	
-	mstatus, _ := cli.Get("mstatus").Result()
-	mvalue, _ := cli.Get("mvalue").Result()
+func setHand() {
+	db := reader.RDclient()
+	mvalue, _ := db.Get("mvalue").Result()
 
 	mval := convert.StringToInt(mvalue)
-	if mstatus == "true" {
-		return convert.IntToString(
-			reader.Hand() * mval,
-		)
+	hand := convert.StringToInt(reader.Hand())
+	result := convert.IntToString(hand * mval)
+
+	err := db.Set("hand", result, 0).Err()
+	if err != nil {
+		log.Println("Error to save on redis hand: ", err)
 	}
-	return convert.IntToString(
-		reader.Hand(),
-	)
+
+	fmt.Println("OLa", hand)
+	fmt.Println("OLa", result)
 }

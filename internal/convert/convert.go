@@ -31,6 +31,12 @@ func FloatToString(data float64) string {
 	return fmt.Sprintf("%f", data)
 }
 
+// StringToFloat64 convert string to float64
+func StringToFloat64(data string) float64 {
+	result, _ := strconv.ParseFloat(data, 64)
+	return result
+}
+
 // FloatToInt convert int to float64
 func FloatToInt(data float64) int64 {
 	return int64(data)
