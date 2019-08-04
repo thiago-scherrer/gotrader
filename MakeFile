@@ -1,0 +1,8 @@
+redis:
+	docker-compose up -d redis
+
+tdd:
+	go test ./... -args config $(CURDIR)/configs/config-test.yml
+
+clean:
+	docker-compose down

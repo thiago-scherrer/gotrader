@@ -14,5 +14,5 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 script:
-  - docker build . -f Dockerfile.test
+  - make -f MakeFile redis tdd clean
   - docker-compose build

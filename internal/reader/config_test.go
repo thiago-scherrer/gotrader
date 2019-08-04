@@ -13,30 +13,17 @@ func TestFlag(t *testing.T) {
 }
 
 func TestReader(t *testing.T) {
-	getResult := configReader()
+	Boot()
 
-	if getResult.Asset != "XBTUSD" {
-		t.Error("error to read config file, got:", getResult)
-	}
-}
+	asset := Asset()
 
-func Test_InitFlag(t *testing.T) {
-	tests := []struct {
-		name string
-		want string
-	}{
-		{"Test", "/opt/config-test.yml"},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := InitFlag(); got != tt.want {
-				t.Errorf("InitFlag() = %v, want %v", got, tt.want)
-			}
-		})
+	if asset != "XBTUSD" {
+		t.Error("error to read config file, got:", asset)
 	}
 }
 
 func Test_configReader(t *testing.T) {
+	Boot()
 	tests := []struct {
 		name string
 		want *Conf
@@ -53,6 +40,7 @@ func Test_configReader(t *testing.T) {
 }
 
 func Test_asset(t *testing.T) {
+	Boot()
 	tests := []struct {
 		name string
 		want string
@@ -69,9 +57,10 @@ func Test_asset(t *testing.T) {
 }
 
 func Test_Candle(t *testing.T) {
+	Boot()
 	tests := []struct {
 		name string
-		want int
+		want int64
 	}{
 		{"Test", 1},
 	}
@@ -85,6 +74,7 @@ func Test_Candle(t *testing.T) {
 }
 
 func Test_endpoint(t *testing.T) {
+	Boot()
 	tests := []struct {
 		name string
 		want string
@@ -102,6 +92,7 @@ func Test_endpoint(t *testing.T) {
 }
 
 func Test_leverage(t *testing.T) {
+	Boot()
 	tests := []struct {
 		name string
 		want string
@@ -119,6 +110,7 @@ func Test_leverage(t *testing.T) {
 }
 
 func Test_secret(t *testing.T) {
+	Boot()
 	tests := []struct {
 		name string
 		want string
@@ -135,9 +127,10 @@ func Test_secret(t *testing.T) {
 }
 
 func Test_Threshold(t *testing.T) {
+	Boot()
 	tests := []struct {
 		name string
-		want int
+		want int64
 	}{
 		{"Test", 1},
 	}
@@ -151,6 +144,7 @@ func Test_Threshold(t *testing.T) {
 }
 
 func Test_userid(t *testing.T) {
+	Boot()
 	tests := []struct {
 		name string
 		want string
@@ -167,6 +161,7 @@ func Test_userid(t *testing.T) {
 }
 
 func Test_matrixUse(t *testing.T) {
+	Boot()
 	tests := []struct {
 		name string
 		want bool
@@ -183,6 +178,7 @@ func Test_matrixUse(t *testing.T) {
 }
 
 func Test_matrixKey(t *testing.T) {
+	Boot()
 	tests := []struct {
 		name string
 		want string
@@ -199,6 +195,7 @@ func Test_matrixKey(t *testing.T) {
 }
 
 func Test_matrixurl(t *testing.T) {
+	Boot()
 	tests := []struct {
 		name string
 		want string
@@ -215,6 +212,7 @@ func Test_matrixurl(t *testing.T) {
 }
 
 func Test_matrixChannel(t *testing.T) {
+	Boot()
 	tests := []struct {
 		name string
 		want string
