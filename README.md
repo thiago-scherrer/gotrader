@@ -73,7 +73,6 @@ The acual logic can be changed on *internal/logic/*. A simple example can be fou
 - best log control
 - more documentation
 - more logic
-- more redis 
 
 ## References
 
