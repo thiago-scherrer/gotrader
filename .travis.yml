@@ -1,8 +1,12 @@
 ---
 sudo: true
-dist: trusty
+dist: xenial
 
-language: minimal
+language: go
+
+env:
+  - GO111MODULE=on
+- GOFLAGS='-mod vendor'
 
 env:
   - DOCKER_COMPOSE_VERSION=1.23.2
