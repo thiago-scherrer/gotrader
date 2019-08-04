@@ -6,8 +6,11 @@ language: go
 
 env:
   - GO111MODULE=on
-- GOFLAGS='-mod vendor'
+  - GOFLAGS='-mod vendor'
 
+go:
+  - 1.12.5
+  
 env:
   - DOCKER_COMPOSE_VERSION=1.23.2
 
