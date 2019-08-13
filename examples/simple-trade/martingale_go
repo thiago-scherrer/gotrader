@@ -217,6 +217,7 @@ func ClosePositionProfitSell() {
 
 func martingaleIncrease() {
 	db := reader.RDclient()
+	defer db.Close()
 
 	err := db.Set("reload", "true", 0).Err()
 	if err != nil {
@@ -236,6 +237,7 @@ func martingaleIncrease() {
 
 func martingaleDecrease() {
 	db := reader.RDclient()
+	defer db.Close()
 
 	err := db.Set("reload", "false", 0).Err()
 	if err != nil {
@@ -251,6 +253,7 @@ func martingaleDecrease() {
 func setHand() {
 	db := reader.RDclient()
 	mvalue, _ := db.Get("mvalue").Result()
+	defer db.Close()
 
 	mval := convert.StringToInt(mvalue)
 	hand := convert.StringToInt(reader.Hand())
@@ -260,7 +263,4 @@ func setHand() {
 	if err != nil {
 		log.Println("Error to save on redis hand: ", err)
 	}
-
-	fmt.Println("OLa", hand)
-	fmt.Println("OLa", result)
 }
