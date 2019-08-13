@@ -92,6 +92,7 @@ func RDclient() *redis.Client {
 func Boot() {
 	conf := configReader()
 	db := RDclient()
+	defer db.Close()
 	bootStatus, _ := db.Get("reload").Result()
 
 	if bootStatus != "true" {
@@ -108,6 +109,7 @@ func Boot() {
 // Asset set the contract type to trade
 func Asset() string {
 	db := RDclient()
+	defer db.Close()
 	result, _ := db.Get("asset").Result()
 	return result
 }
@@ -115,6 +117,7 @@ func Asset() string {
 // Candle return the time of candle setting
 func Candle() int64 {
 	db := RDclient()
+	defer db.Close()
 	result, _ := db.Get("candle").Result()
 	return convert.StringToInt(result)
 }
@@ -128,6 +131,7 @@ func Endpoint() string {
 // Hand return value to trade
 func Hand() string {
 	db := RDclient()
+	defer db.Close()
 	result, _ := db.Get("hand").Result()
 	return result
 }
@@ -135,6 +139,7 @@ func Hand() string {
 // Leverage return the value to set on laverage trading
 func Leverage() string {
 	db := RDclient()
+	defer db.Close()
 	result, _ := db.Get("leverage").Result()
 	return result
 }
@@ -148,6 +153,7 @@ func Secret() string {
 // Threshold return the the value from config file
 func Threshold() int64 {
 	db := RDclient()
+	defer db.Close()
 	result, _ := db.Get("threshold").Result()
 	return convert.StringToInt(result)
 }
@@ -185,6 +191,7 @@ func MatrixChannel() string {
 // Profit return the profit percentage
 func Profit() float64 {
 	db := RDclient()
+	defer db.Close()
 	result, _ := db.Get("profit").Result()
 	return convert.StringToFloat64(result)
 }
@@ -192,6 +199,7 @@ func Profit() float64 {
 // StopLoss return the StopLoss percentage
 func StopLoss() float64 {
 	db := RDclient()
+	defer db.Close()
 	result, _ := db.Get("stoploss").Result()
 	return convert.StringToFloat64(result)
 }
