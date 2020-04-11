@@ -38,7 +38,7 @@ Don't panic!
 
 ## Runing with docker
 
-Go to the config folder and then, copy **config-example.yml** to the **config.yml**. Add your settings to the file and save.
+Go to the config folder called **configs** and then, copy **config-example.yml** to the **config.yml**. Add your settings to the file and save.
 
 Go to the **example/** folder and then, choose or create a strategy and modify with your trade strategies and after this, copy the file like **logic-short-trade_go** to the folder **internal/logic** with the name **logic.go**. Go back to the root dir and follow the steps below:
 
