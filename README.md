@@ -9,8 +9,8 @@ Project to create a trade bot for bitmex trade platform.
 
 ## Requirements
 
-- docker => 18.09.2
-- docker-compose => 1.23.2
+- docker => 19.03.8
+- docker-compose => 1.25.4
 - bitmex account
 
 ## How it works
