@@ -55,6 +55,7 @@ func lastPrice(d []byte) float64 {
 	for _, v := range ap[:] {
 		r = v.LastPrice
 	}
+
 	return r
 }
 

@@ -17,22 +17,30 @@ import (
 // hexCreator encode a string to a sha256, this is needed in bitme API
 func hexCreator(Secret, requestTipe, path, expired, data string) string {
 	concat := requestTipe + path + expired + data
+
 	h := hmac.New(sha256.New, []byte(Secret))
 	h.Write([]byte(concat))
-	hexResult := hex.EncodeToString(h.Sum(nil))
+
+	hexResult := hex.EncodeToString(
+		h.Sum(nil),
+	)
+
 	return hexResult
 }
 
 // timeExpired create a time to expire a session API.
 func timeExpired() int64 {
 	timeExpired := timeStamp() + 60
+
 	return timeExpired
 }
 
 // timeStamp create a timestamp to be used in a session.
 func timeStamp() int64 {
 	now := time.Now()
+
 	timestamp := now.Unix()
+
 	return timestamp
 }
 
@@ -42,8 +50,16 @@ func ClientRobot(requestType, path string, data []byte) ([]byte, int) {
 	ep := reader.Endpoint()
 	sq := reader.Secret()
 	uid := reader.Userid()
-	exp := convert.IntToString((timeExpired()))
-	hex := hexCreator(sq, requestType, path, exp, convert.BytesToString(data))
+	exp := convert.IntToString(
+		(timeExpired()),
+	)
+	hex := hexCreator(
+		sq,
+		requestType,
+		path,
+		exp,
+		convert.BytesToString(data),
+	)
 	url := ep + path
 
 	req, err := http.NewRequest(requestType, url, bytes.NewBuffer(data))
@@ -87,14 +103,18 @@ func MatrixSend(msg string) int {
 	req.Header.Set("User-Agent", "gotrader-r0b0tnull")
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("Accept", "application/json")
+
 	rsp, err := cl.Do(req)
 	if err != nil {
 		log.Println(err)
 	}
+
 	defer rsp.Body.Close()
+
 	_, err = ioutil.ReadAll(rsp.Body)
 	if err != nil {
 		log.Println("Error to get body from Matrix API, got", err)
 	}
+
 	return rsp.StatusCode
 }
