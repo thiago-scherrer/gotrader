@@ -34,13 +34,14 @@ type Conf struct {
 	Endpoint      string  `yaml:"endpoint"`
 	Hand          int64   `yaml:"hand"`
 	Leverage      string  `yaml:"leverage"`
-	MatrixUse     bool    `yaml:"matrixuse"`
+	MatrixChannel string  `yaml:"matrixchannel"`
 	MatrixKey     string  `yaml:"matrix_key"`
 	MatrixURL     string  `yaml:"matrixurl"`
-	MatrixChannel string  `yaml:"matrixchannel"`
+	MatrixUse     bool    `yaml:"matrixuse"`
 	Profit        float64 `yaml:"profit"`
 	Secret        string  `yaml:"secret"`
 	StopLoss      float64 `yaml:"stoploss"`
+	TaapiKey      string  `yaml:"taapikey"`
 	Threshold     int     `yaml:"threshold"`
 	Userid        string  `yaml:"userid"`
 }
@@ -52,10 +53,10 @@ const fixtime int = 6
 func ConfigPath() string {
 	var config string
 
-	if os.Getenv("ENV") == "test" {
-		config = "../../configs/config-test.yml"
-	} else {
+	if os.Getenv("ENV") == "prod" {
 		config = "/opt/config.yml"
+	} else {
+		config = "../../configs/config-test.yml"
 	}
 
 	return config
@@ -185,6 +186,12 @@ func Matrixurl() string {
 func MatrixChannel() string {
 	conf := configReader()
 	return conf.MatrixChannel
+}
+
+// TaapiKey return taapi KEY
+func TaapiKey() string {
+	conf := configReader()
+	return conf.TaapiKey
 }
 
 // Profit return the profit percentage

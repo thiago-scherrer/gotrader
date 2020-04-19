@@ -227,3 +227,19 @@ func Test_matrixChannel(t *testing.T) {
 		})
 	}
 }
+
+func TestTaapiKey(t *testing.T) {
+	tests := []struct {
+		name string
+		want string
+	}{
+		{"Taapi Key:", "42"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := TaapiKey(); got != tt.want {
+				t.Errorf("TaapiKey() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
