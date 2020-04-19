@@ -13,6 +13,8 @@ services:
       context: .
       target: builder
   runner:
+    environment:
+      - ENV=prod
     container_name: gotrader
     build:
       context: .
@@ -23,4 +25,3 @@ services:
     - redis
     environment:
     - REDIS_URL=redis://redis
-
