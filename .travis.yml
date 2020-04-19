@@ -9,7 +9,7 @@ env:
   - GOFLAGS='-mod vendor'
 
 go:
-  - 1.14.1
+  - 1.14.2
 
 env:
   - DOCKER_COMPOSE_VERSION=1.23.2

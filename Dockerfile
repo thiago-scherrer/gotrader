@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
 # build
 # ------------------------------------------------------------------------------
-FROM golang:latest AS builder
+FROM golang:1.14.2 AS builder
 LABEL NAME golang
 LABEL VERSION 2.0
 ENV APP /src/gotrader
