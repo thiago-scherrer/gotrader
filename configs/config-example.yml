@@ -40,3 +40,6 @@ matrixurl: "https://matrix.org/"
 
 # Matrix channel
 matrixchannel: "@xxxxxxxx"
+
+# TAAPI key
+taapikey: "42"
