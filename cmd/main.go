@@ -18,7 +18,7 @@ func main() {
 }
 
 func daemonize() {
-	reader.InitFlag()
+	reader.ConfigPath()
 
 	log.Println(
 		display.HelloMsg(reader.Asset()),

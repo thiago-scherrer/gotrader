@@ -6,7 +6,7 @@ import (
 )
 
 func TestFlag(t *testing.T) {
-	getResult := InitFlag()
+	getResult := ConfigPath()
 	if len(getResult) <= 1 {
 		t.Error("init flag not working, got: ", getResult)
 	}

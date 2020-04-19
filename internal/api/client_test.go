@@ -7,7 +7,7 @@ import (
 )
 
 func TestHmac(t *testing.T) {
-	reader.InitFlag()
+	reader.ConfigPath()
 
 	expired := "1518064236"
 	path := "/api/v1/instrument"

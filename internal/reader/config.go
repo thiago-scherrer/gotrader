@@ -2,13 +2,11 @@ package reader
 
 import (
 	"io/ioutil"
-	"log"
 	"os"
 	"sync"
 
 	"github.com/go-redis/redis"
 	"github.com/thiago-scherrer/gotrader/internal/convert"
-	"github.com/thiago-scherrer/gotrader/internal/display"
 	"gopkg.in/yaml.v2"
 )
 
@@ -50,30 +48,31 @@ type Conf struct {
 // Use to get the right time of the candle time
 const fixtime int = 6
 
-// InitFlag verify if config file has found
-func InitFlag() string {
+// ConfigPath verify where is config file
+func ConfigPath() string {
 	var config string
-	if len(os.Args[1:]) == 0 {
-		log.Fatalf(display.UsageMsg())
-	}
-	if os.Args[1] == "config" {
-		config = os.Args[2]
+
+	if os.Getenv("ENV") == "test" {
+		config = "../../configs/config-test.yml"
 	} else {
-		log.Fatalf(display.UsageMsg())
+		config = "/opt/config.yml"
 	}
+
 	return config
 }
 
 // ConfigReader - read the file from PC
 func configReader() *Conf {
-	confFile := InitFlag()
+	confFile := ConfigPath()
 	conf := Conf{}
+
 	var once sync.Once
 
 	onceReader := func() {
 		config, _ := ioutil.ReadFile(confFile)
 		yaml.Unmarshal(config, &conf)
 	}
+
 	once.Do(onceReader)
 	return &conf
 
