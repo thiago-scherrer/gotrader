@@ -12,6 +12,7 @@ import (
 	"github.com/thiago-scherrer/gotrader/internal/central"
 	"github.com/thiago-scherrer/gotrader/internal/convert"
 	"github.com/thiago-scherrer/gotrader/internal/display"
+	"github.com/thiago-scherrer/gotrader/internal/reader"
 	rd "github.com/thiago-scherrer/gotrader/internal/reader"
 )
 
@@ -78,6 +79,7 @@ func returnDepth() string {
 		if err != nil {
 			break
 		}
+
 		if len(res) <= 5 {
 			break
 		}
@@ -163,19 +165,23 @@ func ClosePositionProfitBuy() {
 
 	for {
 		price := central.Price()
+
 		if closePositionBuy(pst, price) {
 			profitTarget := priceCloseBuy(price)
+
 			log.Println(display.OrdertriggerMsg(rd.Asset()))
-			api.MatrixSend(display.OrdertriggerMsg(rd.Asset()))
+
 			central.ClosePosition(profitTarget)
 			if central.GetProfit() {
+				martingaleDecrease()
 				break
 			}
 		} else if stopLossBuy(pst, price) {
 			log.Println(display.StopLossMsg(rd.Asset()))
-			api.MatrixSend(display.StopLossMsg(rd.Asset()))
+
 			central.ClosePosition(lossTargetBuy(price))
 			if central.GetProfit() {
+				martingaleIncrease()
 				break
 			}
 		}
@@ -191,20 +197,73 @@ func ClosePositionProfitSell() {
 		price := central.Price()
 		if closePositionSell(pst, price) {
 			profitTarget := priceCloseSell(price)
+
 			log.Println(display.OrdertriggerMsg(rd.Asset()))
-			api.MatrixSend(display.OrdertriggerMsg(rd.Asset()))
+
 			central.ClosePosition(profitTarget)
 			if central.GetProfit() {
+				martingaleDecrease()
 				break
 			}
 		} else if stopLossSell(pst, price) {
 			log.Println(display.StopLossMsg(rd.Asset()))
-			api.MatrixSend(display.StopLossMsg(rd.Asset()))
+
 			central.ClosePosition(lossTargetSell(price))
 			if central.GetProfit() {
+				martingaleIncrease()
 				break
 			}
 		}
 		time.Sleep(time.Duration(10) * time.Second)
+	}
+}
+
+func martingaleIncrease() {
+	db := reader.RDclient()
+	defer db.Close()
+
+	err := db.Set("reload", "true", 0).Err()
+	if err != nil {
+		log.Println("Error to save on redis: ", err)
+	}
+
+	mvalue, _ := db.Get("mvalue").Result()
+
+	if convert.StringToInt(mvalue) < 1 {
+		db.IncrBy("mvalue", 2).Err()
+	} else {
+		db.IncrBy("mvalue", 1).Err()
+	}
+
+	setHand()
+}
+
+func martingaleDecrease() {
+	db := reader.RDclient()
+	defer db.Close()
+
+	err := db.Set("reload", "false", 0).Err()
+	if err != nil {
+		log.Println("Error to save on redis: ", err)
+	}
+
+	err = db.Set("mvalue", 0, 0).Err()
+	if err != nil {
+		log.Println("Error to save on redis: ", err)
+	}
+}
+
+func setHand() {
+	db := reader.RDclient()
+	mvalue, _ := db.Get("mvalue").Result()
+	defer db.Close()
+
+	mval := convert.StringToInt(mvalue)
+	hand := convert.StringToInt(reader.Hand())
+	result := convert.IntToString(hand * mval)
+
+	err := db.Set("hand", result, 0).Err()
+	if err != nil {
+		log.Println("Error to save on redis hand: ", err)
 	}
 }

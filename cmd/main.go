@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 
-	"github.com/thiago-scherrer/gotrader/internal/api"
 	"github.com/thiago-scherrer/gotrader/internal/central"
 	"github.com/thiago-scherrer/gotrader/internal/display"
 	"github.com/thiago-scherrer/gotrader/internal/logic"
@@ -18,12 +17,9 @@ func main() {
 }
 
 func daemonize() {
-	reader.InitFlag()
+	reader.ConfigPath()
 
 	log.Println(
-		display.HelloMsg(reader.Asset()),
-	)
-	api.MatrixSend(
 		display.HelloMsg(reader.Asset()),
 	)
 
@@ -35,13 +31,6 @@ func daemonize() {
 	}
 
 	log.Println(
-		display.OrderPrice(
-			reader.Asset(),
-			central.Price(),
-		),
-	)
-
-	api.MatrixSend(
 		display.OrderPrice(
 			reader.Asset(),
 			central.Price(),

@@ -1,30 +1,30 @@
 # User id to use API (bitmex example)
-userid: "LAqUlngMIQkIUjXMUreyu3qn"
+userid: ""
 
 # Password to use API (bitmex example)
-secret: "chNOOS4KvNXR_Xq4k4c9qsfoKWvnDecLATCRlcBwyKDYnWgO"
+secret: ""
 
 # API endpoint/url. Aways use HTTPS!
 endpoint: "https://testnet.bitmex.com"
 
 # Amount of contracts for trade. Only integers (required)
-hand: 2
+hand: 50
 
-# Asset to trade
+# Asset to trade (required)
 asset: "XBTUSD"
 
-# Cadle time (minutes)
-candle: 1
+# Cadle time (minutes). The minimum is 1 (required)
+candle: 5
 
-# threshold to trigger the rule.
-threshold: 1
+# threshold to trigger the rule (required)
+threshold: 5
 
 # Leverage value. Set a number between 0.01 and 100. 
-# Send 0 to enable cross margin.
-leverage: "0.1"
+# Send 0 to enable cross margin. (required) 
+leverage: "10"
 
 # Profit value to close (percentage)
 profit: 0.1
 
 # Stop Loss trigger (percentage)
-stoploss: 1.0
+stoploss: 6.0

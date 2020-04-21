@@ -2,8 +2,10 @@ redis:
 	docker-compose up -d redis
 
 tdd:
+	
 	go mod download
-	go test ./... -args config $(CURDIR)/configs/config-test.yml
-
+	ENV="test" go test -cover ./...
+	go vet ./...
+	
 clean:
 	docker-compose down

@@ -28,7 +28,6 @@ Don't panic!
 
 - New and close order, buy or sell
 - leverage
-- Send messages to matrix.org
 - Able to use custom logic
 
 ## Supported Contracts
@@ -38,48 +37,41 @@ Don't panic!
 
 ## Runing with docker
 
-Go to the config folder called **configs** and then, copy **config-example.yml** to the **config.yml**. Add your settings to the file and save.
+Add your settings to the file **configs/config.yml**
 
-Go to the **example/** folder and then, choose or create a strategy and modify with your trade strategies and after this, copy the file like **logic-short-trade_go** to the folder **internal/logic** with the name **logic.go**. Go back to the root dir and follow the steps below:
+Go back to the root dir and follow the steps below:
 
-```bash
+```sh
 docker-compose build
 ```
 
 After *test* and *build*, run the bot (background):
 
-```bash
+```sh
 docker-compose up -d
 ```
 
 You can see the logs with *docker logs* command, like:
 
-```bash
+```sh
 docker logs -f gotrader
 ```
 
 To stop the bot, run:
 
-```bash
+```sh
 docker-compose down
 ```
 
-## Logic
+## Using other logic
 
-The acual logic can be changed on *internal/logic/*. A simple example can be found on *examples/*.
+The acual logic can be changed on *internal/logic/*. Some examples can be found on *examples/*.
 
-## TO-DO
-
-- best log control
-- more documentation
-- more logic
+Go to the **example/** folder and then, choose or create a strategy. Copy the file like **martingale_go** to the **internal/logic/logic.go**.
 
 ## References
 
 - [bitmex api](https://www.bitmex.com/api/explorer/)
 - [docker-compose install](https://docs.docker.com/compose/install/)
-- [matrix doc](https://matrix.org/docs/spec/client_server/latest#sending-events-to-a-room)
-- [goreportcard](https://goreportcard.com/)
 - [gopherize](https://gopherize.me)
-- [go-yaml](https://github.com/go-yaml/yaml)
 - [project-layout](https://github.com/golang-standards/project-layout)

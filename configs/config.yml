@@ -1,42 +1,30 @@
 # User id to use API (required)
-userid: "xxxxxxxxxxxxxxxxx"
+userid: ""
 
 # Password/Secret key to use API (required)
-secret: "xxxxxxxxxxxxxxx"
+secret: ""
 
 # API endpoint/url. Aways use HTTPS! (required)
-endpoint: "https://testnet.bitmex.com"
+endpoint: "https://www.bitmex.com"
 
 # Amount of contracts for trade. Only integers (required)
-hand: 3
+hand: 50
 
 # Asset to trade (required)
 asset: "XBTUSD"
 
 # Cadle time (minutes). The minimum is 1 (required)
-candle: 30
+candle: 5
 
 # threshold to trigger the rule (required)
-threshold: 3
+threshold: 5
 
 # Leverage value. Set a number between 0.01 and 100. 
 # Send 0 to enable cross margin. (required) 
-leverage: "0.1"
+leverage: "10"
 
 # Profit value to close (percentage)
 profit: 0.1
 
 # Stop Loss trigger (percentage)
-stoploss: 1.0
-
-# Enable matrix (true/false) (required)
-matrixuse: false
-
-# Matrix API KEY
-matrix_key: "!xxxxxxx:matrix.org"
-
-# Matrix API URL
-matrixurl: "https://matrix.org/"
-
-# Matrix channel
-matrixchannel: "@xxxxxxxx"
+stoploss: 6.0

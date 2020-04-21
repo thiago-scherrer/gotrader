@@ -2,13 +2,11 @@ package reader
 
 import (
 	"io/ioutil"
-	"log"
 	"os"
 	"sync"
 
 	"github.com/go-redis/redis"
 	"github.com/thiago-scherrer/gotrader/internal/convert"
-	"github.com/thiago-scherrer/gotrader/internal/display"
 	"gopkg.in/yaml.v2"
 )
 
@@ -31,49 +29,48 @@ type APIResponseComplex struct {
 
 // Conf instruction are the file yaml on disc
 type Conf struct {
-	Asset         string  `yaml:"asset"`
-	Candle        int     `yaml:"candle"`
-	Endpoint      string  `yaml:"endpoint"`
-	Hand          int64   `yaml:"hand"`
-	Leverage      string  `yaml:"leverage"`
-	MatrixUse     bool    `yaml:"matrixuse"`
-	MatrixKey     string  `yaml:"matrix_key"`
-	MatrixURL     string  `yaml:"matrixurl"`
-	MatrixChannel string  `yaml:"matrixchannel"`
-	Profit        float64 `yaml:"profit"`
-	Secret        string  `yaml:"secret"`
-	StopLoss      float64 `yaml:"stoploss"`
-	Threshold     int     `yaml:"threshold"`
-	Userid        string  `yaml:"userid"`
+	Asset     string  `yaml:"asset"`
+	Candle    int     `yaml:"candle"`
+	Endpoint  string  `yaml:"endpoint"`
+	Hand      int64   `yaml:"hand"`
+	Leverage  string  `yaml:"leverage"`
+	Profit    float64 `yaml:"profit"`
+	Secret    string  `yaml:"secret"`
+	StopLoss  float64 `yaml:"stoploss"`
+	Threshold int     `yaml:"threshold"`
+	Userid    string  `yaml:"userid"`
 }
 
 // Use to get the right time of the candle time
 const fixtime int = 6
 
-// InitFlag verify if config file has found
-func InitFlag() string {
+// ConfigPath verify where is config file
+func ConfigPath() string {
 	var config string
-	if len(os.Args[1:]) == 0 {
-		log.Fatalf(display.UsageMsg())
-	}
-	if os.Args[1] == "config" {
-		config = os.Args[2]
+
+	if os.Getenv("GOTRADER_MODE") == "prod" {
+		config = "/opt/config.yml"
+	} else if os.Getenv("GOTRADER_MODE") == "testnet" {
+		config = "./opt/config-testnet.yml"
 	} else {
-		log.Fatalf(display.UsageMsg())
+		config = "../../configs/config-test.yml"
 	}
+
 	return config
 }
 
 // ConfigReader - read the file from PC
 func configReader() *Conf {
-	confFile := InitFlag()
+	confFile := ConfigPath()
 	conf := Conf{}
+
 	var once sync.Once
 
 	onceReader := func() {
 		config, _ := ioutil.ReadFile(confFile)
 		yaml.Unmarshal(config, &conf)
 	}
+
 	once.Do(onceReader)
 	return &conf
 
@@ -162,30 +159,6 @@ func Threshold() int64 {
 func Userid() string {
 	conf := configReader()
 	return conf.Userid
-}
-
-// MatrixUse return if enable or not Matrix
-func MatrixUse() bool {
-	conf := configReader()
-	return conf.MatrixUse
-}
-
-// MatrixKey return API Key from Matrix
-func MatrixKey() string {
-	conf := configReader()
-	return conf.MatrixKey
-}
-
-// Matrixurl return API endpoint from Matrix
-func Matrixurl() string {
-	conf := configReader()
-	return conf.MatrixURL
-}
-
-// MatrixChannel return the channel to send a msg
-func MatrixChannel() string {
-	conf := configReader()
-	return conf.MatrixChannel
 }
 
 // Profit return the profit percentage

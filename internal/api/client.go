@@ -72,7 +72,7 @@ func ClientRobot(requestType, path string, data []byte) ([]byte, int) {
 	req.Header.Set("api-key", uid)
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", "gotrader-r0b0tnull")
+	req.Header.Set("User-Agent", "gotrader")
 	rsp, err := cl.Do(req)
 	if err != nil {
 		log.Println("Error to send the request to the API bitmex, got: ", err)
@@ -80,41 +80,4 @@ func ClientRobot(requestType, path string, data []byte) ([]byte, int) {
 	body, _ := ioutil.ReadAll(rsp.Body)
 
 	return body, rsp.StatusCode
-}
-
-// MatrixSend send a msg to the user on settings
-func MatrixSend(msg string) int {
-	if reader.MatrixUse() == false {
-		return 200
-	}
-
-	cl := &http.Client{}
-	turl := reader.Matrixurl()
-	tch := reader.MatrixChannel()
-	tkn := reader.MatrixKey()
-	dt := convert.StringToBytes(`{"msgtype":"m.text", "body": "` + msg + `"}`)
-	url := turl + "_matrix/client/r0/rooms/" + tch + "/send/m.room.message?access_token=" + tkn
-
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(dt))
-	if err != nil {
-		log.Println("Error create a request on matrix, got: ", err)
-	}
-
-	req.Header.Set("User-Agent", "gotrader-r0b0tnull")
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("Accept", "application/json")
-
-	rsp, err := cl.Do(req)
-	if err != nil {
-		log.Println(err)
-	}
-
-	defer rsp.Body.Close()
-
-	_, err = ioutil.ReadAll(rsp.Body)
-	if err != nil {
-		log.Println("Error to get body from Matrix API, got", err)
-	}
-
-	return rsp.StatusCode
 }

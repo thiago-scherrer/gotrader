@@ -183,7 +183,6 @@ func setLeverge() {
 
 	api.ClientRobot(rtp, path, data)
 	log.Println(display.SetleverageMsg(rd.Asset(), l))
-	api.MatrixSend(display.SetleverageMsg(rd.Asset(), l))
 
 }
 
@@ -193,9 +192,7 @@ func CreateOrder(typeOrder, hand string) bool {
 	makeOrder(typeOrder, hand)
 	if statusOrder() {
 		log.Println(display.OrderDoneMsg(rd.Asset()))
-		api.MatrixSend(display.OrderDoneMsg(rd.Asset()))
 		log.Println(display.OrderCreatedMsg(rd.Asset(), typeOrder))
-		api.MatrixSend(display.OrderCreatedMsg(rd.Asset(), typeOrder))
 		return true
 	}
 	return false
@@ -249,12 +246,10 @@ func ClosePosition(priceClose string) {
 // GetProfit waint to start a new trade round
 func GetProfit() bool {
 	log.Println(display.OrderWaintMsg(rd.Asset()))
-	api.MatrixSend(display.OrderWaintMsg(rd.Asset()))
 
 	for index := 0; index < 4; index++ {
 		if statusOrder() == false {
 			log.Println(display.ProfitMsg(rd.Asset()))
-			api.MatrixSend(display.ProfitMsg(rd.Asset()))
 			return true
 		}
 		time.Sleep(time.Duration(15) * time.Second)

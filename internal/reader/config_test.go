@@ -6,7 +6,7 @@ import (
 )
 
 func TestFlag(t *testing.T) {
-	getResult := InitFlag()
+	getResult := ConfigPath()
 	if len(getResult) <= 1 {
 		t.Error("init flag not working, got: ", getResult)
 	}
@@ -155,74 +155,6 @@ func Test_userid(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := Userid(); got != tt.want {
 				t.Errorf("userid() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func Test_matrixUse(t *testing.T) {
-	Boot()
-	tests := []struct {
-		name string
-		want bool
-	}{
-		{"Test", false},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := MatrixUse(); got != tt.want {
-				t.Errorf("matrixUse() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func Test_matrixKey(t *testing.T) {
-	Boot()
-	tests := []struct {
-		name string
-		want string
-	}{
-		{"Test", "!xxxxxxx:matrix.org"},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := MatrixKey(); got != tt.want {
-				t.Errorf("matrixKey() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func Test_matrixurl(t *testing.T) {
-	Boot()
-	tests := []struct {
-		name string
-		want string
-	}{
-		{"Test", "https://matrix.org"},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := Matrixurl(); got != tt.want {
-				t.Errorf("matrixurl() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func Test_matrixChannel(t *testing.T) {
-	Boot()
-	tests := []struct {
-		name string
-		want string
-	}{
-		{"Test", "@"},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := MatrixChannel(); got != tt.want {
-				t.Errorf("matrixChannel() = %v, want %v", got, tt.want)
 			}
 		})
 	}

@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
 # build
 # ------------------------------------------------------------------------------
-FROM golang:latest AS builder
+FROM golang:1.14.2 AS builder
 LABEL NAME golang
 LABEL VERSION 2.0
 ENV APP /src/gotrader
@@ -27,9 +27,9 @@ FROM scratch AS runner
 LABEL NAME scratch
 LABEL VERSION 2.0
 USER gotrader
+ENV GOTRADER_MODE testnet
 COPY --from=builder /etc/ssl /etc/ssl
 COPY --from=builder /etc/group /etc/group
 COPY --from=builder /etc/passwd /etc/passwd
-COPY --from=builder /opt/*.yml /opt/
 COPY --from=builder /bin/gotrader /bin/gotrader
-CMD ["gotrader", "config", "/opt/config.yml"]
+CMD ["gotrader"]
