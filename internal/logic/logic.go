@@ -93,7 +93,7 @@ func returnDepth() string {
 		time.Sleep(time.Duration(1) * time.Second)
 
 	}
-	
+
 	return logicSystem(buy, sell)
 }
 
@@ -139,7 +139,7 @@ func priceCloseBuy(price float64) string {
 	priceClose := fmt.Sprintf("%2.f",
 		(price + 0.5),
 	)
-	
+
 	return priceClose
 }
 
@@ -147,7 +147,7 @@ func priceCloseSell(price float64) string {
 	priceClose := fmt.Sprintf("%2.f",
 		(price - 0.5),
 	)
-	
+
 	return priceClose
 }
 
@@ -155,7 +155,7 @@ func lossTargetBuy(price float64) string {
 	priceClose := fmt.Sprintf("%2.f",
 		(price - 0.5),
 	)
-	
+
 	return priceClose
 }
 
@@ -163,7 +163,7 @@ func lossTargetSell(price float64) string {
 	priceClose := fmt.Sprintf("%2.f",
 		(price + 0.5),
 	)
-	
+
 	return priceClose
 }
 
@@ -173,12 +173,12 @@ func ClosePositionProfitBuy() {
 
 	for {
 		price := central.Price()
-	
+
 		if closePositionBuy(pst, price) {
 			profitTarget := priceCloseBuy(price)
-	
+
 			log.Println(display.OrdertriggerMsg(rd.Asset()))
-			
+
 			central.ClosePosition(profitTarget)
 			if central.GetProfit() {
 				break
