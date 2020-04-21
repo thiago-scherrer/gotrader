@@ -53,8 +53,10 @@ const fixtime int = 6
 func ConfigPath() string {
 	var config string
 
-	if os.Getenv("ENV") == "prod" {
+	if os.Getenv("GOTRADER_MODE") == "prod" {
 		config = "/opt/config.yml"
+	} else if os.Getenv("GOTRADER_MODE") == "testnet" {
+		config = "./opt/config-testnet.yml"
 	} else {
 		config = "../../configs/config-test.yml"
 	}

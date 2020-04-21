@@ -3,6 +3,7 @@
 
 # secrets
 config.yml
+config-testnet.yml
 
 # vim tmp files
 *.swp

@@ -13,8 +13,6 @@ services:
       context: .
       target: builder
   runner:
-    environment:
-      - ENV=prod
     container_name: gotrader
     build:
       context: .
@@ -25,3 +23,10 @@ services:
     - redis
     environment:
     - REDIS_URL=redis://redis
+    volumes:
+      - type: bind
+        source: ./configs/config-testnet.yml
+        target: /opt/config-testnet.yml
+      - type: bind
+        source: ./configs/config.yml
+        target: /opt/config.yml

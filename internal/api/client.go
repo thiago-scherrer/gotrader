@@ -56,7 +56,7 @@ func ClientRobot(requestType, path string, data []byte) ([]byte, int) {
 	req.Header.Set("api-key", uid)
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", "gotrader-r0b0tnull")
+	req.Header.Set("User-Agent", "gotrader")
 	rsp, err := cl.Do(req)
 	if err != nil {
 		log.Println("Error to send the request to the API bitmex, got: ", err)
@@ -84,7 +84,7 @@ func MatrixSend(msg string) int {
 		log.Println("Error create a request on matrix, got: ", err)
 	}
 
-	req.Header.Set("User-Agent", "gotrader-r0b0tnull")
+	req.Header.Set("User-Agent", "gotrader")
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("Accept", "application/json")
 	rsp, err := cl.Do(req)
@@ -97,4 +97,29 @@ func MatrixSend(msg string) int {
 		log.Println("Error to get body from Matrix API, got", err)
 	}
 	return rsp.StatusCode
+}
+
+// Taapi get value from Taapi system
+func Taapi(ta, pair, interval string) string {
+
+	cl := &http.Client{}
+	turl := "https://ta.taapi.io/"
+	key := reader.TaapiKey()
+	url := turl + ta + "?secret=" + key + "&exchange=binance&symbol=" + pair + "&interval=" + interval
+	dt := convert.StringToBytes("Result")
+	req, err := http.NewRequest("GET", url, bytes.NewBuffer(dt))
+	if err != nil {
+		log.Println("Error create a request on taapi, got: ", err)
+	}
+
+	req.Header.Set("User-Agent", "gotrader")
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	rsp, err := cl.Do(req)
+	if err != nil {
+		log.Println(err)
+	}
+
+	body, _ := ioutil.ReadAll(rsp.Body)
+
+	return convert.BytesToString(body)
 }
