@@ -35,7 +35,7 @@ Don't panic!
 - XBTUSD
 - ETHUSD
 
-## Runing with docker
+## Runing
 
 Add your settings to the file **configs/config.yml**
 
