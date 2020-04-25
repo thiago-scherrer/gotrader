@@ -189,7 +189,7 @@ func APIArray() []APIResponseComplex {
 	return ar
 }
 
-// Data I can not be leave empty
+// Data return a default data to the bitmet api
 func Data() []byte {
 	return convert.StringToBytes("message=GoTrader bot&channelID=1")
 }
