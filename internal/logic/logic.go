@@ -167,7 +167,7 @@ func lossTargetSell(price float64) string {
 	return priceClose
 }
 
-// ClosePositionProfitBuy the Buy position
+// ClosePositionProfitBuy is responsible for closing a Buy order
 func ClosePositionProfitBuy() {
 	pst := central.GetPosition()
 
@@ -195,7 +195,7 @@ func ClosePositionProfitBuy() {
 	}
 }
 
-// ClosePositionProfitSell close the Sell position
+// ClosePositionProfitSell is responsible for closing a Sell position
 func ClosePositionProfitSell() {
 	pst := central.GetPosition()
 
