@@ -69,6 +69,13 @@ The acual logic can be changed on *internal/logic/*. Some examples can be found 
 
 Go to the **example/** folder and then, choose or create a strategy. Copy the file like **martingale_go** to the **internal/logic/logic.go**.
 
+## ENVs
+
+- GOTRADER_MODE=prod
+  - (default) Load `config.yml`
+- GOTRADER_MODE=testnet
+  - Load `config-testnet.yml`
+
 ## References
 
 - [bitmex api](https://www.bitmex.com/api/explorer/)
