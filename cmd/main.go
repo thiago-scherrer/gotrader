@@ -33,7 +33,7 @@ func daemonize() {
 	log.Println(
 		display.OrderPrice(
 			reader.Asset(),
-			central.Price(),
+			central.GetPosition(),
 		),
 	)
 
