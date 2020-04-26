@@ -71,10 +71,11 @@ Go to the **example/** folder and then, choose or create a strategy. Copy the fi
 
 ## ENVs
 
-- GOTRADER_MODE=prod
-  - (default) Load `config.yml`
-- GOTRADER_MODE=testnet
-  - Load `config-testnet.yml`
+- GOTRADER_MODE
+  - `prod` (default): load `config.yml`
+  - `testnet`: load `config-testnet.yml`
+- REDISURL
+  - `redis:6379` (default): endpoint to use redis
 
 ## References
 

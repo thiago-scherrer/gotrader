@@ -78,8 +78,15 @@ func configReader() *Conf {
 
 // RDclient create a client to the redis container
 func RDclient() *redis.Client {
+
+	redisurl := os.Getenv("REDISURL")
+
+	if redisurl == "" {
+		redisurl = "redis:6379"
+	}
+
 	return redis.NewClient(&redis.Options{
-		Addr:     "redis:6379",
+		Addr:     redisurl,
 		Password: "",
 		DB:       0,
 	})
