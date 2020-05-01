@@ -17,31 +17,40 @@ func main() {
 }
 
 func daemonize() {
-	reader.ConfigPath()
+	for {
+		reader.ConfigPath()
 
-	log.Println(
-		display.HelloMsg(reader.Asset()),
-	)
+		log.Println(
+			display.HelloMsg(reader.Asset()),
+		)
 
-	trd := logic.CandleRunner()
-	hand := reader.Hand()
+		trd := logic.CandleRunner()
+		if trd == "Draw" {
+			log.Println(
+				display.DrawMode(),
+			)
+			break
+		}
 
-	if central.CreateOrder(trd, hand) == false {
-		trd = "Error"
-	}
+		hand := reader.Hand()
 
-	log.Println(
-		display.OrderPrice(
-			reader.Asset(),
-			central.GetPosition(),
-		),
-	)
+		if central.CreateOrder(trd, hand) == false {
+			trd = "Error"
+		}
 
-	if trd == "Buy" {
-		logic.ClosePositionProfitBuy()
-	} else if trd == "Sell" {
-		logic.ClosePositionProfitSell()
-	} else {
-		display.OrderCancelMsg()
+		log.Println(
+			display.OrderPrice(
+				reader.Asset(),
+				central.GetPosition(),
+			),
+		)
+
+		if trd == "Buy" {
+			logic.ClosePositionProfitBuy()
+		} else if trd == "Sell" {
+			logic.ClosePositionProfitSell()
+		} else {
+			display.OrderCancelMsg()
+		}
 	}
 }

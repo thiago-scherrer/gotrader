@@ -89,3 +89,10 @@ func Test_orderWaintMsg(t *testing.T) {
 		})
 	}
 }
+
+func TestDrawMode(t *testing.T) {
+	want := "The number of buy and sell orders are equal, leaving."
+	if DrawMode() != want {
+		t.Error("error to get draw msg, WANT: ", want, " GOT: ", DrawMode())
+	}
+}

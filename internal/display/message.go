@@ -58,3 +58,8 @@ func ProfitMsg(a string) string {
 func OrderPrice(asset string, price float64) string {
 	return " " + asset + " - Price now: " + convert.FloatToString(price)
 }
+
+// DrawMode display the draw msg
+func DrawMode() string {
+	return "The number of buy and sell orders are equal, leaving."
+}
