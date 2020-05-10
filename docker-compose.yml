@@ -22,6 +22,7 @@ services:
     links:
     - redis
     environment:
+    - GOTRADER_MODE=prod
     - REDIS_URL=redis://redis
     volumes:
       - type: bind
